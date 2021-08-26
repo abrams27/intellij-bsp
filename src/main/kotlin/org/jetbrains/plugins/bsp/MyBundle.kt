@@ -1,4 +1,4 @@
-package com.github.abrams27.intellijbsp
+package org.jetbrains.plugins.bsp
 
 import com.intellij.AbstractBundle
 import org.jetbrains.annotations.NonNls

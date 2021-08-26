@@ -112,3 +112,23 @@ tasks {
         channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
     }
 }
+
+subprojects {
+
+    apply(plugin = "java")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+
+    group = properties("pluginGroup")
+    version = properties("pluginVersion")
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
+        implementation("ch.epfl.scala:bsp4j:2.0.0-M15")
+    }
+}

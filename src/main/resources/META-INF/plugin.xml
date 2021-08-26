@@ -8,12 +8,12 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.abrams27.intellijbsp.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.abrams27.intellijbsp.services.MyProjectService"/>
+        <applicationService serviceImplementation="org.jetbrains.plugins.bsp.services.MyApplicationService"/>
+        <projectService serviceImplementation="org.jetbrains.plugins.bsp.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.abrams27.intellijbsp.listeners.MyProjectManagerListener"
+        <listener class="org.jetbrains.plugins.bsp.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 </idea-plugin>

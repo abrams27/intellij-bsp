@@ -1,6 +1,6 @@
-package com.github.abrams27.intellijbsp.services
+package org.jetbrains.plugins.bsp.services
 
-import com.github.abrams27.intellijbsp.MyBundle
+import org.jetbrains.plugins.bsp.MyBundle
 import com.intellij.openapi.project.Project
 
 class MyProjectService(project: Project) {

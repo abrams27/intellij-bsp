@@ -1,6 +1,6 @@
-package com.github.abrams27.intellijbsp.listeners
+package org.jetbrains.plugins.bsp.listeners
 
-import com.github.abrams27.intellijbsp.services.MyProjectService
+import org.jetbrains.plugins.bsp.services.MyProjectService
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
