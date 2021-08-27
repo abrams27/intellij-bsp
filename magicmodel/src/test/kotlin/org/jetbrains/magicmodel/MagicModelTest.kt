@@ -2,16 +2,20 @@ package org.jetbrains.magicmodel
 
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
 import org.junit.jupiter.api.Test
+import kotlin.test.assertTrue
 
 class MagicModelTest {
 
-    @Test
-    fun `should return no targets for not existing document`() {
-        val magicModel = MagicModel()
-        val notExistingDocumentId = TextDocumentIdentifier("file:///not/existing/file")
+  @Test
+  fun `should return no targets for not existing document`() {
+    // given
+    val magicModel = MagicModel()
+    val notExistingDocumentId = TextDocumentIdentifier("file:///not/existing/file")
 
-        val targets = magicModel.getTargetsForDocument(notExistingDocumentId)
+    // when
+    val targets = magicModel.getTargetsForDocument(notExistingDocumentId)
 
-        assert(targets.isEmpty())
-    }
+    // then
+    assertTrue(targets.isEmpty())
+  }
 }
