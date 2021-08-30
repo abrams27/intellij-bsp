@@ -169,14 +169,57 @@ class MagicMetaModelGetTargetsForDocumentTest {
     val magicMetaModel = MagicMetaModel(sources)
 
     val commonDirectoryFileInTarget1Id = TextDocumentIdentifier(commonDirectoryFileInTarget1Uri)
-    val commonDirectoryChildFileInTarget1AndTarget2Id = TextDocumentIdentifier(commonDirectoryChildFileInTarget1AndTarget2Uri)
+    val commonDirectoryChildFileInTarget1AndTarget2Id =
+      TextDocumentIdentifier(commonDirectoryChildFileInTarget1AndTarget2Uri)
 
     val commonDirectoryFileInTarget1Targets = magicMetaModel.getTargetsForDocument(commonDirectoryFileInTarget1Id)
-    val commonDirectoryChildFileInTarget1AndTarget2Targets = magicMetaModel.getTargetsForDocument(commonDirectoryChildFileInTarget1AndTarget2Id)
+    val commonDirectoryChildFileInTarget1AndTarget2Targets =
+      magicMetaModel.getTargetsForDocument(commonDirectoryChildFileInTarget1AndTarget2Id)
 
     // then
     val expectedCommonDirectoryFileInTarget1Targets = listOf(target1)
     val expectedCommonDirectoryChildFileInTarget1AndTarget2Targets = listOf(target1, target2)
+
+    commonDirectoryFileInTarget1Targets shouldContainExactlyInAnyOrder expectedCommonDirectoryFileInTarget1Targets
+    commonDirectoryChildFileInTarget1AndTarget2Targets shouldContainExactlyInAnyOrder expectedCommonDirectoryChildFileInTarget1AndTarget2Targets
+  }
+
+  @Test
+  fun `should map multiple files in multiple directories to multiple targets including file based targets`() {
+    // given
+    val commonDirectoryUri = "file:///common/directory"
+    val commonDirectoryChildUri = "file:///common/directory/child"
+    val commonDirectoryFileInTarget1Uri = "$commonDirectoryUri/file1/in/target1"
+    val commonDirectoryChildFileInTarget1Target2Target3Uri = "$commonDirectoryChildUri/file2/in/target1/target2/target3"
+
+    val target1 = BuildTargetIdentifier("//target1")
+    val target2 = BuildTargetIdentifier("//target2")
+    val target3 = BuildTargetIdentifier("//target3")
+
+    val commonDirectorySourceDirectory = SourceItem(commonDirectoryUri, SourceItemKind.DIRECTORY, false)
+    val commonDirectoryChildSourceDirectory = SourceItem(commonDirectoryChildUri, SourceItemKind.DIRECTORY, false)
+    val commonDirectoryChildFileInTarget1Target2Target3Source =
+      SourceItem(commonDirectoryChildFileInTarget1Target2Target3Uri, SourceItemKind.FILE, false)
+    val target1SourceItem = SourcesItem(target1, listOf(commonDirectorySourceDirectory))
+    val target2SourceItem = SourcesItem(target2, listOf(commonDirectoryChildSourceDirectory))
+    val target3SourceItem = SourcesItem(target3, listOf(commonDirectoryChildFileInTarget1Target2Target3Source))
+
+    val sources = listOf(target1SourceItem, target2SourceItem, target3SourceItem)
+
+    // when
+    val magicMetaModel = MagicMetaModel(sources)
+
+    val commonDirectoryFileInTarget1Id = TextDocumentIdentifier(commonDirectoryFileInTarget1Uri)
+    val commonDirectoryChildFileInTarget1Target2Target3Id =
+      TextDocumentIdentifier(commonDirectoryChildFileInTarget1Target2Target3Uri)
+
+    val commonDirectoryFileInTarget1Targets = magicMetaModel.getTargetsForDocument(commonDirectoryFileInTarget1Id)
+    val commonDirectoryChildFileInTarget1AndTarget2Targets =
+      magicMetaModel.getTargetsForDocument(commonDirectoryChildFileInTarget1Target2Target3Id)
+
+    // then
+    val expectedCommonDirectoryFileInTarget1Targets = listOf(target1)
+    val expectedCommonDirectoryChildFileInTarget1AndTarget2Targets = listOf(target1, target2, target3)
 
     commonDirectoryFileInTarget1Targets shouldContainExactlyInAnyOrder expectedCommonDirectoryFileInTarget1Targets
     commonDirectoryChildFileInTarget1AndTarget2Targets shouldContainExactlyInAnyOrder expectedCommonDirectoryChildFileInTarget1AndTarget2Targets
