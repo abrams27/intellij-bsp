@@ -15,7 +15,7 @@ public class MagicMetaModel public constructor(sources: List<SourcesItem>) {
 
   public fun getTargetsForDocument(documentId: TextDocumentIdentifier): List<BuildTargetIdentifier> =
     generateAllDocumentSubdirectories(documentId)
-      .flatMap { println(it); documentIdToTargetsIdsMap[it] ?: emptyList() }
+      .flatMap { documentIdToTargetsIdsMap[it] ?: emptyList() }
       .toList()
 
   private fun generateAllDocumentSubdirectories(documentId: TextDocumentIdentifier): Sequence<Path> {

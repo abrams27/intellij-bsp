@@ -146,4 +146,39 @@ class MagicMetaModelGetTargetsForDocumentTest {
     commonDirectoryDocument1Targets shouldBe expectedTargets
     commonDirectoryDocument2Targets shouldBe expectedTargets
   }
+
+  @Test
+  fun `should map multiple files in multiple directories to multiple targets`() {
+    // given
+    val commonDirectoryUri = "file:///common/directory"
+    val commonDirectoryChildUri = "file:///common/directory/child"
+    val commonDirectoryFileInTarget1Uri = "$commonDirectoryUri/file1/in/target1"
+    val commonDirectoryChildFileInTarget1AndTarget2Uri = "$commonDirectoryChildUri/file2/in/target1/and/target2"
+
+    val target1 = BuildTargetIdentifier("//target1")
+    val target2 = BuildTargetIdentifier("//target2")
+
+    val commonDirectorySourceDirectory = SourceItem(commonDirectoryUri, SourceItemKind.DIRECTORY, false)
+    val commonDirectoryChildSourceDirectory = SourceItem(commonDirectoryChildUri, SourceItemKind.DIRECTORY, false)
+    val target1SourceItem = SourcesItem(target1, listOf(commonDirectorySourceDirectory))
+    val target2SourceItem = SourcesItem(target2, listOf(commonDirectoryChildSourceDirectory))
+
+    val sources = listOf(target1SourceItem, target2SourceItem)
+
+    // when
+    val magicMetaModel = MagicMetaModel(sources)
+
+    val commonDirectoryFileInTarget1Id = TextDocumentIdentifier(commonDirectoryFileInTarget1Uri)
+    val commonDirectoryChildFileInTarget1AndTarget2Id = TextDocumentIdentifier(commonDirectoryChildFileInTarget1AndTarget2Uri)
+
+    val commonDirectoryFileInTarget1Targets = magicMetaModel.getTargetsForDocument(commonDirectoryFileInTarget1Id)
+    val commonDirectoryChildFileInTarget1AndTarget2Targets = magicMetaModel.getTargetsForDocument(commonDirectoryChildFileInTarget1AndTarget2Id)
+
+    // then
+    val expectedCommonDirectoryFileInTarget1Targets = listOf(target1)
+    val expectedCommonDirectoryChildFileInTarget1AndTarget2Targets = listOf(target1, target2)
+
+    commonDirectoryFileInTarget1Targets shouldContainExactlyInAnyOrder expectedCommonDirectoryFileInTarget1Targets
+    commonDirectoryChildFileInTarget1AndTarget2Targets shouldContainExactlyInAnyOrder expectedCommonDirectoryChildFileInTarget1AndTarget2Targets
+  }
 }
