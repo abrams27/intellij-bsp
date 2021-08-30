@@ -4,9 +4,9 @@ import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import ch.epfl.scala.bsp4j.SourceItem
 import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
+import org.jetbrains.magicmetamodel.extensions.toAbsolutePath
 import java.net.URI
 import java.nio.file.Path
-import kotlin.io.path.toPath
 import kotlin.reflect.KProperty
 
 public class MagicMetaModel public constructor(sources: List<SourcesItem>) {
@@ -25,10 +25,7 @@ public class MagicMetaModel public constructor(sources: List<SourcesItem>) {
   }
 
   private fun mapDocumentIdToAbsolutePath(documentId: TextDocumentIdentifier): Path =
-    URI.create(documentId.uri)
-      .normalize()
-      .toPath()
-      .toAbsolutePath()
+    URI.create(documentId.uri).toAbsolutePath()
 }
 
 private class DocumentIdToTargetsIdsMapDelegate(private val sources: List<SourcesItem>) {
@@ -49,8 +46,5 @@ private class DocumentIdToTargetsIdsMapDelegate(private val sources: List<Source
       .map { Pair(it, sourceItem.target) }
 
   private fun mapSourceItemToPath(sourceItem: SourceItem): Path =
-    URI.create(sourceItem.uri)
-      .normalize()
-      .toPath()
-      .toAbsolutePath()
+    URI.create(sourceItem.uri).toAbsolutePath()
 }
