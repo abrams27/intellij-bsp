@@ -6,16 +6,18 @@ import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
 import kotlin.reflect.KProperty
 
-public class MagicModel {
+public class MagicModel public constructor(sources: List<SourcesItem>) {
+
+  private val documentIdToTargetsIdsMap by DocumentIdToTargetsIdsMapDelegate(sources)
 
   public fun getTargetsForDocument(documentId: TextDocumentIdentifier): List<BuildTargetIdentifier> {
-    return emptyList()
+    return documentIdToTargetsIdsMap[documentId] ?: emptyList()
   }
 }
 
-internal class DocumentIdToTargetsIdsMapDelegate(private val sources: List<SourcesItem>) {
+private class DocumentIdToTargetsIdsMapDelegate(private val sources: List<SourcesItem>) {
 
-  internal operator fun getValue(
+  operator fun getValue(
     thisRef: Any?,
     property: KProperty<*>
   ): Map<TextDocumentIdentifier, List<BuildTargetIdentifier>> =

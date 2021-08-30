@@ -130,5 +130,8 @@ subprojects {
     dependencies {
         detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
         implementation("ch.epfl.scala:bsp4j:2.0.0-M15")
+
+        testImplementation(kotlin("test"))
+        testImplementation("io.kotest:kotest-assertions-core:4.6.2")
     }
 }

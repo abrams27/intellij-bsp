@@ -1,21 +1,15 @@
 package org.jetbrains.magicmodel
 
-import ch.epfl.scala.bsp4j.TextDocumentIdentifier
-import org.junit.jupiter.api.Test
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.BeforeEach
+
 
 class MagicModelTest {
 
-  @Test
-  fun `should return no targets for not existing document`() {
-    // given
-    val magicModel = MagicModel()
-    val notExistingDocumentId = TextDocumentIdentifier("file:///not/existing/file")
+  private lateinit var magicModel: MagicModel
 
-    // when
-    val targets = magicModel.getTargetsForDocument(notExistingDocumentId)
-
-    // then
-    assertTrue(targets.isEmpty())
+  @BeforeEach
+  fun beforeEach() {
+    magicModel = MagicModel(emptyList())
   }
+
 }
