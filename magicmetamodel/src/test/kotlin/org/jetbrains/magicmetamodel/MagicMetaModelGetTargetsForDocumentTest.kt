@@ -8,24 +8,6 @@ import org.junit.jupiter.api.Test
 
 class MagicMetaModelGetTargetsForDocumentTest {
 
-  @Test
-  fun `should return empty map for empty sources`() {
-    // given
-    val sources = emptyList<SourcesItem>()
-
-    val notExistingDocumentUri = "file:///not/existing/file"
-
-    // when
-    val magicMetaModel = MagicMetaModel(sources)
-
-    val notExistingDocumentId = TextDocumentIdentifier(notExistingDocumentUri)
-
-    val notExistingDocumentTargets = magicMetaModel.getTargetsForDocument(notExistingDocumentId)
-
-    // then
-    notExistingDocumentTargets shouldBe emptyList()
-  }
-
   @Nested
   inner class FileBasedSourcesTests {
 
@@ -188,44 +170,75 @@ class MagicMetaModelGetTargetsForDocumentTest {
     }
   }
 
-  @Test
-  fun `should map multiple files in multiple directories to multiple targets including file based targets`() {
-    // given
-    val commonDirectoryUri = "file:///common/directory"
-    val commonDirectoryChildUri = "file:///common/directory/child"
-    val commonDirectoryFileInTarget1Uri = "$commonDirectoryUri/file1/in/target1"
-    val commonDirectoryChildFileInTarget1Target2Target3Uri = "$commonDirectoryChildUri/file2/in/target1/target2/target3"
+  @Nested
+  inner class FileAndDirectoryBasedSourcesTests {
 
-    val target1 = BuildTargetIdentifier("//target1")
-    val target2 = BuildTargetIdentifier("//target2")
-    val target3 = BuildTargetIdentifier("//target3")
+    @Test
+    fun `should map document to no targets for no sources`() {
+      // given
 
-    val commonDirectorySourceDirectory = SourceItem(commonDirectoryUri, SourceItemKind.DIRECTORY, false)
-    val commonDirectoryChildSourceDirectory = SourceItem(commonDirectoryChildUri, SourceItemKind.DIRECTORY, false)
-    val commonDirectoryChildFileInTarget1Target2Target3Source =
-      SourceItem(commonDirectoryChildFileInTarget1Target2Target3Uri, SourceItemKind.FILE, false)
-    val target1SourceItem = SourcesItem(target1, listOf(commonDirectorySourceDirectory))
-    val target2SourceItem = SourcesItem(target2, listOf(commonDirectoryChildSourceDirectory))
-    val target3SourceItem = SourcesItem(target3, listOf(commonDirectoryChildFileInTarget1Target2Target3Source))
+      val fileInNoTargetUri = "file:///file/in/no/target"
 
-    val sources = listOf(target1SourceItem, target2SourceItem, target3SourceItem)
+      val sources = emptyList<SourcesItem>()
 
-    // when
-    val magicMetaModel = MagicMetaModel(sources)
+      // when
+      val magicMetaModel = MagicMetaModel(sources)
 
-    val commonDirectoryFileInTarget1Id = TextDocumentIdentifier(commonDirectoryFileInTarget1Uri)
-    val commonDirectoryChildFileInTarget1Target2Target3Id =
-      TextDocumentIdentifier(commonDirectoryChildFileInTarget1Target2Target3Uri)
+      val fileInNoTargetId = TextDocumentIdentifier(fileInNoTargetUri)
 
-    val commonDirectoryFileInTarget1Targets = magicMetaModel.getTargetsForDocument(commonDirectoryFileInTarget1Id)
-    val commonDirectoryChildFileInTarget1AndTarget2Targets =
-      magicMetaModel.getTargetsForDocument(commonDirectoryChildFileInTarget1Target2Target3Id)
+      val fileInNoTargetTargets = magicMetaModel.getTargetsForDocument(fileInNoTargetId)
 
-    // then
-    val expectedCommonDirectoryFileInTarget1Targets = listOf(target1)
-    val expectedCommonDirectoryChildFileInTarget1AndTarget2Targets = listOf(target1, target2, target3)
+      // then
+      fileInNoTargetTargets shouldBe emptyList()
+    }
 
-    commonDirectoryFileInTarget1Targets shouldContainExactlyInAnyOrder expectedCommonDirectoryFileInTarget1Targets
-    commonDirectoryChildFileInTarget1AndTarget2Targets shouldContainExactlyInAnyOrder expectedCommonDirectoryChildFileInTarget1AndTarget2Targets
+    @Test
+    fun `should map file based source inside nested directories to multiple targets`() {
+      // given
+      val commonDirectoryUri = "file:///common/directory"
+      val commonDirectoryChildUri = "file:///common/directory/child"
+
+      val fileInNoTargetUri = "file:///file/in/no/target"
+      val commonDirectoryFileInTarget1Uri = "$commonDirectoryUri/file1/in/target1"
+      val commonDirectoryChildFileInTarget1Target2Target3Uri =
+        "$commonDirectoryChildUri/file/in/target1/target2/target3"
+
+      val target1 = BuildTargetIdentifier("//target1")
+      val target2 = BuildTargetIdentifier("//target2")
+      val target3 = BuildTargetIdentifier("//target3")
+
+      val commonDirectorySource = SourceItem(commonDirectoryUri, SourceItemKind.DIRECTORY, false)
+      val commonDirectoryChildSource = SourceItem(commonDirectoryChildUri, SourceItemKind.DIRECTORY, false)
+      val commonDirectoryChildFileInTarget1Target2Target3Source =
+        SourceItem(commonDirectoryChildFileInTarget1Target2Target3Uri, SourceItemKind.FILE, false)
+
+      val target1Sources = SourcesItem(target1, listOf(commonDirectorySource))
+      val target2Sources = SourcesItem(target2, listOf(commonDirectoryChildSource))
+      val target3Sources = SourcesItem(target3, listOf(commonDirectoryChildFileInTarget1Target2Target3Source))
+
+      val sources = listOf(target1Sources, target2Sources, target3Sources)
+
+      // when
+      val magicMetaModel = MagicMetaModel(sources)
+
+      val fileInNoTargetId = TextDocumentIdentifier(fileInNoTargetUri)
+      val commonDirectoryFileInTarget1Id = TextDocumentIdentifier(commonDirectoryFileInTarget1Uri)
+      val commonDirectoryChildFileInTarget1Target2Target3Id =
+        TextDocumentIdentifier(commonDirectoryChildFileInTarget1Target2Target3Uri)
+
+      val fileInNoTargetTargets = magicMetaModel.getTargetsForDocument(fileInNoTargetId)
+      val commonDirectoryFileInTarget1Targets = magicMetaModel.getTargetsForDocument(commonDirectoryFileInTarget1Id)
+      val commonDirectoryChildFileInTarget1Target2Target3Targets =
+        magicMetaModel.getTargetsForDocument(commonDirectoryChildFileInTarget1Target2Target3Id)
+
+      // then
+      fileInNoTargetTargets shouldBe emptyList()
+      commonDirectoryFileInTarget1Targets shouldContainExactlyInAnyOrder listOf(target1)
+      commonDirectoryChildFileInTarget1Target2Target3Targets shouldContainExactlyInAnyOrder listOf(
+        target1,
+        target2,
+        target3
+      )
+    }
   }
 }
