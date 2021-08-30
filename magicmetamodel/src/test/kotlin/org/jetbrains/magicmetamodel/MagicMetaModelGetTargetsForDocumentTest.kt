@@ -26,16 +26,16 @@ class MagicMetaModelGetTargetsForDocumentTest {
   }
 
   @Test
-  fun `should map multiple documents to single target`() {
+  fun `should map multiple files to single target`() {
     // given
     val singleTargetDocument1Uri = "file:///file1/with/single/target"
     val singleTargetDocument2Uri = "file:///file2/with/single/target"
 
-    val target = BuildTargetIdentifier("//target1")
+    val target = BuildTargetIdentifier("//target")
 
-    val singleTargetFile = SourceItem(singleTargetDocument1Uri, SourceItemKind.FILE, false)
-    val anotherFile = SourceItem(singleTargetDocument2Uri, SourceItemKind.FILE, false)
-    val targetSourceItem = SourcesItem(target, listOf(singleTargetFile, anotherFile))
+    val singleTargetFile1 = SourceItem(singleTargetDocument1Uri, SourceItemKind.FILE, false)
+    val singleTargetFile2 = SourceItem(singleTargetDocument2Uri, SourceItemKind.FILE, false)
+    val targetSourceItem = SourcesItem(target, listOf(singleTargetFile1, singleTargetFile2))
 
     val sources = listOf(targetSourceItem)
 
@@ -56,7 +56,7 @@ class MagicMetaModelGetTargetsForDocumentTest {
   }
 
   @Test
-  fun `should map one document to multiple targets`() {
+  fun `should map one file to multiple targets`() {
     // given
     val multipleTargetsDocumentUri = "file:///file/with/multiple/targets"
 
@@ -83,7 +83,7 @@ class MagicMetaModelGetTargetsForDocumentTest {
   }
 
   @Test
-  fun `should map multiple documents to multiple targets`() {
+  fun `should map multiple files to multiple targets`() {
     // given
     val multipleTargetsDocument1Uri = "file:///file1/with/multiple/targets"
     val multipleTargetsDocument2Uri = "file:///file2/with/multiple/targets"
@@ -115,5 +115,35 @@ class MagicMetaModelGetTargetsForDocumentTest {
 
     document1Targets shouldContainExactlyInAnyOrder expectedDocument1Targets
     document2Targets shouldContainExactlyInAnyOrder expectedDocument2Targets
+  }
+
+  @Test
+  fun `should map multiple files in single directory to single target`() {
+    // given
+    val commonDirectoryUri = "file:///common/directory"
+    val commonDirectoryDocument1Uri = "$commonDirectoryUri/file1/with/single/target"
+    val commonDirectoryDocument2Uri = "$commonDirectoryUri/file2/with/single/target"
+
+    val target = BuildTargetIdentifier("//target")
+
+    val targetSourceDirectory = SourceItem(commonDirectoryUri, SourceItemKind.DIRECTORY, false)
+    val targetSourceItem = SourcesItem(target, listOf(targetSourceDirectory))
+
+    val sources = listOf(targetSourceItem)
+
+    // when
+    val magicMetaModel = MagicMetaModel(sources)
+
+    val commonDirectoryDocument1Id = TextDocumentIdentifier(commonDirectoryDocument1Uri)
+    val commonDirectoryDocument2Id = TextDocumentIdentifier(commonDirectoryDocument2Uri)
+
+    val commonDirectoryDocument1Targets = magicMetaModel.getTargetsForDocument(commonDirectoryDocument1Id)
+    val commonDirectoryDocument2Targets = magicMetaModel.getTargetsForDocument(commonDirectoryDocument2Id)
+
+    // then
+    val expectedTargets = listOf(target)
+
+    commonDirectoryDocument1Targets shouldBe expectedTargets
+    commonDirectoryDocument2Targets shouldBe expectedTargets
   }
 }
