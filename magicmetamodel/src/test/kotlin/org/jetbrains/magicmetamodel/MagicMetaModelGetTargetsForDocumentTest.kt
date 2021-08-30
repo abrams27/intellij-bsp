@@ -3,6 +3,7 @@ package org.jetbrains.magicmetamodel
 import ch.epfl.scala.bsp4j.*
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class MagicMetaModelGetTargetsForDocumentTest {
@@ -25,96 +26,96 @@ class MagicMetaModelGetTargetsForDocumentTest {
     notExistingDocumentTargets shouldBe emptyList()
   }
 
-  @Test
-  fun `should map multiple files to single target`() {
-    // given
-    val singleTargetDocument1Uri = "file:///file1/with/single/target"
-    val singleTargetDocument2Uri = "file:///file2/with/single/target"
+  @Nested
+  inner class FileBasedSourcesTests {
 
-    val target = BuildTargetIdentifier("//target")
+    @Test
+    fun `should map multiple files to single target`() {
+      // given
+      val file1InTarget1Uri = "file:///file1/in/target1"
+      val file2InTarget1Uri = "file:///file2/in/target1"
 
-    val singleTargetFile1 = SourceItem(singleTargetDocument1Uri, SourceItemKind.FILE, false)
-    val singleTargetFile2 = SourceItem(singleTargetDocument2Uri, SourceItemKind.FILE, false)
-    val targetSourceItem = SourcesItem(target, listOf(singleTargetFile1, singleTargetFile2))
+      val target1 = BuildTargetIdentifier("//target1")
 
-    val sources = listOf(targetSourceItem)
+      val file1InTarget1Source = SourceItem(file1InTarget1Uri, SourceItemKind.FILE, false)
+      val file2InTarget1Source = SourceItem(file2InTarget1Uri, SourceItemKind.FILE, false)
 
-    // when
-    val magicMetaModel = MagicMetaModel(sources)
+      val target1Sources = SourcesItem(target1, listOf(file1InTarget1Source, file2InTarget1Source))
 
-    val singleTargetDocument1Id = TextDocumentIdentifier(singleTargetDocument1Uri)
-    val singleTargetDocument2Id = TextDocumentIdentifier(singleTargetDocument2Uri)
+      val sources = listOf(target1Sources)
 
-    val singleTargetDocument1Targets = magicMetaModel.getTargetsForDocument(singleTargetDocument1Id)
-    val singleTargetDocument2Targets = magicMetaModel.getTargetsForDocument(singleTargetDocument2Id)
+      // when
+      val magicMetaModel = MagicMetaModel(sources)
 
-    // then
-    val expectedTargets = listOf(target)
+      val file1InTarget1Id = TextDocumentIdentifier(file1InTarget1Uri)
+      val file2InTarget1Id = TextDocumentIdentifier(file2InTarget1Uri)
 
-    singleTargetDocument1Targets shouldBe expectedTargets
-    singleTargetDocument2Targets shouldBe expectedTargets
-  }
+      val file1InTarget1Targets = magicMetaModel.getTargetsForDocument(file1InTarget1Id)
+      val file2InTarget1Targets = magicMetaModel.getTargetsForDocument(file2InTarget1Id)
 
-  @Test
-  fun `should map one file to multiple targets`() {
-    // given
-    val multipleTargetsDocumentUri = "file:///file/with/multiple/targets"
+      // then
+      file1InTarget1Targets shouldBe listOf(target1)
+      file2InTarget1Targets shouldBe listOf(target1)
+    }
 
-    val target1 = BuildTargetIdentifier("//target1")
-    val target2 = BuildTargetIdentifier("//target2")
+    @Test
+    fun `should map one file to multiple targets`() {
+      // given
+      val fileInTarget1Target2Uri = "file:///file/in/target1/target2"
 
-    val multipleTargetsFile = SourceItem(multipleTargetsDocumentUri, SourceItemKind.FILE, false)
-    val target1SourceItem = SourcesItem(target1, listOf(multipleTargetsFile))
-    val target2SourceItem = SourcesItem(target2, listOf(multipleTargetsFile))
+      val target1 = BuildTargetIdentifier("//target1")
+      val target2 = BuildTargetIdentifier("//target2")
 
-    val sources = listOf(target1SourceItem, target2SourceItem)
+      val fileInTarget1Target2Source = SourceItem(fileInTarget1Target2Uri, SourceItemKind.FILE, false)
 
-    // when
-    val magicMetaModel = MagicMetaModel(sources)
+      val target1Sources = SourcesItem(target1, listOf(fileInTarget1Target2Source))
+      val target2Sources = SourcesItem(target2, listOf(fileInTarget1Target2Source))
 
-    val multipleTargetsDocumentId = TextDocumentIdentifier(multipleTargetsDocumentUri)
+      val sources = listOf(target1Sources, target2Sources)
 
-    val multipleTargetsDocumentTargets = magicMetaModel.getTargetsForDocument(multipleTargetsDocumentId)
+      // when
+      val magicMetaModel = MagicMetaModel(sources)
 
-    // then
-    val expectedTargets = listOf(target1, target2)
+      val fileInTarget1Target2Id = TextDocumentIdentifier(fileInTarget1Target2Uri)
 
-    multipleTargetsDocumentTargets shouldContainExactlyInAnyOrder expectedTargets
-  }
+      val fileInTarget1Target2Targets = magicMetaModel.getTargetsForDocument(fileInTarget1Target2Id)
 
-  @Test
-  fun `should map multiple files to multiple targets`() {
-    // given
-    val multipleTargetsDocument1Uri = "file:///file1/with/multiple/targets"
-    val multipleTargetsDocument2Uri = "file:///file2/with/multiple/targets"
+      // then
+      fileInTarget1Target2Targets shouldContainExactlyInAnyOrder listOf(target1, target2)
+    }
 
-    val target1 = BuildTargetIdentifier("//target1")
-    val target2 = BuildTargetIdentifier("//target2")
-    val target3 = BuildTargetIdentifier("//target3")
+    @Test
+    fun `should map multiple files to multiple targets`() {
+      // given
+      val fileInTarget1Target2Uri = "file:///file/in/target1/target2"
+      val fileInTarget1Target3Uri = "file:///file/in/target1/target3"
 
-    val multipleTargetsFile1 = SourceItem(multipleTargetsDocument1Uri, SourceItemKind.FILE, false)
-    val multipleTargetsFile2 = SourceItem(multipleTargetsDocument2Uri, SourceItemKind.FILE, false)
-    val target1SourceItem = SourcesItem(target1, listOf(multipleTargetsFile1, multipleTargetsFile2))
-    val target2SourceItem = SourcesItem(target2, listOf(multipleTargetsFile1))
-    val target3SourceItem = SourcesItem(target3, listOf(multipleTargetsFile2))
+      val target1 = BuildTargetIdentifier("//target1")
+      val target2 = BuildTargetIdentifier("//target2")
+      val target3 = BuildTargetIdentifier("//target3")
 
-    val sources = listOf(target1SourceItem, target2SourceItem, target3SourceItem)
+      val fileInTarget1Target2Source = SourceItem(fileInTarget1Target2Uri, SourceItemKind.FILE, false)
+      val fileInTarget1Target3Source = SourceItem(fileInTarget1Target3Uri, SourceItemKind.FILE, false)
 
-    // when
-    val magicMetaModel = MagicMetaModel(sources)
+      val target1Sources = SourcesItem(target1, listOf(fileInTarget1Target2Source, fileInTarget1Target3Source))
+      val target2Sources = SourcesItem(target2, listOf(fileInTarget1Target2Source))
+      val target3Sources = SourcesItem(target3, listOf(fileInTarget1Target3Source))
 
-    val multipleTargetsDocument1Id = TextDocumentIdentifier(multipleTargetsDocument1Uri)
-    val multipleTargetsDocument2Id = TextDocumentIdentifier(multipleTargetsDocument2Uri)
+      val sources = listOf(target1Sources, target2Sources, target3Sources)
 
-    val document1Targets = magicMetaModel.getTargetsForDocument(multipleTargetsDocument1Id)
-    val document2Targets = magicMetaModel.getTargetsForDocument(multipleTargetsDocument2Id)
+      // when
+      val magicMetaModel = MagicMetaModel(sources)
 
-    // then
-    val expectedDocument1Targets = listOf(target1, target2)
-    val expectedDocument2Targets = listOf(target1, target3)
+      val fileInTarget1Target2Id = TextDocumentIdentifier(fileInTarget1Target2Uri)
+      val fileInTarget1Target3Id = TextDocumentIdentifier(fileInTarget1Target3Uri)
 
-    document1Targets shouldContainExactlyInAnyOrder expectedDocument1Targets
-    document2Targets shouldContainExactlyInAnyOrder expectedDocument2Targets
+      val fileInTarget1Target2Targets = magicMetaModel.getTargetsForDocument(fileInTarget1Target2Id)
+      val fileInTarget1Target3Targets = magicMetaModel.getTargetsForDocument(fileInTarget1Target3Id)
+
+      // then
+      fileInTarget1Target2Targets shouldContainExactlyInAnyOrder listOf(target1, target2)
+      fileInTarget1Target3Targets shouldContainExactlyInAnyOrder listOf(target1, target3)
+    }
   }
 
   @Test
