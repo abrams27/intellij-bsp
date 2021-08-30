@@ -1,11 +1,11 @@
-package org.jetbrains.magicmodel
+package org.jetbrains.magicmetamodel
 
 import ch.epfl.scala.bsp4j.*
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class MagicModelGetTargetsForDocumentTest {
+class MagicMetaModelGetTargetsForDocumentTest {
 
   @Test
   fun `should return empty map for empty sources`() {
@@ -15,11 +15,11 @@ class MagicModelGetTargetsForDocumentTest {
     val notExistingDocumentUri = "file:///not/existing/file"
 
     // when
-    val magicModel = MagicModel(sources)
+    val magicMetaModel = MagicMetaModel(sources)
 
     val notExistingDocumentId = TextDocumentIdentifier(notExistingDocumentUri)
 
-    val notExistingDocumentTargets = magicModel.getTargetsForDocument(notExistingDocumentId)
+    val notExistingDocumentTargets = magicMetaModel.getTargetsForDocument(notExistingDocumentId)
 
     // then
     notExistingDocumentTargets shouldBe emptyList()
@@ -40,13 +40,13 @@ class MagicModelGetTargetsForDocumentTest {
     val sources = listOf(targetSourceItem)
 
     // when
-    val magicModel = MagicModel(sources)
+    val magicMetaModel = MagicMetaModel(sources)
 
     val singleTargetDocument1Id = TextDocumentIdentifier(singleTargetDocument1Uri)
     val singleTargetDocument2Id = TextDocumentIdentifier(singleTargetDocument2Uri)
 
-    val singleTargetDocument1Targets = magicModel.getTargetsForDocument(singleTargetDocument1Id)
-    val singleTargetDocument2Targets = magicModel.getTargetsForDocument(singleTargetDocument2Id)
+    val singleTargetDocument1Targets = magicMetaModel.getTargetsForDocument(singleTargetDocument1Id)
+    val singleTargetDocument2Targets = magicMetaModel.getTargetsForDocument(singleTargetDocument2Id)
 
     // then
     val expectedTargets = listOf(target)
@@ -70,11 +70,11 @@ class MagicModelGetTargetsForDocumentTest {
     val sources = listOf(target1SourceItem, target2SourceItem)
 
     // when
-    val magicModel = MagicModel(sources)
+    val magicMetaModel = MagicMetaModel(sources)
 
     val multipleTargetsDocumentId = TextDocumentIdentifier(multipleTargetsDocumentUri)
 
-    val multipleTargetsDocumentTargets = magicModel.getTargetsForDocument(multipleTargetsDocumentId)
+    val multipleTargetsDocumentTargets = magicMetaModel.getTargetsForDocument(multipleTargetsDocumentId)
 
     // then
     val expectedTargets = listOf(target1, target2)
@@ -101,13 +101,13 @@ class MagicModelGetTargetsForDocumentTest {
     val sources = listOf(target1SourceItem, target2SourceItem, target3SourceItem)
 
     // when
-    val magicModel = MagicModel(sources)
+    val magicMetaModel = MagicMetaModel(sources)
 
     val multipleTargetsDocument1Id = TextDocumentIdentifier(multipleTargetsDocument1Uri)
     val multipleTargetsDocument2Id = TextDocumentIdentifier(multipleTargetsDocument2Uri)
 
-    val document1Targets = magicModel.getTargetsForDocument(multipleTargetsDocument1Id)
-    val document2Targets = magicModel.getTargetsForDocument(multipleTargetsDocument2Id)
+    val document1Targets = magicMetaModel.getTargetsForDocument(multipleTargetsDocument1Id)
+    val document2Targets = magicMetaModel.getTargetsForDocument(multipleTargetsDocument2Id)
 
     // then
     val expectedDocument1Targets = listOf(target1, target2)

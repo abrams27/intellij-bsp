@@ -1,4 +1,4 @@
-package org.jetbrains.magicmodel
+package org.jetbrains.magicmetamodel
 
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import ch.epfl.scala.bsp4j.SourceItem
@@ -6,7 +6,7 @@ import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
 import kotlin.reflect.KProperty
 
-public class MagicModel public constructor(sources: List<SourcesItem>) {
+public class MagicMetaModel public constructor(sources: List<SourcesItem>) {
 
   private val documentIdToTargetsIdsMap by DocumentIdToTargetsIdsMapDelegate(sources)
 
