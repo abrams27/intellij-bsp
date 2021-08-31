@@ -6,6 +6,10 @@ import java.net.URI
 import java.nio.file.Path
 import kotlin.reflect.KProperty
 
+public data class DocumentTargetsDetails(
+  public val activeTargetId: BuildTargetIdentifier?,
+  public val allTargetsIds: List<BuildTargetIdentifier>
+)
 
 public class MagicMetaModel public constructor(
   public val targets: List<BuildTarget>,
@@ -14,10 +18,13 @@ public class MagicMetaModel public constructor(
 
   private val documentIdToTargetsIdsMap by DocumentIdToTargetsIdsMapDelegate(sources)
 
-  public fun getTargetsForDocument(documentId: TextDocumentIdentifier): List<BuildTargetIdentifier> =
-    generateAllDocumentSubdirectories(documentId)
+  public fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails =
+    DocumentTargetsDetails(
+      activeTargetId = null,
+      allTargetsIds = generateAllDocumentSubdirectories(documentId)
       .flatMap { documentIdToTargetsIdsMap[it] ?: emptyList() }
       .toList()
+    )
 
   private fun generateAllDocumentSubdirectories(documentId: TextDocumentIdentifier): Sequence<Path> {
     val documentAbsolutePath = mapDocumentIdToAbsolutePath(documentId)
