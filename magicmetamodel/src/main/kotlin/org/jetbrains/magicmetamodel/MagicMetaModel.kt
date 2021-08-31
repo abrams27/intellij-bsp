@@ -8,7 +8,7 @@ import kotlin.reflect.KProperty
 
 public data class DocumentTargetsDetails(
   public val activeTargetId: BuildTargetIdentifier?,
-  public val allTargetsIds: List<BuildTargetIdentifier>
+  public val inactiveTargetsIds: List<BuildTargetIdentifier>
 )
 
 public class MagicMetaModel public constructor(
@@ -16,17 +16,29 @@ public class MagicMetaModel public constructor(
   sources: List<SourcesItem>
 ) {
 
+  private val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
+
+  public fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails {
+    val allTargetsIds = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(documentId)
+
+    return DocumentTargetsDetails(
+      activeTargetId = null,
+      inactiveTargetsIds = allTargetsIds
+    )
+  }
+}
+
+private class TargetsDetailsForDocumentProvider constructor(sources: List<SourcesItem>) {
+
   private val documentIdToTargetsIdsMap by DocumentIdToTargetsIdsMapDelegate(sources)
 
-  public fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails =
-    DocumentTargetsDetails(
-      activeTargetId = null,
-      allTargetsIds = generateAllDocumentSubdirectories(documentId)
+  fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): List<BuildTargetIdentifier> =
+    generateAllDocumentSubdirectoriesIncludingDocument(documentId)
       .flatMap { documentIdToTargetsIdsMap[it] ?: emptyList() }
       .toList()
-    )
 
-  private fun generateAllDocumentSubdirectories(documentId: TextDocumentIdentifier): Sequence<Path> {
+
+  private fun generateAllDocumentSubdirectoriesIncludingDocument(documentId: TextDocumentIdentifier): Sequence<Path> {
     val documentAbsolutePath = mapDocumentIdToAbsolutePath(documentId)
 
     return generateSequence(documentAbsolutePath) { it.parent }

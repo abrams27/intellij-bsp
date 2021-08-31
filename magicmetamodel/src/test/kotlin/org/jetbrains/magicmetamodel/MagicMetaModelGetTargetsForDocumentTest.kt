@@ -37,8 +37,8 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val file2InTarget1TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(file2InTarget1Id)
 
       // then
-      file1InTarget1TargetsDetails.allTargetsIds shouldBe listOf(target1)
-      file2InTarget1TargetsDetails.allTargetsIds shouldBe listOf(target1)
+      file1InTarget1TargetsDetails.inactiveTargetsIds shouldBe listOf(target1)
+      file2InTarget1TargetsDetails.inactiveTargetsIds shouldBe listOf(target1)
     }
 
     @Test
@@ -65,7 +65,7 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val fileInTarget1Target2TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(fileInTarget1Target2Id)
 
       // then
-      fileInTarget1Target2TargetsDetails.allTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target2)
+      fileInTarget1Target2TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target2)
     }
 
     @Test
@@ -98,8 +98,8 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val fileInTarget1Target3TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(fileInTarget1Target3Id)
 
       // then
-      fileInTarget1Target2TargetsDetails.allTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target2)
-      fileInTarget1Target3TargetsDetails.allTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target3)
+      fileInTarget1Target2TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target2)
+      fileInTarget1Target3TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target3)
     }
   }
 
@@ -133,8 +133,8 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val commonDirectoryFile2InTarget1TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(commonDirectoryFile2InTarget1Id)
 
       // then
-      commonDirectoryFile1InTarget1TargetsDetails.allTargetsIds shouldBe listOf(target1)
-      commonDirectoryFile2InTarget1TargetsDetails.allTargetsIds shouldBe listOf(target1)
+      commonDirectoryFile1InTarget1TargetsDetails.inactiveTargetsIds shouldBe listOf(target1)
+      commonDirectoryFile2InTarget1TargetsDetails.inactiveTargetsIds shouldBe listOf(target1)
     }
 
     @Test
@@ -170,8 +170,8 @@ class MagicMetaModelGetTargetsForDocumentTest {
         magicMetaModel.getTargetsDetailsForDocument(commonDirectoryChildFileInTarget1Target2Id)
 
       // then
-      commonDirectoryFileInTarget1TargetsDetails.allTargetsIds shouldContainExactlyInAnyOrder listOf(target1)
-      commonDirectoryChildFileInTarget1Target2TargetsDetails.allTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target2)
+      commonDirectoryFileInTarget1TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1)
+      commonDirectoryChildFileInTarget1Target2TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target2)
     }
   }
 
@@ -195,7 +195,7 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val fileInNoTargetTargetsDetails = magicMetaModel.getTargetsDetailsForDocument(fileInNoTargetId)
 
       // then
-      fileInNoTargetTargetsDetails.allTargetsIds shouldBe emptyList()
+      fileInNoTargetTargetsDetails.inactiveTargetsIds shouldBe emptyList()
     }
 
     @Test
@@ -239,9 +239,9 @@ class MagicMetaModelGetTargetsForDocumentTest {
         magicMetaModel.getTargetsDetailsForDocument(commonDirectoryChildFileInTarget1Target2Target3Id)
 
       // then
-      fileInNoTargetTargetsDetails.allTargetsIds shouldBe emptyList()
-      commonDirectoryFileInTarget1TargetsDetails.allTargetsIds shouldContainExactlyInAnyOrder listOf(target1)
-      commonDirectoryChildFileInTarget1Target2Target3Targets.allTargetsIds shouldContainExactlyInAnyOrder listOf(
+      fileInNoTargetTargetsDetails.inactiveTargetsIds shouldBe emptyList()
+      commonDirectoryFileInTarget1TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1)
+      commonDirectoryChildFileInTarget1Target2Target3Targets.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(
         target1,
         target2,
         target3
