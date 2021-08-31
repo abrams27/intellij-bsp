@@ -7,7 +7,7 @@ import ch.epfl.scala.bsp4j.SourcesItem
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import org.junit.jupiter.api.Test
 
-class MagicMetaModelGetTargetsDetailsTest {
+class MagicMetaModelTargetsTest {
 
   @Test
   fun `should return the same targets as in the constructor`() {
