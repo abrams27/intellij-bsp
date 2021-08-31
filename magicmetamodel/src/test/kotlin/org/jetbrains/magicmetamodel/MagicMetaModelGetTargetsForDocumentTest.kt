@@ -24,10 +24,11 @@ class MagicMetaModelGetTargetsForDocumentTest {
 
       val target1Sources = SourcesItem(target1, listOf(file1InTarget1Source, file2InTarget1Source))
 
+      val targets = generateMockBuildTargetsForTargetsId(listOf(target1))
       val sources = listOf(target1Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(sources)
+      val magicMetaModel = MagicMetaModel(targets, sources)
 
       val file1InTarget1Id = TextDocumentIdentifier(file1InTarget1Uri)
       val file2InTarget1Id = TextDocumentIdentifier(file2InTarget1Uri)
@@ -56,7 +57,8 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val sources = listOf(target1Sources, target2Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(sources)
+      val targets = generateMockBuildTargetsForTargetsId(listOf(target1, target2))
+      val magicMetaModel = MagicMetaModel(targets, sources)
 
       val fileInTarget1Target2Id = TextDocumentIdentifier(fileInTarget1Target2Uri)
 
@@ -83,10 +85,11 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val target2Sources = SourcesItem(target2, listOf(fileInTarget1Target2Source))
       val target3Sources = SourcesItem(target3, listOf(fileInTarget1Target3Source))
 
+      val targets = generateMockBuildTargetsForTargetsId(listOf(target1, target2, target3))
       val sources = listOf(target1Sources, target2Sources, target3Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(sources)
+      val magicMetaModel = MagicMetaModel(targets, sources)
 
       val fileInTarget1Target2Id = TextDocumentIdentifier(fileInTarget1Target2Uri)
       val fileInTarget1Target3Id = TextDocumentIdentifier(fileInTarget1Target3Uri)
@@ -117,10 +120,11 @@ class MagicMetaModelGetTargetsForDocumentTest {
 
       val target1Sources = SourcesItem(target1, listOf(commonDirectorySource))
 
+      val targets = generateMockBuildTargetsForTargetsId(listOf(target1))
       val sources = listOf(target1Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(sources)
+      val magicMetaModel = MagicMetaModel(targets, sources)
 
       val commonDirectoryFile1InTarget1Id = TextDocumentIdentifier(commonDirectoryFile1InTarget1Uri)
       val commonDirectoryFile2InTarget1Id = TextDocumentIdentifier(commonDirectoryFile2InTarget1Uri)
@@ -151,10 +155,11 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val target1Sources = SourcesItem(target1, listOf(commonDirectorySource))
       val target2Sources = SourcesItem(target2, listOf(commonDirectoryChildSource))
 
+      val targets = generateMockBuildTargetsForTargetsId(listOf(target1, target2))
       val sources = listOf(target1Sources, target2Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(sources)
+      val magicMetaModel = MagicMetaModel(targets, sources)
 
       val commonDirectoryFileInTarget1Id = TextDocumentIdentifier(commonDirectoryFileInTarget1Uri)
       val commonDirectoryChildFileInTarget1Target2Id =
@@ -179,10 +184,11 @@ class MagicMetaModelGetTargetsForDocumentTest {
 
       val fileInNoTargetUri = "file:///file/in/no/target"
 
+      val targets = emptyList<BuildTarget>()
       val sources = emptyList<SourcesItem>()
 
       // when
-      val magicMetaModel = MagicMetaModel(sources)
+      val magicMetaModel = MagicMetaModel(targets, sources)
 
       val fileInNoTargetId = TextDocumentIdentifier(fileInNoTargetUri)
 
@@ -216,10 +222,11 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val target2Sources = SourcesItem(target2, listOf(commonDirectoryChildSource))
       val target3Sources = SourcesItem(target3, listOf(commonDirectoryChildFileInTarget1Target2Target3Source))
 
+      val targets = generateMockBuildTargetsForTargetsId(listOf(target1, target2, target3))
       val sources = listOf(target1Sources, target2Sources, target3Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(sources)
+      val magicMetaModel = MagicMetaModel(targets, sources)
 
       val fileInNoTargetId = TextDocumentIdentifier(fileInNoTargetUri)
       val commonDirectoryFileInTarget1Id = TextDocumentIdentifier(commonDirectoryFileInTarget1Uri)
@@ -241,4 +248,16 @@ class MagicMetaModelGetTargetsForDocumentTest {
       )
     }
   }
+
+  private fun generateMockBuildTargetsForTargetsId(targetsId: List<BuildTargetIdentifier>): List<BuildTarget> =
+    targetsId.map { generateMockBuildTargetForTargetId(it) }
+
+  private fun generateMockBuildTargetForTargetId(targetId: BuildTargetIdentifier): BuildTarget =
+    BuildTarget(
+      targetId,
+      emptyList(),
+      listOf("kotlin"),
+      emptyList(),
+      BuildTargetCapabilities()
+    )
 }

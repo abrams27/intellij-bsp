@@ -1,15 +1,16 @@
 package org.jetbrains.magicmetamodel
 
-import ch.epfl.scala.bsp4j.BuildTargetIdentifier
-import ch.epfl.scala.bsp4j.SourceItem
-import ch.epfl.scala.bsp4j.SourcesItem
-import ch.epfl.scala.bsp4j.TextDocumentIdentifier
+import ch.epfl.scala.bsp4j.*
 import org.jetbrains.magicmetamodel.extensions.toAbsolutePath
 import java.net.URI
 import java.nio.file.Path
 import kotlin.reflect.KProperty
 
-public class MagicMetaModel public constructor(sources: List<SourcesItem>) {
+
+public class MagicMetaModel public constructor(
+  public val targets: List<BuildTarget>,
+  sources: List<SourcesItem>
+) {
 
   private val documentIdToTargetsIdsMap by DocumentIdToTargetsIdsMapDelegate(sources)
 
