@@ -5,8 +5,10 @@ import ch.epfl.scala.bsp4j.BuildTargetCapabilities
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import ch.epfl.scala.bsp4j.SourcesItem
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+@DisplayName("magicMetaModel.targets tests")
 class MagicMetaModelTargetsTest {
 
   @Test

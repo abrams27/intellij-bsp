@@ -3,12 +3,15 @@ package org.jetbrains.magicmetamodel
 import ch.epfl.scala.bsp4j.*
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
+@DisplayName("targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(sources) tests")
 class TargetsDetailsForDocumentProviderGetTargetsDetailsForDocumentTest {
 
   @Nested
+  @DisplayName("tests with files as sources")
   inner class FileBasedSourcesTests {
 
     @Test
@@ -106,6 +109,7 @@ class TargetsDetailsForDocumentProviderGetTargetsDetailsForDocumentTest {
   }
 
   @Nested
+  @DisplayName("tests with directories as sources")
   inner class DirectoryBasedSourcesTests {
 
     @Test
@@ -179,6 +183,7 @@ class TargetsDetailsForDocumentProviderGetTargetsDetailsForDocumentTest {
   }
 
   @Nested
+  @DisplayName("tests with files and directories as sources")
   inner class FileAndDirectoryBasedSourcesTests {
 
     @Test

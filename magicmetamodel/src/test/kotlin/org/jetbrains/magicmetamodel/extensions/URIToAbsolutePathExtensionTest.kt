@@ -1,11 +1,13 @@
 package org.jetbrains.magicmetamodel.extensions
 
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.net.URI
 import java.nio.file.Paths
 
-class URIExtensionTest {
+@DisplayName("uri.toAbsolutePath() tests")
+class URIToAbsolutePathExtensionTest {
 
   @Test
   fun `should map root uri to root path`() {

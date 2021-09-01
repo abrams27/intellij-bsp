@@ -6,8 +6,10 @@ import ch.epfl.scala.bsp4j.SourceItemKind
 import ch.epfl.scala.bsp4j.SourcesItem
 import io.kotest.matchers.maps.shouldContainExactly
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+@DisplayName("OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider) tests")
 class OverlappingTargetsGraphTest {
 
   @Test
