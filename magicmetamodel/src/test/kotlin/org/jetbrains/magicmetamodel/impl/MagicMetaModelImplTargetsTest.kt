@@ -1,15 +1,16 @@
-package org.jetbrains.magicmetamodel
+package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.BuildTarget
 import ch.epfl.scala.bsp4j.BuildTargetCapabilities
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import ch.epfl.scala.bsp4j.SourcesItem
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import org.jetbrains.magicmetamodel.impl.MagicMetaModelImpl
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-@DisplayName("magicMetaModel.targets tests")
-class MagicMetaModelTargetsTest {
+@DisplayName("magicMetaModelImpl.targets tests")
+class MagicMetaModelImplTargetsTest {
 
   @Test
   fun `should return the same targets as in the constructor`() {
@@ -43,7 +44,7 @@ class MagicMetaModelTargetsTest {
     val sources = emptyList<SourcesItem>()
 
     // when
-    val magicMetaModel = MagicMetaModel(targets, sources)
+    val magicMetaModel = MagicMetaModelImpl(targets, sources)
 
     val modelTargets = magicMetaModel.targets
 

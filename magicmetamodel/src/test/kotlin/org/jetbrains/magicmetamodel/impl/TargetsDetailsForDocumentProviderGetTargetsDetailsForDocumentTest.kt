@@ -1,4 +1,4 @@
-package org.jetbrains.magicmetamodel
+package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.*
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder

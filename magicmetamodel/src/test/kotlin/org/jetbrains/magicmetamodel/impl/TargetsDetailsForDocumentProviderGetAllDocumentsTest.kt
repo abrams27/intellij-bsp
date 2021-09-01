@@ -1,4 +1,4 @@
-package org.jetbrains.magicmetamodel
+package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.*
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
@@ -47,7 +47,7 @@ class TargetsDetailsForDocumentProviderGetAllDocumentsTest {
     val expectedFile2 = TextDocumentIdentifier(file2InTarget1Uri)
     val expectedDocuments = listOf(expectedFile1, expectedFile2)
 
-    allDocuments shouldContainExactlyInAnyOrder  expectedDocuments
+    allDocuments shouldContainExactlyInAnyOrder expectedDocuments
   }
 
   @Test

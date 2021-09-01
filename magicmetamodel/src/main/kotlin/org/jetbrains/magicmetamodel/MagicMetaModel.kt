@@ -2,7 +2,6 @@ package org.jetbrains.magicmetamodel
 
 import ch.epfl.scala.bsp4j.BuildTarget
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
-import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
 
 public data class DocumentTargetsDetails(
@@ -10,19 +9,9 @@ public data class DocumentTargetsDetails(
   public val inactiveTargetsIds: List<BuildTargetIdentifier>
 )
 
-public class MagicMetaModel public constructor(
-  public val targets: List<BuildTarget>,
-  sources: List<SourcesItem>
-) {
+public interface MagicMetaModel {
 
-  private val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
+  public val targets: List<BuildTarget>
 
-  public fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails {
-    val allTargetsIds = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(documentId)
-
-    return DocumentTargetsDetails(
-      activeTargetId = null,
-      inactiveTargetsIds = allTargetsIds
-    )
-  }
+  public fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails
 }
