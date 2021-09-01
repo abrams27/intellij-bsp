@@ -6,7 +6,7 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-class MagicMetaModelGetTargetsForDocumentTest {
+class TargetsDetailsForDocumentTest {
 
   @Nested
   inner class FileBasedSourcesTests {
@@ -24,21 +24,20 @@ class MagicMetaModelGetTargetsForDocumentTest {
 
       val target1Sources = SourcesItem(target1, listOf(file1InTarget1Source, file2InTarget1Source))
 
-      val targets = generateMockBuildTargetsForTargetsId(listOf(target1))
       val sources = listOf(target1Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(targets, sources)
+      val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
 
       val file1InTarget1Id = TextDocumentIdentifier(file1InTarget1Uri)
       val file2InTarget1Id = TextDocumentIdentifier(file2InTarget1Uri)
 
-      val file1InTarget1TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(file1InTarget1Id)
-      val file2InTarget1TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(file2InTarget1Id)
+      val file1InTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(file1InTarget1Id)
+      val file2InTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(file2InTarget1Id)
 
       // then
-      file1InTarget1TargetsDetails.inactiveTargetsIds shouldBe listOf(target1)
-      file2InTarget1TargetsDetails.inactiveTargetsIds shouldBe listOf(target1)
+      file1InTarget1TargetsDetails shouldBe listOf(target1)
+      file2InTarget1TargetsDetails shouldBe listOf(target1)
     }
 
     @Test
@@ -57,15 +56,14 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val sources = listOf(target1Sources, target2Sources)
 
       // when
-      val targets = generateMockBuildTargetsForTargetsId(listOf(target1, target2))
-      val magicMetaModel = MagicMetaModel(targets, sources)
+      val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
 
       val fileInTarget1Target2Id = TextDocumentIdentifier(fileInTarget1Target2Uri)
 
-      val fileInTarget1Target2TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(fileInTarget1Target2Id)
+      val fileInTarget1Target2TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInTarget1Target2Id)
 
       // then
-      fileInTarget1Target2TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target2)
+      fileInTarget1Target2TargetsDetails shouldContainExactlyInAnyOrder listOf(target1, target2)
     }
 
     @Test
@@ -85,21 +83,20 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val target2Sources = SourcesItem(target2, listOf(fileInTarget1Target2Source))
       val target3Sources = SourcesItem(target3, listOf(fileInTarget1Target3Source))
 
-      val targets = generateMockBuildTargetsForTargetsId(listOf(target1, target2, target3))
       val sources = listOf(target1Sources, target2Sources, target3Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(targets, sources)
+      val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
 
       val fileInTarget1Target2Id = TextDocumentIdentifier(fileInTarget1Target2Uri)
       val fileInTarget1Target3Id = TextDocumentIdentifier(fileInTarget1Target3Uri)
 
-      val fileInTarget1Target2TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(fileInTarget1Target2Id)
-      val fileInTarget1Target3TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(fileInTarget1Target3Id)
+      val fileInTarget1Target2TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInTarget1Target2Id)
+      val fileInTarget1Target3TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInTarget1Target3Id)
 
       // then
-      fileInTarget1Target2TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target2)
-      fileInTarget1Target3TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target3)
+      fileInTarget1Target2TargetsDetails shouldContainExactlyInAnyOrder listOf(target1, target2)
+      fileInTarget1Target3TargetsDetails shouldContainExactlyInAnyOrder listOf(target1, target3)
     }
   }
 
@@ -120,21 +117,20 @@ class MagicMetaModelGetTargetsForDocumentTest {
 
       val target1Sources = SourcesItem(target1, listOf(commonDirectorySource))
 
-      val targets = generateMockBuildTargetsForTargetsId(listOf(target1))
       val sources = listOf(target1Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(targets, sources)
+      val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
 
       val commonDirectoryFile1InTarget1Id = TextDocumentIdentifier(commonDirectoryFile1InTarget1Uri)
       val commonDirectoryFile2InTarget1Id = TextDocumentIdentifier(commonDirectoryFile2InTarget1Uri)
 
-      val commonDirectoryFile1InTarget1TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(commonDirectoryFile1InTarget1Id)
-      val commonDirectoryFile2InTarget1TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(commonDirectoryFile2InTarget1Id)
+      val commonDirectoryFile1InTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFile1InTarget1Id)
+      val commonDirectoryFile2InTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFile2InTarget1Id)
 
       // then
-      commonDirectoryFile1InTarget1TargetsDetails.inactiveTargetsIds shouldBe listOf(target1)
-      commonDirectoryFile2InTarget1TargetsDetails.inactiveTargetsIds shouldBe listOf(target1)
+      commonDirectoryFile1InTarget1TargetsDetails shouldBe listOf(target1)
+      commonDirectoryFile2InTarget1TargetsDetails shouldBe listOf(target1)
     }
 
     @Test
@@ -155,23 +151,22 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val target1Sources = SourcesItem(target1, listOf(commonDirectorySource))
       val target2Sources = SourcesItem(target2, listOf(commonDirectoryChildSource))
 
-      val targets = generateMockBuildTargetsForTargetsId(listOf(target1, target2))
       val sources = listOf(target1Sources, target2Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(targets, sources)
+      val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
 
       val commonDirectoryFileInTarget1Id = TextDocumentIdentifier(commonDirectoryFileInTarget1Uri)
       val commonDirectoryChildFileInTarget1Target2Id =
         TextDocumentIdentifier(commonDirectoryChildFileInTarget1Target2Uri)
 
-      val commonDirectoryFileInTarget1TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(commonDirectoryFileInTarget1Id)
+      val commonDirectoryFileInTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFileInTarget1Id)
       val commonDirectoryChildFileInTarget1Target2TargetsDetails =
-        magicMetaModel.getTargetsDetailsForDocument(commonDirectoryChildFileInTarget1Target2Id)
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryChildFileInTarget1Target2Id)
 
       // then
-      commonDirectoryFileInTarget1TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1)
-      commonDirectoryChildFileInTarget1Target2TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1, target2)
+      commonDirectoryFileInTarget1TargetsDetails shouldContainExactlyInAnyOrder listOf(target1)
+      commonDirectoryChildFileInTarget1Target2TargetsDetails shouldContainExactlyInAnyOrder listOf(target1, target2)
     }
   }
 
@@ -184,18 +179,17 @@ class MagicMetaModelGetTargetsForDocumentTest {
 
       val fileInNoTargetUri = "file:///file/in/no/target"
 
-      val targets = emptyList<BuildTarget>()
       val sources = emptyList<SourcesItem>()
 
       // when
-      val magicMetaModel = MagicMetaModel(targets, sources)
+      val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
 
       val fileInNoTargetId = TextDocumentIdentifier(fileInNoTargetUri)
 
-      val fileInNoTargetTargetsDetails = magicMetaModel.getTargetsDetailsForDocument(fileInNoTargetId)
+      val fileInNoTargetTargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInNoTargetId)
 
       // then
-      fileInNoTargetTargetsDetails.inactiveTargetsIds shouldBe emptyList()
+      fileInNoTargetTargetsDetails shouldBe emptyList()
     }
 
     @Test
@@ -222,42 +216,29 @@ class MagicMetaModelGetTargetsForDocumentTest {
       val target2Sources = SourcesItem(target2, listOf(commonDirectoryChildSource))
       val target3Sources = SourcesItem(target3, listOf(commonDirectoryChildFileInTarget1Target2Target3Source))
 
-      val targets = generateMockBuildTargetsForTargetsId(listOf(target1, target2, target3))
       val sources = listOf(target1Sources, target2Sources, target3Sources)
 
       // when
-      val magicMetaModel = MagicMetaModel(targets, sources)
+      val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
 
       val fileInNoTargetId = TextDocumentIdentifier(fileInNoTargetUri)
       val commonDirectoryFileInTarget1Id = TextDocumentIdentifier(commonDirectoryFileInTarget1Uri)
       val commonDirectoryChildFileInTarget1Target2Target3Id =
         TextDocumentIdentifier(commonDirectoryChildFileInTarget1Target2Target3Uri)
 
-      val fileInNoTargetTargetsDetails = magicMetaModel.getTargetsDetailsForDocument(fileInNoTargetId)
-      val commonDirectoryFileInTarget1TargetsDetails = magicMetaModel.getTargetsDetailsForDocument(commonDirectoryFileInTarget1Id)
+      val fileInNoTargetTargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInNoTargetId)
+      val commonDirectoryFileInTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFileInTarget1Id)
       val commonDirectoryChildFileInTarget1Target2Target3Targets =
-        magicMetaModel.getTargetsDetailsForDocument(commonDirectoryChildFileInTarget1Target2Target3Id)
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryChildFileInTarget1Target2Target3Id)
 
       // then
-      fileInNoTargetTargetsDetails.inactiveTargetsIds shouldBe emptyList()
-      commonDirectoryFileInTarget1TargetsDetails.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(target1)
-      commonDirectoryChildFileInTarget1Target2Target3Targets.inactiveTargetsIds shouldContainExactlyInAnyOrder listOf(
+      fileInNoTargetTargetsDetails shouldBe emptyList()
+      commonDirectoryFileInTarget1TargetsDetails shouldContainExactlyInAnyOrder listOf(target1)
+      commonDirectoryChildFileInTarget1Target2Target3Targets shouldContainExactlyInAnyOrder listOf(
         target1,
         target2,
         target3
       )
     }
   }
-
-  private fun generateMockBuildTargetsForTargetsId(targetsId: List<BuildTargetIdentifier>): List<BuildTarget> =
-    targetsId.map { generateMockBuildTargetForTargetId(it) }
-
-  private fun generateMockBuildTargetForTargetId(targetId: BuildTargetIdentifier): BuildTarget =
-    BuildTarget(
-      targetId,
-      emptyList(),
-      listOf("kotlin"),
-      emptyList(),
-      BuildTargetCapabilities()
-    )
 }

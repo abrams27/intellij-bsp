@@ -17,6 +17,7 @@ public class MagicMetaModel public constructor(
 ) {
 
   private val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
+  private val overlappingTargetsGraph by OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider)
 
   public fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails {
     val allTargetsIds = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(documentId)
@@ -28,15 +29,14 @@ public class MagicMetaModel public constructor(
   }
 }
 
-private class TargetsDetailsForDocumentProvider constructor(sources: List<SourcesItem>) {
+internal class TargetsDetailsForDocumentProvider constructor(sources: List<SourcesItem>) {
 
   private val documentIdToTargetsIdsMap by DocumentIdToTargetsIdsMapDelegate(sources)
 
-  fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): List<BuildTargetIdentifier> =
+  internal fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): List<BuildTargetIdentifier> =
     generateAllDocumentSubdirectoriesIncludingDocument(documentId)
       .flatMap { documentIdToTargetsIdsMap[it] ?: emptyList() }
       .toList()
-
 
   private fun generateAllDocumentSubdirectoriesIncludingDocument(documentId: TextDocumentIdentifier): Sequence<Path> {
     val documentAbsolutePath = mapDocumentIdToAbsolutePath(documentId)
@@ -67,4 +67,14 @@ private class DocumentIdToTargetsIdsMapDelegate(private val sources: List<Source
 
   private fun mapSourceItemToPath(sourceItem: SourceItem): Path =
     URI.create(sourceItem.uri).toAbsolutePath()
+}
+
+private class OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider: TargetsDetailsForDocumentProvider) {
+
+  operator fun getValue(
+    thisRef: Any?,
+    property: KProperty<*>
+  ): Map<BuildTargetIdentifier, Set<BuildTargetIdentifier>> {
+    return emptyMap()
+  }
 }
