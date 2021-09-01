@@ -3,7 +3,9 @@ package org.jetbrains.magicmetamodel.impl
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import kotlin.reflect.KProperty
 
-internal class OverlappingTargetsGraphDelegate internal constructor(private val targetsDetailsForDocumentProvider: TargetsDetailsForDocumentProvider) {
+internal class OverlappingTargetsGraphDelegate internal constructor(
+  private val targetsDetailsForDocumentProvider: TargetsDetailsForDocumentProvider
+) {
 
   internal operator fun getValue(
     thisRef: Any?,
@@ -15,7 +17,9 @@ internal class OverlappingTargetsGraphDelegate internal constructor(private val 
       .groupBy({ it.first }, { it.second })
       .mapValues { mapListOfSetsToSingleSet(it.value) }
 
-  private fun generateEdgesForOverlappingTargetsForAllTargets(overlappingTargets: List<BuildTargetIdentifier>): List<Pair<BuildTargetIdentifier, Set<BuildTargetIdentifier>>> =
+  private fun generateEdgesForOverlappingTargetsForAllTargets(
+    overlappingTargets: List<BuildTargetIdentifier>
+  ): List<Pair<BuildTargetIdentifier, Set<BuildTargetIdentifier>>> =
     overlappingTargets.map { generateEdgesForOverlappingTargetsForOneTarget(it, overlappingTargets) }
 
   private fun generateEdgesForOverlappingTargetsForOneTarget(

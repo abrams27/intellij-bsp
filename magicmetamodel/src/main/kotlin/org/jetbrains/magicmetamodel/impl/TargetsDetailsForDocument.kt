@@ -9,7 +9,6 @@ import java.net.URI
 import java.nio.file.Path
 import kotlin.reflect.KProperty
 
-
 internal class TargetsDetailsForDocumentProvider(sources: List<SourcesItem>) {
 
   private val documentIdToTargetsIdsMap by DocumentIdToTargetsIdsMapDelegate(sources)
