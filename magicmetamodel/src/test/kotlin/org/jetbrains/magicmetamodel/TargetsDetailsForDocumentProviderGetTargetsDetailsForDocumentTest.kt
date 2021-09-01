@@ -6,7 +6,7 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-class TargetsDetailsForDocumentTest {
+class TargetsDetailsForDocumentProviderGetTargetsDetailsForDocumentTest {
 
   @Nested
   inner class FileBasedSourcesTests {
