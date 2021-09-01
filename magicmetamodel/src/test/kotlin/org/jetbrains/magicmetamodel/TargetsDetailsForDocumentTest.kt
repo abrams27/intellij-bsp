@@ -32,8 +32,10 @@ class TargetsDetailsForDocumentTest {
       val file1InTarget1Id = TextDocumentIdentifier(file1InTarget1Uri)
       val file2InTarget1Id = TextDocumentIdentifier(file2InTarget1Uri)
 
-      val file1InTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(file1InTarget1Id)
-      val file2InTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(file2InTarget1Id)
+      val file1InTarget1TargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(file1InTarget1Id)
+      val file2InTarget1TargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(file2InTarget1Id)
 
       // then
       file1InTarget1TargetsDetails shouldBe listOf(target1)
@@ -60,7 +62,8 @@ class TargetsDetailsForDocumentTest {
 
       val fileInTarget1Target2Id = TextDocumentIdentifier(fileInTarget1Target2Uri)
 
-      val fileInTarget1Target2TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInTarget1Target2Id)
+      val fileInTarget1Target2TargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInTarget1Target2Id)
 
       // then
       fileInTarget1Target2TargetsDetails shouldContainExactlyInAnyOrder listOf(target1, target2)
@@ -91,8 +94,10 @@ class TargetsDetailsForDocumentTest {
       val fileInTarget1Target2Id = TextDocumentIdentifier(fileInTarget1Target2Uri)
       val fileInTarget1Target3Id = TextDocumentIdentifier(fileInTarget1Target3Uri)
 
-      val fileInTarget1Target2TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInTarget1Target2Id)
-      val fileInTarget1Target3TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInTarget1Target3Id)
+      val fileInTarget1Target2TargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInTarget1Target2Id)
+      val fileInTarget1Target3TargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInTarget1Target3Id)
 
       // then
       fileInTarget1Target2TargetsDetails shouldContainExactlyInAnyOrder listOf(target1, target2)
@@ -125,8 +130,10 @@ class TargetsDetailsForDocumentTest {
       val commonDirectoryFile1InTarget1Id = TextDocumentIdentifier(commonDirectoryFile1InTarget1Uri)
       val commonDirectoryFile2InTarget1Id = TextDocumentIdentifier(commonDirectoryFile2InTarget1Uri)
 
-      val commonDirectoryFile1InTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFile1InTarget1Id)
-      val commonDirectoryFile2InTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFile2InTarget1Id)
+      val commonDirectoryFile1InTarget1TargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFile1InTarget1Id)
+      val commonDirectoryFile2InTarget1TargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFile2InTarget1Id)
 
       // then
       commonDirectoryFile1InTarget1TargetsDetails shouldBe listOf(target1)
@@ -160,7 +167,8 @@ class TargetsDetailsForDocumentTest {
       val commonDirectoryChildFileInTarget1Target2Id =
         TextDocumentIdentifier(commonDirectoryChildFileInTarget1Target2Uri)
 
-      val commonDirectoryFileInTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFileInTarget1Id)
+      val commonDirectoryFileInTarget1TargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFileInTarget1Id)
       val commonDirectoryChildFileInTarget1Target2TargetsDetails =
         targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryChildFileInTarget1Target2Id)
 
@@ -186,7 +194,8 @@ class TargetsDetailsForDocumentTest {
 
       val fileInNoTargetId = TextDocumentIdentifier(fileInNoTargetUri)
 
-      val fileInNoTargetTargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInNoTargetId)
+      val fileInNoTargetTargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInNoTargetId)
 
       // then
       fileInNoTargetTargetsDetails shouldBe emptyList()
@@ -226,8 +235,10 @@ class TargetsDetailsForDocumentTest {
       val commonDirectoryChildFileInTarget1Target2Target3Id =
         TextDocumentIdentifier(commonDirectoryChildFileInTarget1Target2Target3Uri)
 
-      val fileInNoTargetTargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInNoTargetId)
-      val commonDirectoryFileInTarget1TargetsDetails = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFileInTarget1Id)
+      val fileInNoTargetTargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(fileInNoTargetId)
+      val commonDirectoryFileInTarget1TargetsDetails =
+        targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryFileInTarget1Id)
       val commonDirectoryChildFileInTarget1Target2Target3Targets =
         targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(commonDirectoryChildFileInTarget1Target2Target3Id)
 

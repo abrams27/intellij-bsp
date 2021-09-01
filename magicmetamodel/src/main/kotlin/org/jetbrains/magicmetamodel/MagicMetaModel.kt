@@ -1,6 +1,9 @@
 package org.jetbrains.magicmetamodel
 
-import ch.epfl.scala.bsp4j.*
+import ch.epfl.scala.bsp4j.BuildTarget
+import ch.epfl.scala.bsp4j.BuildTargetIdentifier
+import ch.epfl.scala.bsp4j.SourcesItem
+import ch.epfl.scala.bsp4j.TextDocumentIdentifier
 import kotlin.reflect.KProperty
 
 public data class DocumentTargetsDetails(
@@ -14,7 +17,6 @@ public class MagicMetaModel public constructor(
 ) {
 
   private val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
-  private val overlappingTargetsGraph by OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider)
 
   public fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails {
     val allTargetsIds = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(documentId)
@@ -26,9 +28,9 @@ public class MagicMetaModel public constructor(
   }
 }
 
-private class OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider: TargetsDetailsForDocumentProvider) {
+internal class OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider: TargetsDetailsForDocumentProvider) {
 
-  operator fun getValue(
+  internal operator fun getValue(
     thisRef: Any?,
     property: KProperty<*>
   ): Map<BuildTargetIdentifier, Set<BuildTargetIdentifier>> {
