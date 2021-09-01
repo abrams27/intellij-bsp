@@ -10,9 +10,17 @@ import java.nio.file.Path
 import kotlin.reflect.KProperty
 
 
-internal class TargetsDetailsForDocumentProvider constructor(sources: List<SourcesItem>) {
+internal class TargetsDetailsForDocumentProvider(sources: List<SourcesItem>) {
 
   private val documentIdToTargetsIdsMap by DocumentIdToTargetsIdsMapDelegate(sources)
+
+  internal fun getAllDocuments(): List<TextDocumentIdentifier> =
+    documentIdToTargetsIdsMap.keys
+      .map(this::mapPathToTextDocumentIdentifier)
+      .toList()
+
+  private fun mapPathToTextDocumentIdentifier(path: Path): TextDocumentIdentifier =
+    TextDocumentIdentifier(path.toUri().toString())
 
   internal fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): List<BuildTargetIdentifier> =
     generateAllDocumentSubdirectoriesIncludingDocument(documentId)

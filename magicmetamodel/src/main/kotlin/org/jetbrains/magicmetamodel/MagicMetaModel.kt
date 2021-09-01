@@ -4,7 +4,6 @@ import ch.epfl.scala.bsp4j.BuildTarget
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
-import kotlin.reflect.KProperty
 
 public data class DocumentTargetsDetails(
   public val activeTargetId: BuildTargetIdentifier?,
@@ -25,15 +24,5 @@ public class MagicMetaModel public constructor(
       activeTargetId = null,
       inactiveTargetsIds = allTargetsIds
     )
-  }
-}
-
-internal class OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider: TargetsDetailsForDocumentProvider) {
-
-  internal operator fun getValue(
-    thisRef: Any?,
-    property: KProperty<*>
-  ): Map<BuildTargetIdentifier, Set<BuildTargetIdentifier>> {
-    return emptyMap()
   }
 }
