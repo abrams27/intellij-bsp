@@ -6,7 +6,6 @@ import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
 import org.jetbrains.magicmetamodel.DocumentTargetsDetails
 import org.jetbrains.magicmetamodel.MagicMetaModel
-import org.jetbrains.magicmetamodel.MagicMetaModelDiff
 
 public class MagicMetaModelImpl public constructor(
   public override val targets: List<BuildTarget>,
@@ -15,6 +14,14 @@ public class MagicMetaModelImpl public constructor(
 
   private val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
 
+  public override fun loadDefaultTargets() {
+    TODO("Not yet implemented")
+  }
+
+  public override fun loadTarget(targetId: BuildTargetIdentifier) {
+    TODO("Not yet implemented")
+  }
+
   public override fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails {
     val allTargetsIds = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(documentId)
 
@@ -22,13 +29,5 @@ public class MagicMetaModelImpl public constructor(
       activeTargetId = null,
       inactiveTargetsIds = allTargetsIds
     )
-  }
-
-  override fun initializeProject(): MagicMetaModelDiff {
-    TODO("Not yet implemented")
-  }
-
-  override fun loadTarget(targetId: BuildTargetIdentifier): MagicMetaModelDiff {
-    TODO("Not yet implemented")
   }
 }
