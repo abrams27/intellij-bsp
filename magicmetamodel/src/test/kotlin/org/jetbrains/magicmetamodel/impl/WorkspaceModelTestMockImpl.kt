@@ -3,7 +3,6 @@ package org.jetbrains.magicmetamodel.impl
 import com.intellij.workspaceModel.ide.BuilderSnapshot
 import com.intellij.workspaceModel.ide.StorageReplacement
 import com.intellij.workspaceModel.ide.WorkspaceModel
-import com.intellij.workspaceModel.ide.WorkspaceModelCache
 import com.intellij.workspaceModel.storage.*
 import com.intellij.workspaceModel.storage.url.MutableVirtualFileUrlIndex
 import com.intellij.workspaceModel.storage.url.VirtualFileUrlIndex
@@ -94,10 +93,14 @@ internal class WorkspaceEntityStorageBuilderTestMockImpl(
     throw NotImplementedError("This is test mock implementation - method implementation not provided")
 }
 
-internal class WorkspaceModelTestMockImpl(
-  override val cache: WorkspaceModelCache?,
-  override val entityStorage: VersionedEntityStorage
-) : WorkspaceModel {
+internal class WorkspaceModelTestMockImpl : WorkspaceModel {
+
+  override val cache by lazy {
+    throw NotImplementedError("This is test mock implementation - method implementation not provided")
+  }
+  override val entityStorage by lazy {
+    throw NotImplementedError("This is test mock implementation - method implementation not provided")
+  }
 
   override fun <R> updateProjectModel(updater: (WorkspaceEntityStorageBuilder) -> R): R {
     TODO("Not yet implemented")

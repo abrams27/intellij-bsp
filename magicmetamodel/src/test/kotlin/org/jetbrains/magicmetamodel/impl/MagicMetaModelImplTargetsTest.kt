@@ -40,11 +40,12 @@ class MagicMetaModelImplTargetsTest {
       BuildTargetCapabilities()
     )
 
+    val workspaceModel = WorkspaceModelTestMockImpl()
     val targets = listOf(target1, target2)
     val sources = emptyList<SourcesItem>()
 
     // when
-    val magicMetaModel = MagicMetaModelImpl(targets, sources)
+    val magicMetaModel = MagicMetaModelImpl(workspaceModel, targets, sources)
 
     val modelTargets = magicMetaModel.targets
 
