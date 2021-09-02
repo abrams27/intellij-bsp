@@ -3,7 +3,7 @@ package org.jetbrains.magicmetamodel.impl
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import kotlin.reflect.KProperty
 
-internal class OverlappingTargetsGraphDelegate internal constructor(
+internal class OverlappingTargetsGraphDelegate(
   private val targetsDetailsForDocumentProvider: TargetsDetailsForDocumentProvider
 ) {
 
