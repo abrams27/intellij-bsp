@@ -18,4 +18,8 @@ public interface MagicMetaModel {
   public fun loadTarget(targetId: BuildTargetIdentifier)
 
   public fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails
+
+  public fun getAllLoadedTargets(): List<BuildTarget>
+
+  public fun getAllNotLoadedTargets(): List<BuildTarget>
 }

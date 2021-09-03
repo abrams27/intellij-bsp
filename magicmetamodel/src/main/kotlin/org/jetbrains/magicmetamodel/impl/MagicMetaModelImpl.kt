@@ -32,4 +32,12 @@ public class MagicMetaModelImpl public constructor(
       inactiveTargetsIds = allTargetsIds
     )
   }
+
+  override fun getAllLoadedTargets(): List<BuildTarget> {
+    TODO("Not yet implemented")
+  }
+
+  override fun getAllNotLoadedTargets(): List<BuildTarget> {
+    TODO("Not yet implemented")
+  }
 }
