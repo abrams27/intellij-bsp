@@ -9,9 +9,12 @@ import com.intellij.workspaceModel.storage.url.VirtualFileUrlIndex
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
-internal class WorkspaceEntityStorageBuilderTestMockImpl(
-  override val modificationCount: Long
-) : WorkspaceEntityStorageBuilder {
+private class WorkspaceEntityStorageBuilderTestMockImpl : WorkspaceEntityStorageBuilder {
+
+  override val modificationCount by lazy {
+    throw NotImplementedError("This is test mock implementation - method implementation not provided")
+  }
+
 
   override fun <M : ModifiableWorkspaceEntity<T>, T : WorkspaceEntity> addEntity(
     clazz: Class<M>,
