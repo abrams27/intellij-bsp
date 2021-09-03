@@ -10,7 +10,7 @@ import org.jetbrains.magicmetamodel.MagicMetaModel
 
 public class MagicMetaModelImpl public constructor(
   private val workspaceModel: WorkspaceModel,
-  public override val targets: List<BuildTarget>,
+  private val targets: List<BuildTarget>,
   sources: List<SourcesItem>
 ) : MagicMetaModel {
 

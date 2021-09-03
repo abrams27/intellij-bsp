@@ -11,8 +11,6 @@ public data class DocumentTargetsDetails(
 
 public interface MagicMetaModel {
 
-  public val targets: List<BuildTarget>
-
   public fun loadDefaultTargets()
 
   public fun loadTarget(targetId: BuildTargetIdentifier)
