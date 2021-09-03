@@ -15,9 +15,16 @@ public class MagicMetaModelImpl public constructor(
 ) : MagicMetaModel {
 
   private val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
+  private val overlappingTargetsGraph by OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider)
+
+  private val loadedTargets = mutableSetOf<BuildTargetIdentifier>()
 
   public override fun loadDefaultTargets() {
-    TODO("Not yet implemented")
+    val nonOverlappingTargetsToLoad by NonOverlappingTargetsDelegate(overlappingTargetsGraph)
+
+    // TODO add mapping to workspace model
+
+    loadedTargets.addAll(nonOverlappingTargetsToLoad)
   }
 
   public override fun loadTarget(targetId: BuildTargetIdentifier) {
@@ -33,11 +40,12 @@ public class MagicMetaModelImpl public constructor(
     )
   }
 
-  override fun getAllLoadedTargets(): List<BuildTarget> {
-    TODO("Not yet implemented")
-  }
+  override fun getAllLoadedTargets(): List<BuildTarget> =
+    targets.filter(this::isTargetLoaded)
 
-  override fun getAllNotLoadedTargets(): List<BuildTarget> {
-    TODO("Not yet implemented")
-  }
+  override fun getAllNotLoadedTargets(): List<BuildTarget> =
+    targets.filterNot(this::isTargetLoaded)
+
+  private fun isTargetLoaded(target: BuildTarget): Boolean =
+    loadedTargets.contains(target.id)
 }
