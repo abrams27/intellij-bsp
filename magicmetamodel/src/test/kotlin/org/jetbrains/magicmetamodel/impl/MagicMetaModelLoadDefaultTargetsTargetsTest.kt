@@ -2,7 +2,6 @@ package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.*
 import io.kotest.matchers.collections.*
-import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

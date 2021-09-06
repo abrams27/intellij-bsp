@@ -5,8 +5,8 @@ import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
 
 public data class DocumentTargetsDetails(
-  public val activeTargetId: BuildTargetIdentifier?,
-  public val inactiveTargetsIds: List<BuildTargetIdentifier>
+  public val loadedTargetId: BuildTargetIdentifier?,
+  public val notLoadedTargetsIds: List<BuildTargetIdentifier>
 )
 
 public interface MagicMetaModel {

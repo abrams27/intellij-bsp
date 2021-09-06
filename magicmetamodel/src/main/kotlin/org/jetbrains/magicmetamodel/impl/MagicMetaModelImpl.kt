@@ -16,57 +16,90 @@ public class MagicMetaModelImpl public constructor(
 
   private val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
   private val overlappingTargetsGraph by OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider)
-
-  private val loadedTargets = mutableSetOf<BuildTargetIdentifier>()
+  private val loadedTargetsStorage = LoadedTargetsStorage()
 
   public override fun loadDefaultTargets() {
     val nonOverlappingTargetsToLoad by NonOverlappingTargetsDelegate(overlappingTargetsGraph)
 
     // TODO: add mapping to the workspace model
-    loadedTargets.clear()
-    loadedTargets.addAll(nonOverlappingTargetsToLoad)
+    loadedTargetsStorage.clear()
+    loadedTargetsStorage.addTargets(nonOverlappingTargetsToLoad)
   }
 
   public override fun loadTarget(targetId: BuildTargetIdentifier) {
     throwIllegalArgumentExceptionIfTargetIsNotIncludedInTheModel(targetId)
 
-    if(!loadedTargets.contains(targetId)) {
+    if (loadedTargetsStorage.isTargetNotLoaded(targetId)) {
       // TODO: add mapping to the workspace model
       loadTargetAndRemoveOverlappingLoadedTargets(targetId)
     }
   }
 
   private fun throwIllegalArgumentExceptionIfTargetIsNotIncludedInTheModel(targetId: BuildTargetIdentifier) {
-    if (!isTargetIncludedInTheModel(targetId)) {
+    if (isTargetNotIncludedInTheModel(targetId)) {
       throw IllegalArgumentException("Target $targetId is not included in the model.")
     }
   }
 
-  private fun isTargetIncludedInTheModel(targetId: BuildTargetIdentifier): Boolean =
-    targets.any { it.id == targetId }
+  private fun isTargetNotIncludedInTheModel(targetId: BuildTargetIdentifier): Boolean =
+    targets
+      .any { it.id == targetId }
+      .not()
 
   private fun loadTargetAndRemoveOverlappingLoadedTargets(targetIdToLoad: BuildTargetIdentifier) {
     val targetsToRemove = overlappingTargetsGraph[targetIdToLoad] ?: emptySet()
 
-    loadedTargets.removeAll(targetsToRemove)
-    loadedTargets.add(targetIdToLoad)
+    loadedTargetsStorage.removeTargets(targetsToRemove)
+    loadedTargetsStorage.addTarget(targetIdToLoad)
   }
 
   public override fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails {
     val allTargetsIds = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(documentId)
 
+    val loadedTarget = loadedTargetsStorage.getLoadedTargetOrNull(allTargetsIds)
+    val notLoadedTargets = loadedTargetsStorage.getNotLoadedTargets(allTargetsIds)
+
     return DocumentTargetsDetails(
-      activeTargetId = null,
-      inactiveTargetsIds = allTargetsIds
+      loadedTargetId = loadedTarget,
+      notLoadedTargetsIds = notLoadedTargets,
     )
   }
 
   override fun getAllLoadedTargets(): List<BuildTarget> =
-    targets.filter(this::isTargetLoaded)
+    targets.filter(loadedTargetsStorage::isTargetLoaded)
 
   override fun getAllNotLoadedTargets(): List<BuildTarget> =
-    targets.filterNot(this::isTargetLoaded)
+    targets.filterNot(loadedTargetsStorage::isTargetLoaded)
+}
 
-  private fun isTargetLoaded(target: BuildTarget): Boolean =
+private class LoadedTargetsStorage {
+
+  private val loadedTargets = mutableSetOf<BuildTargetIdentifier>()
+
+  fun clear() =
+    loadedTargets.clear()
+
+  fun addTargets(targets: Collection<BuildTargetIdentifier>) =
+    loadedTargets.addAll(targets)
+
+  fun addTarget(target: BuildTargetIdentifier) =
+    loadedTargets.add(target)
+
+  fun removeTargets(targets: Collection<BuildTargetIdentifier>) =
+    loadedTargets.removeAll(targets)
+
+  fun getLoadedTargetOrNull(allTargets: List<BuildTargetIdentifier>): BuildTargetIdentifier? =
+    allTargets.firstOrNull(this::isTargetLoaded)
+
+  fun getNotLoadedTargets(allTargets: List<BuildTargetIdentifier>): List<BuildTargetIdentifier> =
+    allTargets.filterNot(this::isTargetLoaded)
+
+  fun isTargetNotLoaded(targetId: BuildTargetIdentifier): Boolean =
+    !isTargetLoaded(targetId)
+
+  fun isTargetLoaded(targetId: BuildTargetIdentifier): Boolean =
+    loadedTargets.contains(targetId)
+
+  fun isTargetLoaded(target: BuildTarget): Boolean =
     loadedTargets.contains(target.id)
 }
