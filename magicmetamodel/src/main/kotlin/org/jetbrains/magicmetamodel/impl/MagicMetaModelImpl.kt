@@ -42,9 +42,7 @@ public class MagicMetaModelImpl public constructor(
   }
 
   private fun isTargetNotIncludedInTheModel(targetId: BuildTargetIdentifier): Boolean =
-    targets
-      .any { it.id == targetId }
-      .not()
+    !targets.any { it.id == targetId }
 
   private fun loadTargetAndRemoveOverlappingLoadedTargets(targetIdToLoad: BuildTargetIdentifier) {
     val targetsToRemove = overlappingTargetsGraph[targetIdToLoad] ?: emptySet()
