@@ -23,6 +23,7 @@ public class MagicMetaModelImpl public constructor(
     val nonOverlappingTargetsToLoad by NonOverlappingTargetsDelegate(overlappingTargetsGraph)
 
     // TODO: add mapping to the workspace model
+    loadedTargets.clear()
     loadedTargets.addAll(nonOverlappingTargetsToLoad)
   }
 
