@@ -7,7 +7,7 @@ internal class OverlappingTargetsGraphDelegate(
   private val targetsDetailsForDocumentProvider: TargetsDetailsForDocumentProvider
 ) {
 
-  internal operator fun getValue(
+  operator fun getValue(
     thisRef: Any?,
     property: KProperty<*>
   ): Map<BuildTargetIdentifier, Set<BuildTargetIdentifier>> =

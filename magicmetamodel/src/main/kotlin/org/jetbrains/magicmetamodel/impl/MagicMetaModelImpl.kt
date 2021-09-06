@@ -51,7 +51,7 @@ internal class MagicMetaModelImpl internal constructor(
     loadedTargetsStorage.addTarget(targetIdToLoad)
   }
 
-  public override fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails {
+  override fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails {
     val allTargetsIds = targetsDetailsForDocumentProvider.getTargetsDetailsForDocument(documentId)
 
     val loadedTarget = loadedTargetsStorage.getLoadedTargetOrNull(allTargetsIds)
