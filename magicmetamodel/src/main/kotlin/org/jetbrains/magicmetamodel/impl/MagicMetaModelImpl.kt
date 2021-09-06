@@ -8,7 +8,7 @@ import com.intellij.workspaceModel.ide.WorkspaceModel
 import org.jetbrains.magicmetamodel.DocumentTargetsDetails
 import org.jetbrains.magicmetamodel.MagicMetaModel
 
-public class MagicMetaModelImpl public constructor(
+internal class MagicMetaModelImpl internal constructor(
   private val workspaceModel: WorkspaceModel,
   private val targets: List<BuildTarget>,
   sources: List<SourcesItem>
@@ -18,7 +18,7 @@ public class MagicMetaModelImpl public constructor(
   private val overlappingTargetsGraph by OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider)
   private val loadedTargetsStorage = LoadedTargetsStorage()
 
-  public override fun loadDefaultTargets() {
+  override fun loadDefaultTargets() {
     val nonOverlappingTargetsToLoad by NonOverlappingTargetsDelegate(overlappingTargetsGraph)
 
     // TODO: add mapping to the workspace model
@@ -26,7 +26,7 @@ public class MagicMetaModelImpl public constructor(
     loadedTargetsStorage.addTargets(nonOverlappingTargetsToLoad)
   }
 
-  public override fun loadTarget(targetId: BuildTargetIdentifier) {
+  override fun loadTarget(targetId: BuildTargetIdentifier) {
     throwIllegalArgumentExceptionIfTargetIsNotIncludedInTheModel(targetId)
 
     if (loadedTargetsStorage.isTargetNotLoaded(targetId)) {
