@@ -22,13 +22,33 @@ public class MagicMetaModelImpl public constructor(
   public override fun loadDefaultTargets() {
     val nonOverlappingTargetsToLoad by NonOverlappingTargetsDelegate(overlappingTargetsGraph)
 
-    // TODO add mapping to workspace model
-
+    // TODO: add mapping to the workspace model
     loadedTargets.addAll(nonOverlappingTargetsToLoad)
   }
 
   public override fun loadTarget(targetId: BuildTargetIdentifier) {
-    TODO("Not yet implemented")
+    throwIllegalArgumentExceptionIfTargetIsNotIncludedInTheModel(targetId)
+
+    if(!loadedTargets.contains(targetId)) {
+      // TODO: add mapping to the workspace model
+      loadTargetAndRemoveOverlappingLoadedTargets(targetId)
+    }
+  }
+
+  private fun throwIllegalArgumentExceptionIfTargetIsNotIncludedInTheModel(targetId: BuildTargetIdentifier) {
+    if (!isTargetIncludedInTheModel(targetId)) {
+      throw IllegalArgumentException("Target $targetId is not included in the model.")
+    }
+  }
+
+  private fun isTargetIncludedInTheModel(targetId: BuildTargetIdentifier): Boolean =
+    targets.any { it.id == targetId }
+
+  private fun loadTargetAndRemoveOverlappingLoadedTargets(targetIdToLoad: BuildTargetIdentifier) {
+    val targetsToRemove = overlappingTargetsGraph[targetIdToLoad] ?: emptySet()
+
+    loadedTargets.removeAll(targetsToRemove)
+    loadedTargets.add(targetIdToLoad)
   }
 
   public override fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails {

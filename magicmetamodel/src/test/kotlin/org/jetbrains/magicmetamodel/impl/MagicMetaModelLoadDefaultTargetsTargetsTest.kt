@@ -6,8 +6,8 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-@DisplayName("magicMetaModel.getAllLoadedTargets() and magicMetaModel.getAllNotLoadedTargets() and magicMetaModel.loadDefaultTargets() tests")
-class MagicMetaModelGetAllLoadedTargetsGetAllNotLoadedAndLoadDefaultTargetsTargetsTest {
+@DisplayName("magicMetaModel.loadDefaultTargets() with magicMetaModel.getAllLoadedTargets() and magicMetaModel.getAllNotLoadedTargets() tests")
+class MagicMetaModelLoadDefaultTargetsTargetsTest {
 
   @Test
   fun `should return no loaded and no not loaded targets for empty project`() {
