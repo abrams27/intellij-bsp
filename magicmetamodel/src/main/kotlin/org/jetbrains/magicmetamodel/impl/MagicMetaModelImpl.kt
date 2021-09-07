@@ -8,6 +8,9 @@ import com.intellij.workspaceModel.ide.WorkspaceModel
 import org.jetbrains.magicmetamodel.DocumentTargetsDetails
 import org.jetbrains.magicmetamodel.MagicMetaModel
 
+/**
+ * Basic implementation of [MagicMetaModel] supporting shared sources provided by the BSP and build on top of [WorkspaceModel].
+ */
 internal class MagicMetaModelImpl internal constructor(
   private val workspaceModel: WorkspaceModel,
   private val targets: List<BuildTarget>,
