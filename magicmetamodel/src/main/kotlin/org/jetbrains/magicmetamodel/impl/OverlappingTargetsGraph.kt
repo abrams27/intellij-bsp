@@ -1,6 +1,7 @@
 package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
+import org.jetbrains.magicmetamodel.extensions.reduceSets
 import kotlin.reflect.KProperty
 
 internal class OverlappingTargetsGraphDelegate(
@@ -15,7 +16,7 @@ internal class OverlappingTargetsGraphDelegate(
       .map(targetsDetailsForDocumentProvider::getTargetsDetailsForDocument)
       .flatMap(this::generateEdgesForOverlappingTargetsForAllTargets)
       .groupBy({ it.first }, { it.second })
-      .mapValues { mapListOfSetsToSingleSet(it.value) }
+      .mapValues { it.value.reduceSets() }
 
   private fun generateEdgesForOverlappingTargetsForAllTargets(
     overlappingTargets: List<BuildTargetIdentifier>
@@ -38,7 +39,4 @@ internal class OverlappingTargetsGraphDelegate(
     overlappingTargets
       .filter { it != target }
       .toSet()
-
-  private fun <T> mapListOfSetsToSingleSet(listOfSets: List<Set<T>>): Set<T> =
-    listOfSets.reduce { acc, el -> acc.union(el) }
 }
