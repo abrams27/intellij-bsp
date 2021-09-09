@@ -96,13 +96,13 @@ class NonOverlappingTargetsTest {
 
   private fun validateNonOverlappingTargetsByCheckingGraph(
     nonOverlappingTargets: Set<BuildTargetIdentifier>,
-    graph: Map<BuildTargetIdentifier, Set<BuildTargetIdentifier>>
+    graph: Map<BuildTargetIdentifier, Set<BuildTargetIdentifier>>,
   ) = nonOverlappingTargets.forEach { validateNonOverlappingTargetByCheckingGraph(it, nonOverlappingTargets, graph) }
 
   private fun validateNonOverlappingTargetByCheckingGraph(
     targetToValidate: BuildTargetIdentifier,
     nonOverlappingTargets: Set<BuildTargetIdentifier>,
-    graph: Map<BuildTargetIdentifier, Set<BuildTargetIdentifier>>
+    graph: Map<BuildTargetIdentifier, Set<BuildTargetIdentifier>>,
   ) {
     val overlappingTargetsWithTargetToValidate = graph[targetToValidate] ?: emptySet()
 

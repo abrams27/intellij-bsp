@@ -1,41 +1,41 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("java")
-    // Kotlin support
-    id("org.jetbrains.kotlin.jvm")
-    // detekt linter - read more: https://detekt.github.io/detekt/gradle.html
-    id("io.gitlab.arturbosch.detekt")
-    // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
-    id("org.jlleitschuh.gradle.ktlint")
+  id("java")
+  // Kotlin support
+  id("org.jetbrains.kotlin.jvm")
+  // detekt linter - read more: https://detekt.github.io/detekt/gradle.html
+  id("io.gitlab.arturbosch.detekt")
+  // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
+  id("org.jlleitschuh.gradle.ktlint")
 
-    `java-library`
+  `java-library`
 }
 
 kotlin {
-    explicitApi()
+  explicitApi()
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+  implementation(kotlin("stdlib-jdk8"))
 
 }
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 tasks.test {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+  jvmTarget = "1.8"
 }
 
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+  jvmTarget = "1.8"
 }

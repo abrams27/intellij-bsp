@@ -6,9 +6,9 @@ import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.diagnostic.trace
-import org.jetbrains.magicmetamodel.extensions.toAbsolutePath
 import java.net.URI
 import java.nio.file.Path
+import org.jetbrains.magicmetamodel.extensions.toAbsolutePath
 import kotlin.reflect.KProperty
 
 internal class TargetsDetailsForDocumentProvider(sources: List<SourcesItem>) {

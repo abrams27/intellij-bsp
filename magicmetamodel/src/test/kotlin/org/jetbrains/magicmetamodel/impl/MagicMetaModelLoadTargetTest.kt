@@ -1,6 +1,11 @@
 package org.jetbrains.magicmetamodel.impl
 
-import ch.epfl.scala.bsp4j.*
+import ch.epfl.scala.bsp4j.BuildTarget
+import ch.epfl.scala.bsp4j.BuildTargetCapabilities
+import ch.epfl.scala.bsp4j.BuildTargetIdentifier
+import ch.epfl.scala.bsp4j.SourceItem
+import ch.epfl.scala.bsp4j.SourceItemKind
+import ch.epfl.scala.bsp4j.SourcesItem
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
@@ -231,7 +236,7 @@ class MagicMetaModelLoadTargetTest {
 
     // then
     loadedTargets shouldContainExactlyInAnyOrder listOf(target1, target2)
-    notLoadedTargets shouldBe  emptyList()
+    notLoadedTargets shouldBe emptyList()
   }
 
   @Test

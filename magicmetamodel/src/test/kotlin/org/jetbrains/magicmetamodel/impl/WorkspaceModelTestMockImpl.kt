@@ -3,7 +3,18 @@ package org.jetbrains.magicmetamodel.impl
 import com.intellij.workspaceModel.ide.BuilderSnapshot
 import com.intellij.workspaceModel.ide.StorageReplacement
 import com.intellij.workspaceModel.ide.WorkspaceModel
-import com.intellij.workspaceModel.storage.*
+import com.intellij.workspaceModel.storage.EntityChange
+import com.intellij.workspaceModel.storage.EntityReference
+import com.intellij.workspaceModel.storage.EntitySource
+import com.intellij.workspaceModel.storage.ExternalEntityMapping
+import com.intellij.workspaceModel.storage.ModifiableWorkspaceEntity
+import com.intellij.workspaceModel.storage.MutableExternalEntityMapping
+import com.intellij.workspaceModel.storage.PersistentEntityId
+import com.intellij.workspaceModel.storage.WorkspaceEntity
+import com.intellij.workspaceModel.storage.WorkspaceEntityStorage
+import com.intellij.workspaceModel.storage.WorkspaceEntityStorageBuilder
+import com.intellij.workspaceModel.storage.WorkspaceEntityStorageDiffBuilder
+import com.intellij.workspaceModel.storage.WorkspaceEntityWithPersistentId
 import com.intellij.workspaceModel.storage.url.MutableVirtualFileUrlIndex
 import com.intellij.workspaceModel.storage.url.VirtualFileUrlIndex
 import kotlin.reflect.KClass
@@ -19,7 +30,7 @@ private class WorkspaceEntityStorageBuilderTestMockImpl : WorkspaceEntityStorage
   override fun <M : ModifiableWorkspaceEntity<T>, T : WorkspaceEntity> addEntity(
     clazz: Class<M>,
     source: EntitySource,
-    initializer: M.() -> Unit
+    initializer: M.() -> Unit,
   ): T {
     TODO("Not yet implemented")
   }
@@ -47,7 +58,7 @@ private class WorkspaceEntityStorageBuilderTestMockImpl : WorkspaceEntityStorage
     throw NotImplementedError("This is test mock implementation - method implementation not provided")
 
   override fun entitiesBySource(
-    sourceFilter: (EntitySource) -> Boolean
+    sourceFilter: (EntitySource) -> Boolean,
   ): Map<EntitySource, Map<Class<out WorkspaceEntity>, List<WorkspaceEntity>>> =
     throw NotImplementedError("This is test mock implementation - method implementation not provided")
 
@@ -69,20 +80,20 @@ private class WorkspaceEntityStorageBuilderTestMockImpl : WorkspaceEntityStorage
   override fun <M : ModifiableWorkspaceEntity<out T>, T : WorkspaceEntity> modifyEntity(
     clazz: Class<M>,
     e: T,
-    change: M.() -> Unit
+    change: M.() -> Unit,
   ): T =
     throw NotImplementedError("This is test mock implementation - method implementation not provided")
 
   override fun <E : WorkspaceEntity, R : WorkspaceEntity> referrers(
     e: E,
     entityClass: KClass<R>,
-    property: KProperty1<R, EntityReference<E>>
+    property: KProperty1<R, EntityReference<E>>,
   ): Sequence<R> =
     throw NotImplementedError("This is test mock implementation - method implementation not provided")
 
   override fun <E : WorkspaceEntityWithPersistentId, R : WorkspaceEntity> referrers(
     id: PersistentEntityId<E>,
-    entityClass: Class<R>
+    entityClass: Class<R>,
   ): Sequence<R> =
     throw NotImplementedError("This is test mock implementation - method implementation not provided")
 
