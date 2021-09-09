@@ -4,6 +4,8 @@ import ch.epfl.scala.bsp4j.BuildTarget
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
+import com.intellij.openapi.diagnostic.debug
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.workspaceModel.ide.WorkspaceModel
 import org.jetbrains.magicmetamodel.DocumentTargetsDetails
 import org.jetbrains.magicmetamodel.MagicMetaModel
@@ -14,15 +16,27 @@ import org.jetbrains.magicmetamodel.MagicMetaModel
 internal class MagicMetaModelImpl internal constructor(
   private val workspaceModel: WorkspaceModel,
   private val targets: List<BuildTarget>,
-  sources: List<SourcesItem>
+  sources: List<SourcesItem>,
 ) : MagicMetaModel {
+
+  init {
+    LOGGER.debug { "Initializing MagicMetaModelImpl model..." }
+  }
 
   private val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
   private val overlappingTargetsGraph by OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider)
   private val loadedTargetsStorage = LoadedTargetsStorage()
 
+  init {
+    LOGGER.debug { "Initializing MagicMetaModelImpl model done!" }
+  }
+
   override fun loadDefaultTargets() {
+    LOGGER.debug { "Calculating default targets to load..." }
+
     val nonOverlappingTargetsToLoad by NonOverlappingTargetsDelegate(overlappingTargetsGraph)
+
+    LOGGER.debug { "Calculating default targets to load done! Targets to load: $nonOverlappingTargetsToLoad" }
 
     // TODO: add mapping to the workspace model
     loadedTargetsStorage.clear()
@@ -71,6 +85,10 @@ internal class MagicMetaModelImpl internal constructor(
 
   override fun getAllNotLoadedTargets(): List<BuildTarget> =
     targets.filterNot(loadedTargetsStorage::isTargetLoaded)
+
+  companion object {
+    private val LOGGER = logger<MagicMetaModelImpl>()
+  }
 }
 
 private class LoadedTargetsStorage {
