@@ -1,19 +1,15 @@
 <idea-plugin>
-    <id>com.github.abrams27.intellijbsp</id>
-    <name>intellij-bsp</name>
-    <vendor>abrams27</vendor>
+    <id>org.jetbrains.bsp</id>
+    <name>Build Server Protocol</name>
+    <vendor>JetBrains</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="org.jetbrains.plugins.bsp.services.MyApplicationService"/>
-        <projectService serviceImplementation="org.jetbrains.plugins.bsp.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="org.jetbrains.plugins.bsp.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 </idea-plugin>
