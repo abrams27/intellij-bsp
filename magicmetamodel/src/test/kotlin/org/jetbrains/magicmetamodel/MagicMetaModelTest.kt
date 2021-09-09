@@ -1,4 +1,5 @@
 @file:Suppress("LongMethod")
+
 package org.jetbrains.magicmetamodel
 
 import ch.epfl.scala.bsp4j.BuildTarget

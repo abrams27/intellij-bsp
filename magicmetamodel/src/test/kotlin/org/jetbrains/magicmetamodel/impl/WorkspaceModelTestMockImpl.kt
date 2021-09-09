@@ -28,7 +28,6 @@ private class WorkspaceEntityStorageBuilderTestMockImpl : WorkspaceEntityStorage
     throw NotImplementedError("This is test mock implementation - method implementation not provided")
   }
 
-
   override fun <M : ModifiableWorkspaceEntity<T>, T : WorkspaceEntity> addEntity(
     clazz: Class<M>,
     source: EntitySource,

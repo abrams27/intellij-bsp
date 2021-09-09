@@ -1,4 +1,5 @@
 @file:Suppress("LongMethod")
+
 package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
@@ -107,7 +108,6 @@ class OverlappingTargetsGraphTest {
       SourceItem("file:///overlapping/file1/in/target5/target6/target9", SourceItemKind.FILE, false)
     val overlappingSource1InTarget6Target8 =
       SourceItem("file:///overlapping/file1/in/target6/target8", SourceItemKind.FILE, false)
-
 
     val target1Id = BuildTargetIdentifier("//target1")
     val source1InTarget1 =

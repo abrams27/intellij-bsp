@@ -1,4 +1,5 @@
 @file:Suppress("LongMethod", "MaxLineLength")
+
 package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.BuildTarget
@@ -351,7 +352,6 @@ class MagicMetaModelLoadDefaultTargetsTargetsTest {
     magicMetaModel.loadTarget(notLoadedTargetByDefault.id)
     val loadedTargetsAfterLoading = magicMetaModel.getAllLoadedTargets()
     val notLoadedTargetsAfterLoading = magicMetaModel.getAllNotLoadedTargets()
-
 
     magicMetaModel.loadDefaultTargets()
     val loadedTargetsAfterSecondDefaultLoading = magicMetaModel.getAllLoadedTargets()
