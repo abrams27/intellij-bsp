@@ -4,6 +4,8 @@ import ch.epfl.scala.bsp4j.BuildTarget
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
+import com.intellij.openapi.diagnostic.debug
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.workspaceModel.ide.WorkspaceModel
 import org.jetbrains.magicmetamodel.impl.MagicMetaModelImpl
 
@@ -14,7 +16,7 @@ import org.jetbrains.magicmetamodel.impl.MagicMetaModelImpl
  */
 public data class DocumentTargetsDetails(
   public val loadedTargetId: BuildTargetIdentifier?,
-  public val notLoadedTargetsIds: List<BuildTargetIdentifier>
+  public val notLoadedTargetsIds: List<BuildTargetIdentifier>,
 )
 
 /**
@@ -65,13 +67,18 @@ public interface MagicMetaModel {
   public fun getAllNotLoadedTargets(): List<BuildTarget>
 
   public companion object {
+    private val LOGGER = logger<MagicMetaModel>()
+
     /**
      * Create instance of [MagicMetaModelImpl] which supports shared sources provided by the BSP and works on top of [WorkspaceModel].
      */
     public fun create(
       workspaceModel: WorkspaceModel,
       targets: List<BuildTarget>,
-      sources: List<SourcesItem>
-    ): MagicMetaModel = MagicMetaModelImpl(workspaceModel, targets, sources)
+      sources: List<SourcesItem>,
+    ): MagicMetaModel {
+      LOGGER.debug { "Creating MagicMetaModelImpl for $workspaceModel, $targets. $sources ..." }
+      return MagicMetaModelImpl(workspaceModel, targets, sources)
+    }
   }
 }
