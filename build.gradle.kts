@@ -119,13 +119,17 @@ subprojects {
     apply(plugin = "org.jetbrains.intellij")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "io.gitlab.arturbosch.detekt")
-    apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
     group = properties("pluginGroup")
     version = properties("pluginVersion")
 
     repositories {
         mavenCentral()
+    }
+
+    tasks.test {
+        useJUnitPlatform()
     }
 
     dependencies {
