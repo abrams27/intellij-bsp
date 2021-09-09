@@ -1,11 +1,11 @@
 package org.jetbrains.plugins.bsp.services
 
-import org.jetbrains.plugins.bsp.MyBundle
 import com.intellij.openapi.project.Project
+import org.jetbrains.plugins.bsp.MyBundle
 
 class MyProjectService(project: Project) {
 
-    init {
-        println(MyBundle.message("projectService", project.name))
-    }
+  init {
+    println(MyBundle.message("projectService", project.name))
+  }
 }

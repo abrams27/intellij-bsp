@@ -4,7 +4,7 @@ import org.jetbrains.plugins.bsp.MyBundle
 
 class MyApplicationService {
 
-    init {
-        println(MyBundle.message("applicationService"))
-    }
+  init {
+    println(MyBundle.message("applicationService"))
+  }
 }
