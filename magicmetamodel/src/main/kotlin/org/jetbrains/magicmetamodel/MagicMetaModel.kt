@@ -77,7 +77,7 @@ public interface MagicMetaModel {
       targets: List<BuildTarget>,
       sources: List<SourcesItem>,
     ): MagicMetaModel {
-      LOGGER.debug { "Creating MagicMetaModelImpl for $workspaceModel, $targets. $sources ..." }
+      LOGGER.debug { "Creating MagicMetaModelImpl for $workspaceModel, $targets. $sources..." }
       return MagicMetaModelImpl(workspaceModel, targets, sources)
     }
   }
