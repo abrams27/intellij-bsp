@@ -1,4 +1,5 @@
-package org.jetbrains.magicmetamodel.impl;
+@file:Suppress("MaxLineLength")
+package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.BuildTarget
 import ch.epfl.scala.bsp4j.BuildTargetCapabilities

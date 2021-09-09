@@ -17,8 +17,13 @@ internal class NonOverlappingTargetsDelegate(
 
     LOGGER.trace { "Calculating non overlapping targets for $allTargets..." }
 
-    return allTargets.fold(emptySet(), this::addTargetToSetIfNoneOfItsNeighborsIsAdded)
-      .also { LOGGER.trace { "Calculating non overlapping targets for $allTargets done! Calculated non overlapping targets: $it." } }
+    return allTargets
+      .fold(emptySet(), this::addTargetToSetIfNoneOfItsNeighborsIsAdded)
+      .also {
+        LOGGER.trace {
+          "Calculating non overlapping targets for $allTargets done! Calculated non overlapping targets: $it."
+        }
+      }
   }
 
   private fun addTargetToSetIfNoneOfItsNeighborsIsAdded(
@@ -37,7 +42,10 @@ internal class NonOverlappingTargetsDelegate(
   ): Boolean {
     val neighbors = overlappingTargetsGraph[target] ?: emptySet()
 
-    LOGGER.trace { "Checking that any of $target overlapping targets $neighbors is already included in the non overlapping targets set..." }
+    LOGGER.trace {
+      "Checking that any of $target overlapping targets $neighbors " +
+        "is already included in the non overlapping targets set..."
+    }
 
     return isAnyTargetAddedToSet(nonOverlappingTargetsAcc, neighbors)
       .also { LOGGER.trace { "Checking done! Result: $it." } }

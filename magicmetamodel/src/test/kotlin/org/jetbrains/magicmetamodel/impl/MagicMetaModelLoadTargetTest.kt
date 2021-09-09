@@ -1,3 +1,4 @@
+@file:Suppress("LongMethod")
 package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.BuildTarget
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test
 class MagicMetaModelLoadTargetTest {
 
   @Test
+  @Suppress
   fun `should throw IllegalArgumentException for not existing target`() {
     // given
     val workspaceModel = WorkspaceModelTestMockImpl()

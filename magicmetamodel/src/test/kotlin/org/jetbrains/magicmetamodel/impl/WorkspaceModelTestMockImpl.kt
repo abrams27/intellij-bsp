@@ -20,6 +20,8 @@ import com.intellij.workspaceModel.storage.url.VirtualFileUrlIndex
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
+// will be used in the future
+@Suppress("UnusedPrivateClass")
 private class WorkspaceEntityStorageBuilderTestMockImpl : WorkspaceEntityStorageBuilder {
 
   override val modificationCount by lazy {

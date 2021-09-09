@@ -51,7 +51,8 @@ public interface MagicMetaModel {
   /**
    * Get targets details for given document.
    *
-   * The response contains a loaded target that contains the document, or null if no loaded target contains the document.
+   * The response contains a loaded target that contains the document,
+   * or null if no loaded target contains the document.
    * The response also contains unloaded targets that contain the document.
    */
   public fun getTargetsDetailsForDocument(documentId: TextDocumentIdentifier): DocumentTargetsDetails
@@ -70,7 +71,8 @@ public interface MagicMetaModel {
     private val LOGGER = logger<MagicMetaModel>()
 
     /**
-     * Create instance of [MagicMetaModelImpl] which supports shared sources provided by the BSP and works on top of [WorkspaceModel].
+     * Create instance of [MagicMetaModelImpl] which supports shared sources
+     * provided by the BSP and works on top of [WorkspaceModel].
      */
     public fun create(
       workspaceModel: WorkspaceModel,

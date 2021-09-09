@@ -11,7 +11,8 @@ import org.jetbrains.magicmetamodel.DocumentTargetsDetails
 import org.jetbrains.magicmetamodel.MagicMetaModel
 
 /**
- * Basic implementation of [MagicMetaModel] supporting shared sources provided by the BSP and build on top of [WorkspaceModel].
+ * Basic implementation of [MagicMetaModel] supporting shared sources
+ * provided by the BSP and build on top of [WorkspaceModel].
  */
 internal class MagicMetaModelImpl internal constructor(
   private val workspaceModel: WorkspaceModel,
@@ -38,6 +39,7 @@ internal class MagicMetaModelImpl internal constructor(
 
     LOGGER.debug { "Calculating default targets to load done! Targets to load: $nonOverlappingTargetsToLoad" }
 
+    @Suppress("ForbiddenComment")
     // TODO: add mapping to the workspace model
     loadedTargetsStorage.clear()
     loadedTargetsStorage.addTargets(nonOverlappingTargetsToLoad)
@@ -47,6 +49,7 @@ internal class MagicMetaModelImpl internal constructor(
     throwIllegalArgumentExceptionIfTargetIsNotIncludedInTheModel(targetId)
 
     if (loadedTargetsStorage.isTargetNotLoaded(targetId)) {
+      @Suppress("ForbiddenComment")
       // TODO: add mapping to the workspace model
       loadTargetAndRemoveOverlappingLoadedTargets(targetId)
     }

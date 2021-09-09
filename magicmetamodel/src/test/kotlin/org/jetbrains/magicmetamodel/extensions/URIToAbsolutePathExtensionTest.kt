@@ -1,10 +1,10 @@
 package org.jetbrains.magicmetamodel.extensions
 
 import io.kotest.matchers.shouldBe
-import java.net.URI
-import java.nio.file.Paths
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import java.net.URI
+import java.nio.file.Paths
 
 @DisplayName("uri.toAbsolutePath() tests")
 class URIToAbsolutePathExtensionTest {

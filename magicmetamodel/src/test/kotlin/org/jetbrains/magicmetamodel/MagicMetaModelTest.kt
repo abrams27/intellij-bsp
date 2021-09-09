@@ -1,3 +1,4 @@
+@file:Suppress("LongMethod")
 package org.jetbrains.magicmetamodel
 
 import ch.epfl.scala.bsp4j.BuildTarget
@@ -335,7 +336,8 @@ class MagicMetaModelTest {
     )
 
     // ------
-    // user decides to load not loaded `:app-2.1*` target by default (app-2.13 if app-2.12 is currently loaded or vice versa)
+    // user decides to load not loaded `:app-2.1*` target by default
+    // (app-2.13 if app-2.12 is currently loaded or vice versa)
     // ------
     magicMetaModel.loadTarget(notLoadedAppByDefault.id)
 
@@ -347,14 +349,14 @@ class MagicMetaModelTest {
 
     // user opens each file and checks the loaded target for each file (e.g. at the bottom bar widget)
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibAUri, libA212Id, emptyList())
+      Triple(sourceInLibAUri, libA212Id, emptyList())
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibBUri, loadedLibBByDefault.id, listOf(notLoadedLibBByDefault.id))
+      Triple(sourceInLibBUri, loadedLibBByDefault.id, listOf(notLoadedLibBByDefault.id))
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibCUri, loadedLibCByDefault.id, listOf(notLoadedLibCByDefault.id))
+      Triple(sourceInLibCUri, loadedLibCByDefault.id, listOf(notLoadedLibCByDefault.id))
     // user switched this target!
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInAppUri, notLoadedAppByDefault.id, listOf(loadedAppByDefault.id))
+      Triple(sourceInAppUri, notLoadedAppByDefault.id, listOf(loadedAppByDefault.id))
 
     // ------
     // well, now user decides to load not loaded `:libB-2.1*` target by default
@@ -369,14 +371,14 @@ class MagicMetaModelTest {
 
     // user opens each file and checks the loaded target for each file (e.g. at the bottom bar widget)
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibAUri, libA212Id, emptyList())
+      Triple(sourceInLibAUri, libA212Id, emptyList())
     // user switched this target now!
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibBUri, notLoadedLibBByDefault.id, listOf(loadedLibBByDefault.id))
+      Triple(sourceInLibBUri, notLoadedLibBByDefault.id, listOf(loadedLibBByDefault.id))
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibCUri, loadedLibCByDefault.id, listOf(notLoadedLibCByDefault.id))
+      Triple(sourceInLibCUri, loadedLibCByDefault.id, listOf(notLoadedLibCByDefault.id))
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInAppUri, notLoadedAppByDefault.id, listOf(loadedAppByDefault.id))
+      Triple(sourceInAppUri, notLoadedAppByDefault.id, listOf(loadedAppByDefault.id))
 
     // ------
     // and, finally user decides to load the default configuration
@@ -391,13 +393,13 @@ class MagicMetaModelTest {
 
     // user opens each file and checks the loaded target for each file (e.g. at the bottom bar widget)
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibAUri, libA212Id, emptyList())
+      Triple(sourceInLibAUri, libA212Id, emptyList())
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibBUri, loadedLibBByDefault.id, listOf(notLoadedLibBByDefault.id))
+      Triple(sourceInLibBUri, loadedLibBByDefault.id, listOf(notLoadedLibBByDefault.id))
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibCUri, loadedLibCByDefault.id, listOf(notLoadedLibCByDefault.id))
+      Triple(sourceInLibCUri, loadedLibCByDefault.id, listOf(notLoadedLibCByDefault.id))
     magicMetaModel `should return valid targets details for document`
-        Triple(sourceInAppUri, loadedAppByDefault.id, listOf(notLoadedAppByDefault.id))
+      Triple(sourceInAppUri, loadedAppByDefault.id, listOf(notLoadedAppByDefault.id))
   }
 
   private fun getAppTargetLoadedVersionOrThrow(
@@ -421,7 +423,6 @@ class MagicMetaModelTest {
       13 -> Pair(target13, target12)
       else -> fail("Wrong version!")
     }
-
 
   private infix fun MagicMetaModel.`should return given loaded and not loaded targets`(
     expectedLoadedAndNotLoadedTargets: Pair<List<BuildTarget>, List<BuildTarget>>,
