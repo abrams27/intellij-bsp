@@ -243,7 +243,7 @@ class MagicMetaModelTest {
       ),
       BuildTargetCapabilities(),
     )
-    val targets = listOf(libA212, libB212, libB213, libC212, libC213, app212, app213)
+    val targets = listOf(libA212, libB213, libB212, libC212, libC213, app213, app212)
 
     val sourceInLibAUri = "file:///libA/src/main/kotlin/"
     val sourceInLibA = SourceItem(
@@ -304,10 +304,10 @@ class MagicMetaModelTest {
       libA212Sources,
       libB212Sources,
       libB213Sources,
-      libC212Sources,
       libC213Sources,
-      app212Sources,
+      libC212Sources,
       app213Sources,
+      app212Sources,
     )
 
     // when & then
@@ -319,16 +319,13 @@ class MagicMetaModelTest {
     // after bsp importing process
     magicMetaModel.loadDefaultTargets()
 
-    // now we have only 2 valid default targets configuration (libA-2.12 has no shared sources):
-    // 1. libA-2.12 + libB-2.12, libC-2.12, app-2.12
-    // 2. libA-2.12 + libB-2.13, libC-2.13, app-2.13
-    val appVersion = getAppTargetLoadedVersionOrThrow(app212, app213, magicMetaModel.getAllLoadedTargets())
-
+    // now we are collecting loaded by default targets
     val (loadedLibBByDefault, notLoadedLibBByDefault) =
-      getExpectedLoadedAndNotLoadedTargets(appVersion, libB212, libB213)
+      getLoadedAndNotLoadedTargetsOrThrow(libB212, libB213, magicMetaModel.getAllLoadedTargets())
     val (loadedLibCByDefault, notLoadedLibCByDefault) =
-      getExpectedLoadedAndNotLoadedTargets(appVersion, libC212, libC213)
-    val (loadedAppByDefault, notLoadedAppByDefault) = getExpectedLoadedAndNotLoadedTargets(appVersion, app212, app213)
+      getLoadedAndNotLoadedTargetsOrThrow(libC212, libC213, magicMetaModel.getAllLoadedTargets())
+    val (loadedAppByDefault, notLoadedAppByDefault) =
+      getLoadedAndNotLoadedTargetsOrThrow(app212, app213, magicMetaModel.getAllLoadedTargets())
 
     // showing loaded and not loaded targets to user (e.g. at the sidebar)
     magicMetaModel `should return given loaded and not loaded targets` Pair(
@@ -403,26 +400,15 @@ class MagicMetaModelTest {
       Triple(sourceInAppUri, loadedAppByDefault.id, listOf(notLoadedAppByDefault.id))
   }
 
-  private fun getAppTargetLoadedVersionOrThrow(
-    app212: BuildTarget,
-    app213: BuildTarget,
+  private fun getLoadedAndNotLoadedTargetsOrThrow(
+    target1: BuildTarget,
+    target2: BuildTarget,
     loadedTargets: List<BuildTarget>,
-  ): Int =
-    when (Pair(loadedTargets.contains(app212), loadedTargets.contains(app213))) {
-      Pair(true, false) -> 12
-      Pair(false, true) -> 13
-      else -> fail("Invalid loaded targets! Loaded targets should contain either ${app212.id} or ${app213.id}")
-    }
-
-  private fun getExpectedLoadedAndNotLoadedTargets(
-    version: Int,
-    target12: BuildTarget,
-    target13: BuildTarget,
   ): Pair<BuildTarget, BuildTarget> =
-    when (version) {
-      12 -> Pair(target12, target13)
-      13 -> Pair(target13, target12)
-      else -> fail("Wrong version!")
+    when (Pair(loadedTargets.contains(target1), loadedTargets.contains(target2))) {
+      Pair(true, false) -> Pair(target1, target2)
+      Pair(false, true) -> Pair(target2, target1)
+      else -> fail("Invalid loaded targets! Loaded targets should contain either ${target1.id} or ${target2.id}")
     }
 
   private infix fun MagicMetaModel.`should return given loaded and not loaded targets`(
