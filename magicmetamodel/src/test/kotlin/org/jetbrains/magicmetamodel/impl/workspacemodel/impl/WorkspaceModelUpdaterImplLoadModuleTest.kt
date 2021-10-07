@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @DisplayName("workspaceModelUpdaterImpl.loadModule(moduleDetails) tests")
-class WorkspaceModelUpdaterImplLoadModuleTest : WorkspaceModelBaseTest() {
+private class WorkspaceModelUpdaterImplLoadModuleTest : WorkspaceModelBaseTest() {
 
   @Test
   fun `should add java module`() {

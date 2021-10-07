@@ -14,7 +14,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @DisplayName("workspaceModelUpdaterImpl.loadRootModule() tests")
-class WorkspaceModelUpdaterImplLoadRootModuleTest : WorkspaceModelBaseTest() {
+private class WorkspaceModelUpdaterImplLoadRootModuleTest : WorkspaceModelBaseTest() {
 
 //  @Test
 //  fun `should

@@ -1,15 +1,9 @@
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transformers
 
 import ch.epfl.scala.bsp4j.SourcesItem
-import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.WorkspaceModelEntity
+import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.JavaSourceRoot
+import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.SourceRoot
 import java.net.URI
-import java.nio.file.Path
-
-internal data class JavaSourceRoot(
-  val sourceDir: Path,
-  val generated: Boolean,
-  val packagePrefix: String,
-) : WorkspaceModelEntity()
 
 internal object SourcesItemToJavaSourceRootTransformer :
   WorkspaceModelEntityPartitionTransformer<SourcesItem, JavaSourceRoot> {

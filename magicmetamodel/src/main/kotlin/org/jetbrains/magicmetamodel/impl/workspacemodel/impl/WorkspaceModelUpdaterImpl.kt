@@ -2,6 +2,7 @@ package org.jetbrains.magicmetamodel.impl.workspacemodel.impl
 
 import ch.epfl.scala.bsp4j.BuildTarget
 import ch.epfl.scala.bsp4j.SourcesItem
+import com.intellij.workspaceModel.ide.JpsFileEntitySource
 import com.intellij.workspaceModel.ide.WorkspaceModel
 import com.intellij.workspaceModel.storage.bridgeEntities.addContentRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addJavaSourceRootEntity

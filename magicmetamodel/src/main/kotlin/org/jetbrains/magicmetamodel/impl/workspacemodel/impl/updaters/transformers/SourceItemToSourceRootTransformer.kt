@@ -2,15 +2,10 @@ package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transform
 
 import ch.epfl.scala.bsp4j.SourceItem
 import ch.epfl.scala.bsp4j.SourceItemKind
-import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.WorkspaceModelEntity
+import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.SourceRoot
 import java.net.URI
 import java.nio.file.Path
 import kotlin.io.path.toPath
-
-internal data class SourceRoot(
-  val sourceDir: Path,
-  val generated: Boolean = false
-) : WorkspaceModelEntity()
 
 // TODO better generated handling & merge
 internal object SourceItemToSourceRootTransformer :
