@@ -66,17 +66,17 @@ detekt {
 }
 
 tasks {
-  // Set the compatibility versions to 1.8
-  withType<JavaCompile> {
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
-  }
-  withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-  }
-
-  withType<Detekt> {
-    jvmTarget = "1.8"
+  properties("javaVersion").let {
+    withType<JavaCompile> {
+      sourceCompatibility = it
+      targetCompatibility = it
+    }
+    withType<KotlinCompile> {
+      kotlinOptions.jvmTarget = it
+    }
+    withType<Detekt> {
+      jvmTarget = it
+    }
   }
 
   patchPluginXml {
@@ -134,6 +134,20 @@ subprojects {
 
   tasks.test {
     useJUnitPlatform()
+  }
+
+  // Set the JVM compatibility versions
+  properties("javaVersion").let {
+    tasks.withType<JavaCompile> {
+      sourceCompatibility = it
+      targetCompatibility = it
+    }
+    tasks.withType<KotlinCompile> {
+      kotlinOptions.jvmTarget = it
+    }
+    tasks.withType<Detekt> {
+      jvmTarget = it
+    }
   }
 
   detekt {

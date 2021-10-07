@@ -1,24 +1,26 @@
-package org.jetbrains.magicmetamodel.impl.workspacemodel
+package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transformers
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.net.URI
 
-@DisplayName("PackagePrefix.calculate(source, sourceRoots) tests")
-class PackagePrefixTest {
+@DisplayName("JavaSourcePackageDetailsToJavaSourceRootPackagePrefixTransformer.transform(javaSourcePackageDetails) tests")
+class JavaSourcePackageDetailsToJavaSourceRootPackagePrefixTransformerTest {
 
   @Test
   fun `should return no package for equal source dir and single root`() {
     // given
     val sourceDir = URI.create("file:///example/package/root/")
     val roots = listOf(URI.create("file:///example/package/root/"))
+    val javaSourcePackageDetails = JavaSourcePackageDetails(sourceDir, roots)
 
     // when
-    val packagePrefix = PackagePrefix.calculate(sourceDir, roots)
+    val packagePrefix =
+      JavaSourcePackageDetailsToJavaSourceRootPackagePrefixTransformer.transform(javaSourcePackageDetails)
 
     // then
-    packagePrefix shouldBe ""
+    packagePrefix shouldBe JavaSourceRootPackagePrefix("")
   }
 
   @Test
@@ -30,12 +32,14 @@ class PackagePrefixTest {
       URI.create("file:///example/package/root/"),
       URI.create("file:///another/another/example/package/root/"),
     )
+    val javaSourcePackageDetails = JavaSourcePackageDetails(sourceDir, roots)
 
     // when
-    val packagePrefix = PackagePrefix.calculate(sourceDir, roots)
+    val packagePrefix =
+      JavaSourcePackageDetailsToJavaSourceRootPackagePrefixTransformer.transform(javaSourcePackageDetails)
 
     // then
-    packagePrefix shouldBe ""
+    packagePrefix shouldBe JavaSourceRootPackagePrefix("")
   }
 
   @Test
@@ -43,12 +47,14 @@ class PackagePrefixTest {
     // given
     val sourceDir = URI.create("file:///root/dir/example/package/")
     val roots = listOf(URI.create("file:///root/dir/"))
+    val javaSourcePackageDetails = JavaSourcePackageDetails(sourceDir, roots)
 
     // when
-    val packagePrefix = PackagePrefix.calculate(sourceDir, roots)
+    val packagePrefix =
+      JavaSourcePackageDetailsToJavaSourceRootPackagePrefixTransformer.transform(javaSourcePackageDetails)
 
     // then
-    packagePrefix shouldBe "example.package"
+    packagePrefix shouldBe JavaSourceRootPackagePrefix("example.package")
   }
 
   @Test
@@ -60,12 +66,14 @@ class PackagePrefixTest {
       URI.create("file:///root/dir/"),
       URI.create("file:///another/another/example/package/root/"),
     )
+    val javaSourcePackageDetails = JavaSourcePackageDetails(sourceDir, roots)
 
     // when
-    val packagePrefix = PackagePrefix.calculate(sourceDir, roots)
+    val packagePrefix =
+      JavaSourcePackageDetailsToJavaSourceRootPackagePrefixTransformer.transform(javaSourcePackageDetails)
 
     // then
-    packagePrefix shouldBe "example.package"
+    packagePrefix shouldBe JavaSourceRootPackagePrefix("example.package")
   }
 
   @Test
@@ -77,12 +85,14 @@ class PackagePrefixTest {
       URI.create("file:///example/package/root/"),
       URI.create("file:///another/another/example/package/root/"),
     )
+    val javaSourcePackageDetails = JavaSourcePackageDetails(sourceDir, roots)
 
     // when
-    val packagePrefix = PackagePrefix.calculate(sourceDir, roots)
+    val packagePrefix =
+      JavaSourcePackageDetailsToJavaSourceRootPackagePrefixTransformer.transform(javaSourcePackageDetails)
 
     // then
-    packagePrefix shouldBe "example.package"
+    packagePrefix shouldBe JavaSourceRootPackagePrefix("example.package")
   }
 
   @Test
@@ -94,11 +104,13 @@ class PackagePrefixTest {
       URI.create("file:///not/matching/root/dir/"),
       URI.create("file:///another/another/root/dir/example/package/"),
     )
+    val javaSourcePackageDetails = JavaSourcePackageDetails(sourceDir, roots)
 
     // when
-    val packagePrefix = PackagePrefix.calculate(sourceDir, roots)
+    val packagePrefix =
+      JavaSourcePackageDetailsToJavaSourceRootPackagePrefixTransformer.transform(javaSourcePackageDetails)
 
     // then
-    packagePrefix shouldBe "root.dir.example.package"
+    packagePrefix shouldBe JavaSourceRootPackagePrefix("root.dir.example.package")
   }
 }

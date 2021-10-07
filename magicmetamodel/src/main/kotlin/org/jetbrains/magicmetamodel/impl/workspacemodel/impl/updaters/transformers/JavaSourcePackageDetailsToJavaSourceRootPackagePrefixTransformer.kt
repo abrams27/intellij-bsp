@@ -1,16 +1,33 @@
-package org.jetbrains.magicmetamodel.impl.workspacemodel
+package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transformers
 
 import org.jetbrains.magicmetamodel.extensions.allSubdirectoriesSequence
+import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.WorkspaceModelEntity
 import java.net.URI
 import java.nio.file.Path
 import kotlin.io.path.pathString
 import kotlin.io.path.toPath
 
-internal object PackagePrefix {
+internal data class JavaSourcePackageDetails(
+  val sourceDir: URI,
+  val sourceRoots: List<URI>
+)
+
+internal data class JavaSourceRootPackagePrefix(
+  val packagePrefix: String
+)
+
+internal object JavaSourcePackageDetailsToJavaSourceRootPackagePrefixTransformer :
+  WorkspaceModelEntityBaseTransformer<JavaSourcePackageDetails, JavaSourceRootPackagePrefix> {
 
   private const val PACKAGE_DELIMITER = '.'
 
-  internal fun calculate(sourceDir: URI, sourceRoots: List<URI>): String {
+  override fun transform(inputEntity: JavaSourcePackageDetails): JavaSourceRootPackagePrefix {
+    val packagePrefix = calculateRawPackagePrefix(inputEntity.sourceDir, inputEntity.sourceRoots)
+
+    return JavaSourceRootPackagePrefix(packagePrefix)
+  }
+
+  private fun calculateRawPackagePrefix(sourceDir: URI, sourceRoots: List<URI>): String {
     val sourceDirRawPath = sourceDir.toPath().pathString
     val matchingRootRawPath = calculateMatchingRootPath(sourceDir, sourceRoots)?.pathString
 

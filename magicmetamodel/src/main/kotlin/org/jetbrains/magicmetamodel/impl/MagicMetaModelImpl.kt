@@ -16,8 +16,12 @@ import org.jetbrains.magicmetamodel.MagicMetaModel
  */
 internal class MagicMetaModelImpl internal constructor(
   private val workspaceModel: WorkspaceModel,
+//  private val projectLocation: JpsProjectConfigLocation,
+//  private val virtualFileUrlManager: VirtualFileUrlManager,
   private val targets: List<BuildTarget>,
-  sources: List<SourcesItem>,
+  private val sources: List<SourcesItem>,
+//  private val resources: List<ResourcesItem>,
+//  private val dependencies: List<DependencySourcesItem>,
 ) : MagicMetaModel {
 
   init {
@@ -27,6 +31,7 @@ internal class MagicMetaModelImpl internal constructor(
   private val targetsDetailsForDocumentProvider = TargetsDetailsForDocumentProvider(sources)
   private val overlappingTargetsGraph by OverlappingTargetsGraphDelegate(targetsDetailsForDocumentProvider)
   private val loadedTargetsStorage = LoadedTargetsStorage()
+//  private val workspaceModelUpdaterImpl = WorkspaceModelUpdaterImpl(workspaceModel, projectLocation, virtualFileUrlManager)
 
   init {
     LOGGER.debug { "Initializing MagicMetaModelImpl model done!" }
@@ -41,6 +46,10 @@ internal class MagicMetaModelImpl internal constructor(
 
     @Suppress("ForbiddenComment")
     // TODO: add mapping to the workspace model
+
+//    val sourcesToAdd = sources.filter { nonOverlappingTargetsToLoad.contains(it.target) }
+
+//    workspaceModelUpdaterImpl.addJavaSources(targets, sourcesToAdd, resources, dependencies)
     loadedTargetsStorage.clear()
     loadedTargetsStorage.addTargets(nonOverlappingTargetsToLoad)
   }

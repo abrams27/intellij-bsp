@@ -2,11 +2,15 @@ package org.jetbrains.magicmetamodel
 
 import ch.epfl.scala.bsp4j.BuildTarget
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
+import ch.epfl.scala.bsp4j.DependencySourcesItem
+import ch.epfl.scala.bsp4j.ResourcesItem
 import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
 import com.intellij.openapi.diagnostic.debug
 import com.intellij.openapi.diagnostic.logger
+import com.intellij.workspaceModel.ide.JpsProjectConfigLocation
 import com.intellij.workspaceModel.ide.WorkspaceModel
+import com.intellij.workspaceModel.storage.url.VirtualFileUrlManager
 import org.jetbrains.magicmetamodel.impl.MagicMetaModelImpl
 
 /**
