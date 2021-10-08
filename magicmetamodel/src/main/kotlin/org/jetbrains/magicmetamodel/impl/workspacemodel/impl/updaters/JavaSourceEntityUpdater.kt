@@ -2,9 +2,9 @@ package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 
 import com.intellij.workspaceModel.storage.WorkspaceEntityStorageBuilder
 import com.intellij.workspaceModel.storage.bridgeEntities.ContentRootEntity
+import com.intellij.workspaceModel.storage.bridgeEntities.JavaSourceRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.SourceRootEntity
-import com.intellij.workspaceModel.storage.bridgeEntities.addContentRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addJavaSourceRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addSourceRootEntity
 import com.intellij.workspaceModel.storage.impl.url.toVirtualFileUrl
@@ -24,33 +24,31 @@ internal data class JavaSourceRoot(
 
 internal class JavaSourceEntityUpdater(
   private val workspaceModelDetails: WorkspaceModelDetails,
-) : WorkspaceModelEntityUpdater<JavaSourceRoot> {
+) : WorkspaceModelEntityUpdater<JavaSourceRoot, JavaSourceRootEntity> {
 
-  private val defaultExcludedUrls = emptyList<VirtualFileUrl>()
-  private val defaultExcludedPatterns = emptyList<String>()
+  private val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelDetails)
 
-  private val javaSourceContentRootType = "java-source"
-
-  override fun addEntity(entityToAdd: JavaSourceRoot, parentModuleEntity: ModuleEntity) {
+  override fun addEntity(entityToAdd: JavaSourceRoot, parentModuleEntity: ModuleEntity): JavaSourceRootEntity {
     val virtualSourceRootDir = entityToAdd.sourceDir.toVirtualFileUrl(workspaceModelDetails.virtualFileManager)
 
-    workspaceModelDetails.workspaceModel.updateProjectModel {
-      val contentRootEntity = addContentRootEntity(it, parentModuleEntity, virtualSourceRootDir)
+    val contentRootEntity = addContentRootEntity(entityToAdd, parentModuleEntity)
+
+    return workspaceModelDetails.workspaceModel.updateProjectModel {
       val sourceRootEntity = addSourceRootEntity(it, contentRootEntity, virtualSourceRootDir)
       addJavaSourceRootEntity(it, sourceRootEntity, entityToAdd)
     }
   }
 
   private fun addContentRootEntity(
-    builder: WorkspaceEntityStorageBuilder,
-    moduleEntity: ModuleEntity,
-    virtualSourceRootDir: VirtualFileUrl,
-  ): ContentRootEntity = builder.addContentRootEntity(
-    url = virtualSourceRootDir,
-    excludedUrls = defaultExcludedUrls,
-    excludedPatterns = defaultExcludedPatterns,
-    module = moduleEntity,
-  )
+    entityToAdd: JavaSourceRoot,
+    parentModuleEntity: ModuleEntity
+  ): ContentRootEntity {
+    val contentRoot = ContentRoot(
+      url = entityToAdd.sourceDir
+    )
+
+    return contentRootEntityUpdater.addEntity(contentRoot, parentModuleEntity)
+  }
 
   private fun addSourceRootEntity(
     builder: WorkspaceEntityStorageBuilder,
@@ -59,7 +57,7 @@ internal class JavaSourceEntityUpdater(
   ): SourceRootEntity = builder.addSourceRootEntity(
     contentRoot = contentRootEntity,
     url = virtualSourceRootDir,
-    rootType = javaSourceContentRootType,
+    rootType = ROOT_TYPE,
     source = workspaceModelDetails.projectConfigSource,
   )
 
@@ -67,9 +65,13 @@ internal class JavaSourceEntityUpdater(
     builder: WorkspaceEntityStorageBuilder,
     sourceRoot: SourceRootEntity,
     entityToAdd: JavaSourceRoot,
-  ) = builder.addJavaSourceRootEntity(
+  ): JavaSourceRootEntity = builder.addJavaSourceRootEntity(
     sourceRoot = sourceRoot,
     generated = entityToAdd.generated,
     packagePrefix = entityToAdd.packagePrefix,
   )
+
+  private companion object {
+    private const val ROOT_TYPE = "java-source"
+  }
 }

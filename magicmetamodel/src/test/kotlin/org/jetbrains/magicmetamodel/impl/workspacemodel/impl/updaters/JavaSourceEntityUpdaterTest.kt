@@ -32,8 +32,10 @@ private class JavaSourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTest(
     // when
     val javaSourceEntityUpdater = JavaSourceEntityUpdater(workspaceModelDetails)
 
+    lateinit var returnedJavaSourceRootEntity: JavaSourceRootEntity
+
     WriteCommandAction.runWriteCommandAction(project) {
-      javaSourceEntityUpdater.addEntity(javaSourceRoot, parentModuleEntity)
+      returnedJavaSourceRootEntity = javaSourceEntityUpdater.addEntity(javaSourceRoot, parentModuleEntity)
     }
 
     // then
@@ -43,6 +45,8 @@ private class JavaSourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTest(
       sourceRootEntity = SourceRootEntity(virtualSourceDir, "java-source"),
       javaSourceRootEntity = JavaSourceRootEntity(generated, packagePrefix),
     )
+
+    validateJavaSourceRootEntity(returnedJavaSourceRootEntity, expectedJavaSourceRootEntityDetails)
 
     workspaceModelLoadedEntries(JavaSourceRootEntity::class.java) shouldContainExactlyInAnyOrder Pair(
       listOf(expectedJavaSourceRootEntityDetails), this::validateJavaSourceRootEntity
@@ -69,8 +73,10 @@ private class JavaSourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTest(
     // when
     val javaSourceEntityUpdater = JavaSourceEntityUpdater(workspaceModelDetails)
 
+    lateinit var returnedJavaSourceRootEntries: Collection<JavaSourceRootEntity>
+
     WriteCommandAction.runWriteCommandAction(project) {
-      javaSourceEntityUpdater.addEntries(javaSourceRoots, parentModuleEntity)
+      returnedJavaSourceRootEntries = javaSourceEntityUpdater.addEntries(javaSourceRoots, parentModuleEntity)
     }
 
     // then
@@ -86,6 +92,11 @@ private class JavaSourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTest(
       contentRootEntity = ContentRootEntity(virtualSourceDir2, emptyList(), emptyList()),
       sourceRootEntity = SourceRootEntity(virtualSourceDir2, "java-source"),
       javaSourceRootEntity = JavaSourceRootEntity(generated2, packagePrefix2),
+    )
+
+    returnedJavaSourceRootEntries shouldContainExactlyInAnyOrder Pair(
+      listOf(expectedJavaSourceRootEntityDetails1, expectedJavaSourceRootEntityDetails2),
+      this::validateJavaSourceRootEntity
     )
 
     workspaceModelLoadedEntries(JavaSourceRootEntity::class.java) shouldContainExactlyInAnyOrder Pair(

@@ -29,8 +29,10 @@ private class JavaResourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTes
     // when
     val javaResourceEntityUpdater = JavaResourceEntityUpdater(workspaceModelDetails)
 
+    lateinit var returnedJavaResourceRootEntity: JavaResourceRootEntity
+
     WriteCommandAction.runWriteCommandAction(project) {
-      javaResourceEntityUpdater.addEntity(javaResourceRoot, parentModuleEntity)
+      returnedJavaResourceRootEntity = javaResourceEntityUpdater.addEntity(javaResourceRoot, parentModuleEntity)
     }
 
     // then
@@ -40,6 +42,8 @@ private class JavaResourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTes
       sourceRootEntity = SourceRootEntity(virtualResourceUrl, "java-resource"),
       javaResourceRootEntity = JavaResourceRootEntity(false, ""),
     )
+
+    validateJavaResourceRootEntity(returnedJavaResourceRootEntity, expectedJavaResourceRootEntityDetails)
 
     workspaceModelLoadedEntries(JavaResourceRootEntity::class.java) shouldContainExactlyInAnyOrder Pair(
       listOf(expectedJavaResourceRootEntityDetails), this::validateJavaResourceRootEntity
@@ -63,8 +67,10 @@ private class JavaResourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTes
     // when
     val javaResourceEntityUpdater = JavaResourceEntityUpdater(workspaceModelDetails)
 
+    lateinit var returnedJavaResourceRootEntries: Collection<JavaResourceRootEntity>
+
     WriteCommandAction.runWriteCommandAction(project) {
-      javaResourceEntityUpdater.addEntries(javaResourceRoots, parentModuleEntity)
+      returnedJavaResourceRootEntries = javaResourceEntityUpdater.addEntries(javaResourceRoots, parentModuleEntity)
     }
 
     // then
@@ -88,6 +94,15 @@ private class JavaResourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTes
       sourceRootEntity = SourceRootEntity(virtualResourceUrl3, "java-resource"),
       javaResourceRootEntity = JavaResourceRootEntity(false, ""),
     )
+
+    returnedJavaResourceRootEntries shouldContainExactlyInAnyOrder Pair(
+      listOf(
+        expectedJavaResourceRootEntityDetails1,
+        expectedJavaResourceRootEntityDetails2,
+        expectedJavaResourceRootEntityDetails3
+      ), this::validateJavaResourceRootEntity
+    )
+
     workspaceModelLoadedEntries(JavaResourceRootEntity::class.java) shouldContainExactlyInAnyOrder Pair(
       listOf(
         expectedJavaResourceRootEntityDetails1,
