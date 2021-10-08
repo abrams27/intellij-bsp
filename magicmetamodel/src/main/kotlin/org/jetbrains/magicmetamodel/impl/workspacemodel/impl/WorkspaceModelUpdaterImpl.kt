@@ -128,23 +128,23 @@ internal class WorkspaceModelUpdaterImpl(
 //        "JAVA_MODULE"
 //      )
 //
-//      details.libraries.forEach { dep ->
-//        val root = LibraryRoot(
-//          virtualFileUrlManager.fromUrl("jar${dep.jar.drop(4)}!/"),
-//          LibraryRootTypeId.COMPILED
-//        )
+    //      details.libraries.forEach { dep ->
+    //        val root = LibraryRoot(
+    //          virtualFileUrlManager.fromUrl("jar${dep.jar.drop(4)}!/"),
+    //          LibraryRootTypeId.COMPILED
+    //        )
+    //
+    //        it.addLibraryEntity(
+    //          dep.prettyName,
+    //          LibraryTableId.ModuleLibraryTableId(ModuleId(details.name)),
+    //          listOf(root),
+    //          emptyList(),
+    //          projectConfigSource
+    //        )
+    //      }
 //
-//        it.addLibraryEntity(
-//          dep.prettyName,
-//          LibraryTableId.ModuleLibraryTableId(ModuleId(details.name)),
-//          listOf(root),
-//          emptyList(),
-//          projectConfigSource
-//        )
-//      }
-//
-//      if (details.sources.isNotEmpty()) {
-//        details.sources.forEach { source ->
+    //      if (details.sources.isNotEmpty()) {
+    //        details.sources.forEach { source ->
     //          val xd = virtualFileUrlManager.fromPath(source.source.sourceDir.toString())
     //
     //          val contentRoot = it.addContentRootEntity(
@@ -162,18 +162,18 @@ internal class WorkspaceModelUpdaterImpl(
     //          )
     //
     //          it.addJavaSourceRootEntity(sourceRoot, source.source.generated, "bsp.${source.packagePrefix}")
-//        }
-//      } else {
-//        it.addContentRootEntity(
-//          virtualFileUrlManager.fromUrl(details.baseDirectory),
-//          emptyList(),
-//          emptyList(),
-//          module
-//        )
-//      }
-//      details.resources.forEach { resource ->
-//        val xd = virtualFileUrlManager.fromUrl(resource.uri)
-//
+    //        }
+    //      } else {
+    //        it.addContentRootEntity(
+    //          virtualFileUrlManager.fromUrl(details.baseDirectory),
+    //          emptyList(),
+    //          emptyList(),
+    //          module
+    //        )
+    //      }
+    //      details.resources.forEach { resource ->
+    //        val xd = virtualFileUrlManager.fromUrl(resource.uri)
+    //
     //        val contentRoot = it.addContentRootEntity(
     //          xd,
     //          emptyList(),

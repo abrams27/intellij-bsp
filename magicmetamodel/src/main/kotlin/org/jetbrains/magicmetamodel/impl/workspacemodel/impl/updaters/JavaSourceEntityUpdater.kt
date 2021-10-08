@@ -29,12 +29,10 @@ internal class JavaSourceEntityUpdater(
   private val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelDetails)
 
   override fun addEntity(entityToAdd: JavaSourceRoot, parentModuleEntity: ModuleEntity): JavaSourceRootEntity {
-    val virtualSourceRootDir = entityToAdd.sourceDir.toVirtualFileUrl(workspaceModelDetails.virtualFileManager)
-
     val contentRootEntity = addContentRootEntity(entityToAdd, parentModuleEntity)
 
     return workspaceModelDetails.workspaceModel.updateProjectModel {
-      val sourceRootEntity = addSourceRootEntity(it, contentRootEntity, virtualSourceRootDir)
+      val sourceRootEntity = addSourceRootEntity(it, contentRootEntity, entityToAdd)
       addJavaSourceRootEntity(it, sourceRootEntity, entityToAdd)
     }
   }
@@ -53,10 +51,10 @@ internal class JavaSourceEntityUpdater(
   private fun addSourceRootEntity(
     builder: WorkspaceEntityStorageBuilder,
     contentRootEntity: ContentRootEntity,
-    virtualSourceRootDir: VirtualFileUrl,
+    entityToAdd: JavaSourceRoot,
   ): SourceRootEntity = builder.addSourceRootEntity(
     contentRoot = contentRootEntity,
-    url = virtualSourceRootDir,
+    url = entityToAdd.sourceDir.toVirtualFileUrl(workspaceModelDetails.virtualFileManager),
     rootType = ROOT_TYPE,
     source = workspaceModelDetails.projectConfigSource,
   )
