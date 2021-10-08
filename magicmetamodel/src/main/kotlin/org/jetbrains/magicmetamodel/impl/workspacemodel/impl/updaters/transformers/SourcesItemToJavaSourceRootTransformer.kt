@@ -13,13 +13,13 @@ internal object SourcesItemToJavaSourceRootTransformer :
 
     return SourceItemToSourceRootTransformer
       .transform(inputEntity.sources)
-      .map { calculateJavaSourceRoot(it, sourceRoots) }
+      .map { toJavaSourceRoot(it, sourceRoots) }
   }
 
   private fun getSourceRootsAsURIs(sourcesItem: SourcesItem): List<URI> =
     sourcesItem.roots.map(URI::create)
 
-  private fun calculateJavaSourceRoot(sourceRoot: SourceRoot, sourceRoots: List<URI>): JavaSourceRoot {
+  private fun toJavaSourceRoot(sourceRoot: SourceRoot, sourceRoots: List<URI>): JavaSourceRoot {
     val packagePrefix = calculatePackagePrefix(sourceRoot, sourceRoots)
 
     return JavaSourceRoot(

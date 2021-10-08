@@ -45,12 +45,12 @@ private class JavaSourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTest(
     )
 
     workspaceModelLoadedEntries(JavaSourceRootEntity::class.java) shouldContainExactlyInAnyOrder Pair(
-      listOf(expectedJavaSourceRootEntityDetails), this::shouldHaveTheSameContentsSourcesJavaSourcesRoots
+      listOf(expectedJavaSourceRootEntityDetails), this::validateJavaSourceRootEntity
     )
   }
 
   @Test
-  fun `should add multiple java source root to the workspace model`() {
+  fun `should add multiple java source roots to the workspace model`() {
     // given
     val sourceDir1 = URI.create("file:///root/dir/example/package/").toPath()
     val generated1 = false
@@ -90,11 +90,11 @@ private class JavaSourceEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTest(
 
     workspaceModelLoadedEntries(JavaSourceRootEntity::class.java) shouldContainExactlyInAnyOrder Pair(
       listOf(expectedJavaSourceRootEntityDetails1, expectedJavaSourceRootEntityDetails2),
-      this::shouldHaveTheSameContentsSourcesJavaSourcesRoots
+      this::validateJavaSourceRootEntity
     )
   }
 
-  private fun shouldHaveTheSameContentsSourcesJavaSourcesRoots(
+  private fun validateJavaSourceRootEntity(
     actual: JavaSourceRootEntity,
     expected: ExpectedJavaSourceRootEntityDetails
   ) {

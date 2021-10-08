@@ -145,23 +145,23 @@ internal class WorkspaceModelUpdaterImpl(
 //
 //      if (details.sources.isNotEmpty()) {
 //        details.sources.forEach { source ->
-//          val xd = virtualFileUrlManager.fromPath(source.source.sourceDir.toString())
-//
-//          val contentRoot = it.addContentRootEntity(
-//            xd,
-//            emptyList(),
-//            emptyList(),
-//            module
-//          )
-//
-//          val sourceRoot = it.addSourceRootEntity(
-//            contentRoot,
-//            xd,
-//            "java-source",
-//            projectConfigSource
-//          )
-//
-//          it.addJavaSourceRootEntity(sourceRoot, source.source.generated, "bsp.${source.packagePrefix}")
+    //          val xd = virtualFileUrlManager.fromPath(source.source.sourceDir.toString())
+    //
+    //          val contentRoot = it.addContentRootEntity(
+    //            xd,
+    //            emptyList(),
+    //            emptyList(),
+    //            module
+    //          )
+    //
+    //          val sourceRoot = it.addSourceRootEntity(
+    //            contentRoot,
+    //            xd,
+    //            "java-source",
+    //            projectConfigSource
+    //          )
+    //
+    //          it.addJavaSourceRootEntity(sourceRoot, source.source.generated, "bsp.${source.packagePrefix}")
 //        }
 //      } else {
 //        it.addContentRootEntity(
@@ -174,21 +174,21 @@ internal class WorkspaceModelUpdaterImpl(
 //      details.resources.forEach { resource ->
 //        val xd = virtualFileUrlManager.fromUrl(resource.uri)
 //
-//        val contentRoot = it.addContentRootEntity(
-//          xd,
-//          emptyList(),
-//          emptyList(),
-//          module
-//        )
-//
-//        val sourceRoot = it.addSourceRootEntity(
-//          contentRoot,
-//          xd,
-//          "java-resource",
-//          projectConfigSource
-//        )
-//
-//        it.addJavaResourceRootEntity(sourceRoot, false, "")
+    //        val contentRoot = it.addContentRootEntity(
+    //          xd,
+    //          emptyList(),
+    //          emptyList(),
+    //          module
+    //        )
+    //
+    //        val sourceRoot = it.addSourceRootEntity(
+    //          contentRoot,
+    //          xd,
+    //          "java-resource",
+    //          projectConfigSource
+    //        )
+    //
+    //        it.addJavaResourceRootEntity(sourceRoot, false, "")
 //      }
 //      it.addJavaModuleSettingsEntity(
 //        true,

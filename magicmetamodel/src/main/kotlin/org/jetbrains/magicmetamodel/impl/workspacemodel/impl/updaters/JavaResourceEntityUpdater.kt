@@ -5,48 +5,43 @@ import com.intellij.workspaceModel.storage.bridgeEntities.ContentRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.SourceRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addContentRootEntity
-import com.intellij.workspaceModel.storage.bridgeEntities.addJavaSourceRootEntity
+import com.intellij.workspaceModel.storage.bridgeEntities.addJavaResourceRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addSourceRootEntity
 import com.intellij.workspaceModel.storage.impl.url.toVirtualFileUrl
 import com.intellij.workspaceModel.storage.url.VirtualFileUrl
 import java.nio.file.Path
 
-internal data class SourceRoot(
-  val sourceDir: Path,
-  val generated: Boolean
+internal data class JavaResourceRoot(
+  val resourcePath: Path,
 ) : WorkspaceModelEntity()
 
-internal data class JavaSourceRoot(
-  val sourceDir: Path,
-  val generated: Boolean,
-  val packagePrefix: String,
-) : WorkspaceModelEntity()
-
-internal class JavaSourceEntityUpdater(
+internal class JavaResourceEntityUpdater(
   private val workspaceModelDetails: WorkspaceModelDetails,
-) : WorkspaceModelEntityUpdater<JavaSourceRoot> {
+) : WorkspaceModelEntityUpdater<JavaResourceRoot> {
 
   private val defaultExcludedUrls = emptyList<VirtualFileUrl>()
   private val defaultExcludedPatterns = emptyList<String>()
+  private val defaultGenerated = false
+  private val defaultRelativeOutputPath = ""
 
-  private val javaSourceContentRootType = "java-source"
+  private val javaResourceContentRootType = "java-resource"
 
-  override fun addEntity(entityToAdd: JavaSourceRoot, parentModuleEntity: ModuleEntity) {
-    val virtualSourceRootDir = entityToAdd.sourceDir.toVirtualFileUrl(workspaceModelDetails.virtualFileManager)
+  override fun addEntity(entityToAdd: JavaResourceRoot, parentModuleEntity: ModuleEntity) {
+    val virtualResourcePath = entityToAdd.resourcePath.toVirtualFileUrl(workspaceModelDetails.virtualFileManager)
 
     workspaceModelDetails.workspaceModel.updateProjectModel {
-      val contentRootEntity = addContentRootEntity(it, parentModuleEntity, virtualSourceRootDir)
-      val sourceRootEntity = addSourceRootEntity(it, contentRootEntity, virtualSourceRootDir)
-      addJavaSourceRootEntity(it, sourceRootEntity, entityToAdd)
+      val contentRootEntity = addContentRootEntity(it, parentModuleEntity, virtualResourcePath)
+      val sourceRoot = addSourceRootEntity(it, contentRootEntity, virtualResourcePath)
+      addJavaResourceRootEntity(it, sourceRoot)
     }
   }
 
   private fun addContentRootEntity(
     builder: WorkspaceEntityStorageBuilder,
     moduleEntity: ModuleEntity,
-    virtualSourceRootDir: VirtualFileUrl,
+    virtualResourceUrl: VirtualFileUrl,
   ): ContentRootEntity = builder.addContentRootEntity(
-    url = virtualSourceRootDir,
+    url = virtualResourceUrl,
     excludedUrls = defaultExcludedUrls,
     excludedPatterns = defaultExcludedPatterns,
     module = moduleEntity,
@@ -55,21 +50,20 @@ internal class JavaSourceEntityUpdater(
   private fun addSourceRootEntity(
     builder: WorkspaceEntityStorageBuilder,
     contentRootEntity: ContentRootEntity,
-    virtualSourceRootDir: VirtualFileUrl,
+    virtualResourceUrl: VirtualFileUrl,
   ): SourceRootEntity = builder.addSourceRootEntity(
     contentRoot = contentRootEntity,
-    url = virtualSourceRootDir,
-    rootType = javaSourceContentRootType,
+    url = virtualResourceUrl,
+    rootType = javaResourceContentRootType,
     source = workspaceModelDetails.projectConfigSource,
   )
 
-  private fun addJavaSourceRootEntity(
+  private fun addJavaResourceRootEntity(
     builder: WorkspaceEntityStorageBuilder,
     sourceRoot: SourceRootEntity,
-    entityToAdd: JavaSourceRoot,
-  ) = builder.addJavaSourceRootEntity(
+  ) = builder.addJavaResourceRootEntity(
     sourceRoot = sourceRoot,
-    generated = entityToAdd.generated,
-    packagePrefix = entityToAdd.packagePrefix,
+    generated = defaultGenerated,
+    relativeOutputPath = defaultRelativeOutputPath,
   )
 }
