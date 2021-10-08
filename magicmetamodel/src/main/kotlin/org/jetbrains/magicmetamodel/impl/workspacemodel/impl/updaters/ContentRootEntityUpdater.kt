@@ -14,7 +14,7 @@ internal data class ContentRoot(
 
 internal class ContentRootEntityUpdater(
   private val workspaceModelDetails: WorkspaceModelDetails,
-) : WorkspaceModelEntityUpdater<ContentRoot, ContentRootEntity> {
+) : WorkspaceModelEntityWithParentModuleUpdater<ContentRoot, ContentRootEntity> {
 
   override fun addEntity(entityToAdd: ContentRoot, parentModuleEntity: ModuleEntity): ContentRootEntity {
     return workspaceModelDetails.workspaceModel.updateProjectModel {

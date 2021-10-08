@@ -16,7 +16,7 @@ internal data class Library(
 
 internal class LibraryEntityUpdater(
   private val workspaceModelDetails: WorkspaceModelDetails,
-) : WorkspaceModelEntityUpdater<Library, LibraryEntity> {
+) : WorkspaceModelEntityWithParentModuleUpdater<Library, LibraryEntity> {
 
   override fun addEntity(entityToAdd: Library, parentModuleEntity: ModuleEntity): LibraryEntity {
     return workspaceModelDetails.workspaceModel.updateProjectModel {

@@ -16,7 +16,7 @@ internal data class JavaResourceRoot(
 
 internal class JavaResourceEntityUpdater(
   private val workspaceModelDetails: WorkspaceModelDetails,
-) : WorkspaceModelEntityUpdater<JavaResourceRoot, JavaResourceRootEntity> {
+) : WorkspaceModelEntityWithParentModuleUpdater<JavaResourceRoot, JavaResourceRootEntity> {
 
   private val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelDetails)
 

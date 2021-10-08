@@ -9,7 +9,7 @@ import com.intellij.workspaceModel.storage.bridgeEntities.addModuleEntity
 import org.jetbrains.magicmetamodel.impl.workspacemodel.WorkspaceModelBaseTest
 import org.junit.jupiter.api.BeforeEach
 
-internal abstract class WorkspaceModelEntityUpdaterBaseTest : WorkspaceModelBaseTest() {
+internal abstract class WorkspaceModelEntityWithParentModuleUpdaterBaseTest : WorkspaceModelBaseTest() {
 
   protected lateinit var workspaceModelDetails: WorkspaceModelDetails
   protected lateinit var parentModuleEntity: ModuleEntity

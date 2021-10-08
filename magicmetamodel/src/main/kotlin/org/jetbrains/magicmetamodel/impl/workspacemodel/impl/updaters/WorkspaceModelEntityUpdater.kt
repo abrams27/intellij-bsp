@@ -15,10 +15,22 @@ internal data class WorkspaceModelDetails(
   val projectConfigSource: EntitySource,
 )
 
-internal interface WorkspaceModelEntityUpdater<E : WorkspaceModelEntity, R : WorkspaceEntityBase> {
+internal sealed interface WorkspaceModelEntityUpdater<E : WorkspaceModelEntity, R : WorkspaceEntityBase>
+
+internal interface WorkspaceModelEntityWithParentModuleUpdater<E : WorkspaceModelEntity, R : WorkspaceEntityBase> :
+  WorkspaceModelEntityUpdater<E, R> {
 
   fun addEntries(entriesToAdd: Collection<E>, parentModuleEntity: ModuleEntity): Collection<R> =
     entriesToAdd.map { addEntity(it, parentModuleEntity) }
 
   fun addEntity(entityToAdd: E, parentModuleEntity: ModuleEntity): R
+}
+
+internal interface WorkspaceModelEntityWithoutParentModuleUpdater<E : WorkspaceModelEntity, R : WorkspaceEntityBase> :
+  WorkspaceModelEntityUpdater<E, R> {
+
+  fun addEntries(entriesToAdd: Collection<E>): Collection<R> =
+    entriesToAdd.map { addEntity(it) }
+
+  fun addEntity(entityToAdd: E): R
 }

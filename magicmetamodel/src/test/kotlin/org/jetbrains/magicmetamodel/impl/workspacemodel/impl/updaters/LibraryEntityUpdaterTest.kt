@@ -16,7 +16,7 @@ private data class ExpectedLibraryEntityDetails(
 )
 
 @DisplayName("LibraryEntityUpdater.addEntity(entityToAdd, parentModuleEntity) tests")
-private class LibraryEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTest() {
+private class LibraryEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
 
   @Test
   fun `should add one library to the workspace model`() {

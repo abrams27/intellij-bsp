@@ -14,7 +14,7 @@ private data class ExpectedContentRootEntityDetails(
 )
 
 @DisplayName("ContentRootEntityUpdater.addEntity()")
-private class ContentRootEntityUpdaterTest : WorkspaceModelEntityUpdaterBaseTest() {
+private class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
 
   @Test
   fun `should add one content root to the workspace model`() {

@@ -8,7 +8,6 @@ import com.intellij.workspaceModel.storage.bridgeEntities.SourceRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addJavaSourceRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addSourceRootEntity
 import com.intellij.workspaceModel.storage.impl.url.toVirtualFileUrl
-import com.intellij.workspaceModel.storage.url.VirtualFileUrl
 import java.nio.file.Path
 
 internal data class SourceRoot(
@@ -24,7 +23,7 @@ internal data class JavaSourceRoot(
 
 internal class JavaSourceEntityUpdater(
   private val workspaceModelDetails: WorkspaceModelDetails,
-) : WorkspaceModelEntityUpdater<JavaSourceRoot, JavaSourceRootEntity> {
+) : WorkspaceModelEntityWithParentModuleUpdater<JavaSourceRoot, JavaSourceRootEntity> {
 
   private val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelDetails)
 
