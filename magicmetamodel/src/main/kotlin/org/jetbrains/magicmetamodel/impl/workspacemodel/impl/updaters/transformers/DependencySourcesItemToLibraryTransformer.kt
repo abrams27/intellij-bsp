@@ -6,7 +6,7 @@ import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.Library
 internal object DependencySourcesItemToLibraryTransformer :
   WorkspaceModelEntityPartitionTransformer<DependencySourcesItem, Library> {
 
-  override fun transform(inputEntity: DependencySourcesItem): Collection<Library> {
+  override fun transform(inputEntity: DependencySourcesItem): List<Library> {
     return inputEntity.sources.map(this::toLibrary)
   }
 

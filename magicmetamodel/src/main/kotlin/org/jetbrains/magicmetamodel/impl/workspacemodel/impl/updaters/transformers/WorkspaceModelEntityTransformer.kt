@@ -10,17 +10,17 @@ internal interface WorkspaceModelEntityBaseTransformer<in T, out R> {
 internal interface WorkspaceModelEntityTransformer<in T, out R : WorkspaceModelEntity> :
   WorkspaceModelEntityBaseTransformer<T, R> {
 
-  fun transform(inputEntities: Collection<T>): Collection<R> =
+  fun transform(inputEntities: List<T>): List<R> =
     inputEntities.map(this::transform).distinct()
 
   override fun transform(inputEntity: T): R
 }
 
 internal interface WorkspaceModelEntityPartitionTransformer<in T, out R : WorkspaceModelEntity> :
-  WorkspaceModelEntityBaseTransformer<T, Collection<R>> {
+  WorkspaceModelEntityBaseTransformer<T, List<R>> {
 
-  fun transform(inputEntities: Collection<T>): Collection<R> =
+  fun transform(inputEntities: List<T>): List<R> =
     inputEntities.flatMap(this::transform).distinct()
 
-  override fun transform(inputEntity: T): Collection<R>
+  override fun transform(inputEntity: T): List<R>
 }

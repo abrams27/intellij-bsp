@@ -8,7 +8,7 @@ import kotlin.io.path.toPath
 internal object ResourcesItemToJavaResourceRootTransformer :
   WorkspaceModelEntityPartitionTransformer<ResourcesItem, JavaResourceRoot> {
 
-  override fun transform(inputEntity: ResourcesItem): Collection<JavaResourceRoot> {
+  override fun transform(inputEntity: ResourcesItem): List<JavaResourceRoot> {
     return inputEntity.resources.map(this::toJavaResourceRoot)
   }
 

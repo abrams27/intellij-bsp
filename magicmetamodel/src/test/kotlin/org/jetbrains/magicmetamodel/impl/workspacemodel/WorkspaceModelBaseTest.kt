@@ -7,6 +7,7 @@ import com.intellij.workspaceModel.ide.JpsFileEntitySource
 import com.intellij.workspaceModel.ide.JpsProjectConfigLocation
 import com.intellij.workspaceModel.ide.WorkspaceModel
 import com.intellij.workspaceModel.ide.getInstance
+import com.intellij.workspaceModel.storage.WorkspaceEntity
 import com.intellij.workspaceModel.storage.impl.url.toVirtualFileUrl
 import com.intellij.workspaceModel.storage.url.VirtualFileUrlManager
 import io.kotest.inspectors.forAll
@@ -62,4 +63,7 @@ internal abstract class WorkspaceModelBaseTest {
 
     this.forAll { actual -> expectedValues.forAny { assertion(actual, it) } }
   }
+
+  protected fun <E : WorkspaceEntity> workspaceModelLoadedEntries(entityClass: Class<E>): List<E> =
+    workspaceModel.entityStorage.current.entities(entityClass).toList()
 }

@@ -20,7 +20,7 @@ internal sealed interface WorkspaceModelEntityUpdater<E : WorkspaceModelEntity, 
 internal interface WorkspaceModelEntityWithParentModuleUpdater<E : WorkspaceModelEntity, R : WorkspaceEntityBase> :
   WorkspaceModelEntityUpdater<E, R> {
 
-  fun addEntries(entriesToAdd: Collection<E>, parentModuleEntity: ModuleEntity): Collection<R> =
+  fun addEntries(entriesToAdd: List<E>, parentModuleEntity: ModuleEntity): List<R> =
     entriesToAdd.map { addEntity(it, parentModuleEntity) }
 
   fun addEntity(entityToAdd: E, parentModuleEntity: ModuleEntity): R
@@ -29,7 +29,7 @@ internal interface WorkspaceModelEntityWithParentModuleUpdater<E : WorkspaceMode
 internal interface WorkspaceModelEntityWithoutParentModuleUpdater<E : WorkspaceModelEntity, R : WorkspaceEntityBase> :
   WorkspaceModelEntityUpdater<E, R> {
 
-  fun addEntries(entriesToAdd: Collection<E>): Collection<R> =
+  fun addEntries(entriesToAdd: List<E>): List<R> =
     entriesToAdd.map { addEntity(it) }
 
   fun addEntity(entityToAdd: E): R

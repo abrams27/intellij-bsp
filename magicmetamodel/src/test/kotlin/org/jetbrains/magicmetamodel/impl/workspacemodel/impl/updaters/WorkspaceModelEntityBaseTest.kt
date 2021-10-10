@@ -9,9 +9,20 @@ import com.intellij.workspaceModel.storage.bridgeEntities.addModuleEntity
 import org.jetbrains.magicmetamodel.impl.workspacemodel.WorkspaceModelBaseTest
 import org.junit.jupiter.api.BeforeEach
 
-internal abstract class WorkspaceModelEntityWithParentModuleUpdaterBaseTest : WorkspaceModelBaseTest() {
+internal abstract class WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest : WorkspaceModelBaseTest() {
 
   protected lateinit var workspaceModelDetails: WorkspaceModelDetails
+
+  @BeforeEach
+  override fun beforeEach() {
+    super.beforeEach()
+
+    workspaceModelDetails = WorkspaceModelDetails(workspaceModel, virtualFileUrlManager, projectConfigSource)
+  }
+}
+
+internal abstract class WorkspaceModelEntityWithParentModuleUpdaterBaseTest : WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest() {
+
   protected lateinit var parentModuleEntity: ModuleEntity
 
   private val parentModuleName = "test-module-root"
@@ -21,7 +32,6 @@ internal abstract class WorkspaceModelEntityWithParentModuleUpdaterBaseTest : Wo
   override fun beforeEach() {
     super.beforeEach()
 
-    workspaceModelDetails = WorkspaceModelDetails(workspaceModel, virtualFileUrlManager, projectConfigSource)
     addParentModuleEntity()
   }
 
@@ -40,7 +50,4 @@ internal abstract class WorkspaceModelEntityWithParentModuleUpdaterBaseTest : Wo
       source = projectConfigSource,
       type = parentModuleType
     )
-
-  protected fun <E : WorkspaceEntity> workspaceModelLoadedEntries(entityClass: Class<E>): List<E> =
-    workspaceModel.entityStorage.current.entities(entityClass).toList()
 }

@@ -8,7 +8,7 @@ import java.net.URI
 internal object SourcesItemToJavaSourceRootTransformer :
   WorkspaceModelEntityPartitionTransformer<SourcesItem, JavaSourceRoot> {
 
-  override fun transform(inputEntity: SourcesItem): Collection<JavaSourceRoot> {
+  override fun transform(inputEntity: SourcesItem): List<JavaSourceRoot> {
     val sourceRoots = getSourceRootsAsURIs(inputEntity)
 
     return SourceItemToSourceRootTransformer
