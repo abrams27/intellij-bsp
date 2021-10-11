@@ -2,18 +2,17 @@ package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transform
 
 import ch.epfl.scala.bsp4j.ResourcesItem
 import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.JavaResourceRoot
-import java.net.URI
-import kotlin.io.path.toPath
 
 internal object ResourcesItemToJavaResourceRootTransformer :
   WorkspaceModelEntityPartitionTransformer<ResourcesItem, JavaResourceRoot> {
 
-  override fun transform(inputEntity: ResourcesItem): List<JavaResourceRoot> {
-    return inputEntity.resources.map(this::toJavaResourceRoot)
-  }
+  override fun transform(inputEntity: ResourcesItem): List<JavaResourceRoot> =
+    inputEntity.resources
+      .map(this::toJavaResourceRoot)
+      .distinct()
 
   private fun toJavaResourceRoot(resourcePath: String) =
     JavaResourceRoot(
-      resourcePath = URI.create(resourcePath).toPath()
+      resourcePath = RawUriToDirectoryPathTransformer.transform(resourcePath)
     )
 }

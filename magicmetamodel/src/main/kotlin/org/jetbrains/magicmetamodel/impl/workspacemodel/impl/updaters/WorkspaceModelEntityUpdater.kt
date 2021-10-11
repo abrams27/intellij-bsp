@@ -10,7 +10,7 @@ internal abstract class WorkspaceModelEntity
 
 internal data class WorkspaceModelDetails(
   val workspaceModel: WorkspaceModel,
-  val virtualFileManager: VirtualFileUrlManager,
+  val virtualFileUrlManager: VirtualFileUrlManager,
   val projectConfigSource: EntitySource,
 )
 

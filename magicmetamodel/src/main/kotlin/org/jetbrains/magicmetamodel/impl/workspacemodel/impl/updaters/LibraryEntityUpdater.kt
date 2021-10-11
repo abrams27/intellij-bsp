@@ -39,7 +39,7 @@ internal class LibraryEntityUpdater(
 
   private fun toLibraryRoot(entityToAdd: Library): LibraryRoot =
     LibraryRoot(
-      url = workspaceModelDetails.virtualFileManager.fromUrl(entityToAdd.jar),
+      url = workspaceModelDetails.virtualFileUrlManager.fromUrl(entityToAdd.jar),
       type = LibraryRootTypeId.SOURCES,
     )
 }

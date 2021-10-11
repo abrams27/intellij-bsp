@@ -46,7 +46,7 @@ internal class JavaResourceEntityUpdater(
     entityToAdd: JavaResourceRoot,
   ): SourceRootEntity = builder.addSourceRootEntity(
     contentRoot = contentRootEntity,
-    url = entityToAdd.resourcePath.toVirtualFileUrl(workspaceModelDetails.virtualFileManager),
+    url = entityToAdd.resourcePath.toVirtualFileUrl(workspaceModelDetails.virtualFileUrlManager),
     rootType = ROOT_TYPE,
     source = workspaceModelDetails.projectConfigSource,
   )

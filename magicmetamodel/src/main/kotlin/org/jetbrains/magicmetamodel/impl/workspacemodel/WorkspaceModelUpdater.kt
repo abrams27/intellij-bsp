@@ -6,7 +6,7 @@ import ch.epfl.scala.bsp4j.DependencySourcesItem
 import ch.epfl.scala.bsp4j.ResourcesItem
 import ch.epfl.scala.bsp4j.SourcesItem
 
-internal data class ModuleDetails(
+public data class ModuleDetails(
   val target: BuildTarget,
   val allTargetsIds: List<BuildTargetIdentifier>,
   val sources: List<SourcesItem>,
@@ -17,6 +17,9 @@ internal data class ModuleDetails(
 internal interface WorkspaceModelUpdater {
 
 //  fun loadRootModule()
+
+  fun loadModules(modulesDetails: List<ModuleDetails>) =
+    modulesDetails.forEach(this::loadModule)
 
   fun loadModule(moduleDetails: ModuleDetails)
 

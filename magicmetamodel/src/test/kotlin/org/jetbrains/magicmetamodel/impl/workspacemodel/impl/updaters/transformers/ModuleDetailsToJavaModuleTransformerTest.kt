@@ -25,6 +25,7 @@ import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.ModuleDepe
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.net.URI
+import java.nio.file.Files
 import kotlin.io.path.toPath
 
 @DisplayName("ModuleDetailsToJavaModuleTransformer.transform(moduleDetails) tests")
@@ -69,9 +70,10 @@ class ModuleDetailsToJavaModuleTransformerTest {
     )
     sourcesItem.roots = listOf("file:///root/dir/")
 
+    val resourceFilePath = Files.createTempFile("resource", "File.txt")
     val resourcesItem = ResourcesItem(
       buildTargetId,
-      listOf("file:///root/dir/example/resource/File1.txt", "file:///root/dir/example/resource/File2.txt")
+      listOf(resourceFilePath.toUri().toString())
     )
 
     val dependencySourcesItem = DependencySourcesItem(
@@ -95,7 +97,6 @@ class ModuleDetailsToJavaModuleTransformerTest {
     val javaModule = ModuleDetailsToJavaModuleTransformer.transform(moduleDetails)
 
     // then
-
     val expectedModule = Module(
       name = "module1",
       type = "JAVA_MODULE",
@@ -120,10 +121,7 @@ class ModuleDetailsToJavaModuleTransformerTest {
     )
 
     val expectedJavaResourceRoot1 = JavaResourceRoot(
-      resourcePath = URI.create("file:///root/dir/example/resource/File1.txt").toPath(),
-    )
-    val expectedJavaResourceRoot2 = JavaResourceRoot(
-      resourcePath = URI.create("file:///root/dir/example/resource/File2.txt").toPath(),
+      resourcePath = resourceFilePath.parent,
     )
 
     val expectedLibrary1 = Library(
@@ -139,7 +137,7 @@ class ModuleDetailsToJavaModuleTransformerTest {
       module = expectedModule,
       baseDirContentRoot = expectedBaseDirContentRoot,
       sourceRoots = listOf(expectedJavaSourceRoot1, expectedJavaSourceRoot2),
-      resourceRoots = listOf(expectedJavaResourceRoot1, expectedJavaResourceRoot2),
+      resourceRoots = listOf(expectedJavaResourceRoot1),
       libraries = listOf(expectedLibrary1, expectedLibrary2),
     )
 
@@ -173,9 +171,14 @@ class ModuleDetailsToJavaModuleTransformerTest {
     )
     sourcesItem1.roots = listOf("file:///root/dir/")
 
+    val resourceFilePath11 = Files.createTempFile("resource", "File1.txt")
+    val resourceFilePath12 = Files.createTempFile("resource", "File2.txt")
     val resourcesItem1 = ResourcesItem(
       buildTargetId1,
-      listOf("file:///root/dir/example/resource/File1.txt", "file:///root/dir/example/resource/File2.txt")
+      listOf(
+        resourceFilePath11.toUri().toString(),
+        resourceFilePath12.toUri().toString(),
+      )
     )
 
     val dependencySourcesItem1 = DependencySourcesItem(
@@ -216,9 +219,10 @@ class ModuleDetailsToJavaModuleTransformerTest {
     )
     sourcesItem2.roots = listOf("file:///another/root/dir/")
 
+    val resourceDirPath21 = Files.createTempDirectory("resource")
     val resourcesItem2 = ResourcesItem(
       buildTargetId2,
-      listOf("file:///another/root/dir/example/resource/File1.txt")
+      listOf(resourceDirPath21.toUri().toString())
     )
 
     val dependencySourcesItem2 = DependencySourcesItem(
@@ -268,10 +272,7 @@ class ModuleDetailsToJavaModuleTransformerTest {
     )
 
     val expectedJavaResourceRoot11 = JavaResourceRoot(
-      resourcePath = URI.create("file:///root/dir/example/resource/File1.txt").toPath(),
-    )
-    val expectedJavaResourceRoot12 = JavaResourceRoot(
-      resourcePath = URI.create("file:///root/dir/example/resource/File2.txt").toPath(),
+      resourcePath = resourceFilePath11.parent,
     )
 
     val expectedLibrary11 = Library(
@@ -287,7 +288,7 @@ class ModuleDetailsToJavaModuleTransformerTest {
       module = expectedModule1,
       baseDirContentRoot = expectedBaseDirContentRoot1,
       sourceRoots = listOf(expectedJavaSourceRoot11, expectedJavaSourceRoot12),
-      resourceRoots = listOf(expectedJavaResourceRoot11, expectedJavaResourceRoot12),
+      resourceRoots = listOf(expectedJavaResourceRoot11),
       libraries = listOf(expectedLibrary11, expectedLibrary12),
     )
 
@@ -307,7 +308,7 @@ class ModuleDetailsToJavaModuleTransformerTest {
     )
 
     val expectedJavaResourceRoot21 = JavaResourceRoot(
-      resourcePath = URI.create("file:///another/root/dir/example/resource/File1.txt").toPath(),
+      resourcePath = resourceDirPath21,
     )
 
     val expectedLibrary21 = Library(

@@ -227,6 +227,7 @@ object SampleBSPProjectToImport {
   val libBDependenciesSources = DependencySourcesItem(libBId, emptyList())
 
 
+  val allTargetsIds = listOf(appId, libBId, libAid, libBBId)
   val targets = listOf(appTarget, libBBTarget, libBTarget, libATarget)
   val sources = listOf(libBBSources, libASources, appSources, libBSources)
   val resources = listOf(appResources, libBBResources)

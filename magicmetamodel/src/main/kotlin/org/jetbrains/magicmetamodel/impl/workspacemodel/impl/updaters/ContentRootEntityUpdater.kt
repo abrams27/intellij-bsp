@@ -27,7 +27,7 @@ internal class ContentRootEntityUpdater(
     moduleEntity: ModuleEntity,
     entityToAdd: ContentRoot,
   ): ContentRootEntity = builder.addContentRootEntity(
-    url = entityToAdd.url.toVirtualFileUrl(workspaceModelDetails.virtualFileManager),
+    url = entityToAdd.url.toVirtualFileUrl(workspaceModelDetails.virtualFileUrlManager),
     excludedUrls = DEFAULT_EXCLUDED_URLS,
     excludedPatterns = DEFAULT_EXCLUDED_PATTERNS,
     module = moduleEntity,
