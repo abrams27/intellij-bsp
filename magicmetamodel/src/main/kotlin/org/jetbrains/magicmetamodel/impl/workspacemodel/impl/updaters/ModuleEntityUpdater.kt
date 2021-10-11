@@ -1,7 +1,12 @@
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 
 import com.intellij.workspaceModel.storage.WorkspaceEntityStorageBuilder
-import com.intellij.workspaceModel.storage.bridgeEntities.*
+import com.intellij.workspaceModel.storage.bridgeEntities.LibraryId
+import com.intellij.workspaceModel.storage.bridgeEntities.LibraryTableId
+import com.intellij.workspaceModel.storage.bridgeEntities.ModuleDependencyItem
+import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
+import com.intellij.workspaceModel.storage.bridgeEntities.ModuleId
+import com.intellij.workspaceModel.storage.bridgeEntities.addModuleEntity
 
 internal data class ModuleDependency(
   val moduleName: String,
@@ -34,7 +39,8 @@ internal class ModuleEntityUpdater(
     entityToAdd: Module,
   ): ModuleEntity {
     val modulesDependencies = entityToAdd.modulesDependencies.map(this::toModuleDependencyItemModuleDependency)
-    val librariesDependencies = entityToAdd.librariesDependencies.map { toModuleDependencyItemLibraryDependency(it, entityToAdd.name) }
+    val librariesDependencies =
+      entityToAdd.librariesDependencies.map { toModuleDependencyItemLibraryDependency(it, entityToAdd.name) }
 
     return builder.addModuleEntity(
       name = entityToAdd.name,
@@ -52,7 +58,10 @@ internal class ModuleEntityUpdater(
       productionOnTest = true,
     )
 
-  private fun toModuleDependencyItemLibraryDependency(libraryDependency: LibraryDependency, moduleName: String): ModuleDependencyItem.Exportable.LibraryDependency =
+  private fun toModuleDependencyItemLibraryDependency(
+    libraryDependency: LibraryDependency,
+    moduleName: String
+  ): ModuleDependencyItem.Exportable.LibraryDependency =
     ModuleDependencyItem.Exportable.LibraryDependency(
       library = LibraryId(
         name = libraryDependency.libraryName,

@@ -17,7 +17,8 @@ class DependencySourcesItemToLibraryDependencyTransformerTest {
     val emptyDependencySourcesItems = listOf<DependencySourcesItem>()
 
     // when
-    val librariesDependencies = DependencySourcesItemToLibraryDependencyTransformer.transform(emptyDependencySourcesItems)
+    val librariesDependencies =
+      DependencySourcesItemToLibraryDependencyTransformer.transform(emptyDependencySourcesItems)
 
     // then
     librariesDependencies shouldBe emptyList()

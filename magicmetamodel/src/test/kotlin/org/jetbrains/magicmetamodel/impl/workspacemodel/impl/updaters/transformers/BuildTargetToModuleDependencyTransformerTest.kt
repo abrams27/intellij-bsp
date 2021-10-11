@@ -102,7 +102,7 @@ class BuildTargetToModuleDependencyTransformerTest {
       BuildTargetIdentifier("//target4"),
       BuildTargetIdentifier("//target5"),
 
-    )
+      )
 
     // when
     val buildTargetToModuleDependencyTransformer = BuildTargetToModuleDependencyTransformer(allTargets)

@@ -1,7 +1,6 @@
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transformers
 
 import org.jetbrains.magicmetamodel.extensions.allSubdirectoriesSequence
-import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.WorkspaceModelEntity
 import java.net.URI
 import java.nio.file.Path
 import kotlin.io.path.pathString

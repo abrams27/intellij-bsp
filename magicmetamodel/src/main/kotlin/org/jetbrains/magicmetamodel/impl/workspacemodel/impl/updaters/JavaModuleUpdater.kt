@@ -3,7 +3,7 @@ package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 import com.intellij.workspaceModel.storage.bridgeEntities.ModuleDependencyItem
 import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
 
-internal data class JavaModule (
+internal data class JavaModule(
   val module: Module,
   val baseDirContentRoot: ContentRoot,
   val sourceRoots: List<JavaSourceRoot>,
@@ -52,4 +52,18 @@ internal class JavaModuleWithoutSourcesUpdater(
 
     return moduleEntity
   }
+}
+
+internal class JavaModuleUpdater(
+  workspaceModelDetails: WorkspaceModelDetails,
+) : WorkspaceModelEntityWithoutParentModuleUpdater<JavaModule, ModuleEntity> {
+
+  private val javaModuleWithSourcesUpdater = JavaModuleWithSourcesUpdater(workspaceModelDetails)
+  private val javaModuleWithoutSourcesUpdater = JavaModuleWithoutSourcesUpdater(workspaceModelDetails)
+
+  override fun addEntity(entityToAdd: JavaModule): ModuleEntity =
+    when (Pair(entityToAdd.sourceRoots.size, entityToAdd.resourceRoots.size)) {
+      Pair(0, 0) -> javaModuleWithoutSourcesUpdater.addEntity(entityToAdd)
+      else -> javaModuleWithSourcesUpdater.addEntity(entityToAdd)
+    }
 }

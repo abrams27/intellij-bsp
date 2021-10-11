@@ -180,7 +180,7 @@ class BspModuleDetailsToModuleTransformerTest {
           moduleName = "//target2",
         ),
         ModuleDependency(
-          moduleName ="//target3",
+          moduleName = "//target3",
         ),
       ),
       librariesDependencies = listOf(
@@ -208,7 +208,10 @@ class BspModuleDetailsToModuleTransformerTest {
       )
     )
 
-    modules shouldContainExactlyInAnyOrder Pair(listOf(expectedModule1, expectedModule2), this::shouldBeIgnoringDependenciesOrder)
+    modules shouldContainExactlyInAnyOrder Pair(
+      listOf(expectedModule1, expectedModule2),
+      this::shouldBeIgnoringDependenciesOrder
+    )
   }
 
   // TODO
@@ -221,7 +224,7 @@ class BspModuleDetailsToModuleTransformerTest {
     this.forAll { actual -> expectedValues.forAny { assertion(actual, it) } }
   }
 
-  private fun shouldBeIgnoringDependenciesOrder (actual: Module, expected: Module) {
+  private fun shouldBeIgnoringDependenciesOrder(actual: Module, expected: Module) {
     actual.name shouldBe expected.name
     actual.type shouldBe expected.type
     actual.modulesDependencies shouldContainExactlyInAnyOrder expected.modulesDependencies

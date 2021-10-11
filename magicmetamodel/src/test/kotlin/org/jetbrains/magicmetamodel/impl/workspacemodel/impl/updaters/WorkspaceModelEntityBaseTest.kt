@@ -1,9 +1,7 @@
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 
 import com.intellij.openapi.command.WriteCommandAction
-import com.intellij.workspaceModel.storage.WorkspaceEntity
 import com.intellij.workspaceModel.storage.WorkspaceEntityStorageBuilder
-import com.intellij.workspaceModel.storage.bridgeEntities.ContentRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addModuleEntity
 import org.jetbrains.magicmetamodel.impl.workspacemodel.WorkspaceModelBaseTest
@@ -21,7 +19,8 @@ internal abstract class WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest :
   }
 }
 
-internal abstract class WorkspaceModelEntityWithParentModuleUpdaterBaseTest : WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest() {
+internal abstract class WorkspaceModelEntityWithParentModuleUpdaterBaseTest :
+  WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest() {
 
   protected lateinit var parentModuleEntity: ModuleEntity
 
