@@ -6,7 +6,6 @@ import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
 import com.intellij.workspaceModel.storage.impl.WorkspaceEntityBase
 import com.intellij.workspaceModel.storage.url.VirtualFileUrlManager
 
-
 internal abstract class WorkspaceModelEntity
 
 internal data class WorkspaceModelDetails(
