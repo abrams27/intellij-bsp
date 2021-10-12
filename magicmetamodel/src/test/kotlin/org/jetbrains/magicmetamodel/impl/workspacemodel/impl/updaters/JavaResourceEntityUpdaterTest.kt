@@ -27,7 +27,7 @@ private class JavaResourceEntityUpdaterTest : WorkspaceModelEntityWithParentModu
     val javaResourceRoot = JavaResourceRoot(resourcePath)
 
     // when
-    val javaResourceEntityUpdater = JavaResourceEntityUpdater(workspaceModelDetails)
+    val javaResourceEntityUpdater = JavaResourceEntityUpdater(workspaceModelEntityUpdaterConfig)
 
     lateinit var returnedJavaResourceRootEntity: JavaResourceRootEntity
 
@@ -65,7 +65,7 @@ private class JavaResourceEntityUpdaterTest : WorkspaceModelEntityWithParentModu
     val javaResourceRoots = listOf(javaResourceRoot1, javaResourceRoot2, javaResourceRoot3)
 
     // when
-    val javaResourceEntityUpdater = JavaResourceEntityUpdater(workspaceModelDetails)
+    val javaResourceEntityUpdater = JavaResourceEntityUpdater(workspaceModelEntityUpdaterConfig)
 
     lateinit var returnedJavaResourceRootEntries: Collection<JavaResourceRootEntity>
 

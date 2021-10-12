@@ -15,11 +15,11 @@ internal data class Library(
 ) : WorkspaceModelEntity()
 
 internal class LibraryEntityUpdater(
-  private val workspaceModelDetails: WorkspaceModelDetails,
+  private val workspaceModelEntityUpdaterConfig: WorkspaceModelEntityUpdaterConfig,
 ) : WorkspaceModelEntityWithParentModuleUpdater<Library, LibraryEntity> {
 
   override fun addEntity(entityToAdd: Library, parentModuleEntity: ModuleEntity): LibraryEntity {
-    return workspaceModelDetails.workspaceModel.updateProjectModel {
+    return workspaceModelEntityUpdaterConfig.workspaceModel.updateProjectModel {
       addLibraryEntity(it, parentModuleEntity, entityToAdd)
     }
   }
@@ -34,12 +34,12 @@ internal class LibraryEntityUpdater(
       tableId = LibraryTableId.ModuleLibraryTableId(ModuleId(parentModuleEntity.name)),
       listOf(toLibraryRoot(entityToAdd)),
       emptyList(),
-      workspaceModelDetails.projectConfigSource
+      workspaceModelEntityUpdaterConfig.projectConfigSource
     )
 
   private fun toLibraryRoot(entityToAdd: Library): LibraryRoot =
     LibraryRoot(
-      url = workspaceModelDetails.virtualFileUrlManager.fromUrl(entityToAdd.jar),
+      url = workspaceModelEntityUpdaterConfig.virtualFileUrlManager.fromUrl(entityToAdd.jar),
       type = LibraryRootTypeId.SOURCES,
     )
 }

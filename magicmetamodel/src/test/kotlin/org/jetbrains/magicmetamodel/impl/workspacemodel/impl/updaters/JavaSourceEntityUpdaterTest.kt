@@ -30,7 +30,7 @@ private class JavaSourceEntityUpdaterTest : WorkspaceModelEntityWithParentModule
     val javaSourceRoot = JavaSourceRoot(sourceDir, generated, packagePrefix)
 
     // when
-    val javaSourceEntityUpdater = JavaSourceEntityUpdater(workspaceModelDetails)
+    val javaSourceEntityUpdater = JavaSourceEntityUpdater(workspaceModelEntityUpdaterConfig)
 
     lateinit var returnedJavaSourceRootEntity: JavaSourceRootEntity
 
@@ -71,7 +71,7 @@ private class JavaSourceEntityUpdaterTest : WorkspaceModelEntityWithParentModule
     val javaSourceRoots = listOf(javaSourceRoot1, javaSourceRoot2)
 
     // when
-    val javaSourceEntityUpdater = JavaSourceEntityUpdater(workspaceModelDetails)
+    val javaSourceEntityUpdater = JavaSourceEntityUpdater(workspaceModelEntityUpdaterConfig)
 
     lateinit var returnedJavaSourceRootEntries: Collection<JavaSourceRootEntity>
 

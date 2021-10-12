@@ -23,7 +23,7 @@ private class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModul
     val contentRoot = ContentRoot(contentPath)
 
     // when
-    val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelDetails)
+    val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelEntityUpdaterConfig)
 
     lateinit var returnedContentRootEntity: ContentRootEntity
 
@@ -59,7 +59,7 @@ private class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModul
     val contentRoots = listOf(contentRoot1, contentRoot2, contentRoot3)
 
     // when
-    val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelDetails)
+    val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelEntityUpdaterConfig)
 
     lateinit var returnedContentRootEntries: Collection<ContentRootEntity>
 

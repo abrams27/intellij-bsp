@@ -13,11 +13,11 @@ internal data class ContentRoot(
 ) : WorkspaceModelEntity()
 
 internal class ContentRootEntityUpdater(
-  private val workspaceModelDetails: WorkspaceModelDetails,
+  private val workspaceModelEntityUpdaterConfig: WorkspaceModelEntityUpdaterConfig,
 ) : WorkspaceModelEntityWithParentModuleUpdater<ContentRoot, ContentRootEntity> {
 
   override fun addEntity(entityToAdd: ContentRoot, parentModuleEntity: ModuleEntity): ContentRootEntity {
-    return workspaceModelDetails.workspaceModel.updateProjectModel {
+    return workspaceModelEntityUpdaterConfig.workspaceModel.updateProjectModel {
       addContentRootEntity(it, parentModuleEntity, entityToAdd)
     }
   }
@@ -27,7 +27,7 @@ internal class ContentRootEntityUpdater(
     moduleEntity: ModuleEntity,
     entityToAdd: ContentRoot,
   ): ContentRootEntity = builder.addContentRootEntity(
-    url = entityToAdd.url.toVirtualFileUrl(workspaceModelDetails.virtualFileUrlManager),
+    url = entityToAdd.url.toVirtualFileUrl(workspaceModelEntityUpdaterConfig.virtualFileUrlManager),
     excludedUrls = DEFAULT_EXCLUDED_URLS,
     excludedPatterns = DEFAULT_EXCLUDED_PATTERNS,
     module = moduleEntity,

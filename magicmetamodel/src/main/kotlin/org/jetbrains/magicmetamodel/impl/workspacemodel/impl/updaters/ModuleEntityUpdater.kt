@@ -24,12 +24,12 @@ internal data class Module(
 ) : WorkspaceModelEntity()
 
 internal class ModuleEntityUpdater(
-  private val workspaceModelDetails: WorkspaceModelDetails,
+  private val workspaceModelEntityUpdaterConfig: WorkspaceModelEntityUpdaterConfig,
   private val defaultDependencies: List<ModuleDependencyItem> = emptyList(),
 ) : WorkspaceModelEntityWithoutParentModuleUpdater<Module, ModuleEntity> {
 
   override fun addEntity(entityToAdd: Module): ModuleEntity {
-    return workspaceModelDetails.workspaceModel.updateProjectModel {
+    return workspaceModelEntityUpdaterConfig.workspaceModel.updateProjectModel {
       addModuleEntity(it, entityToAdd)
     }
   }
@@ -45,7 +45,7 @@ internal class ModuleEntityUpdater(
     return builder.addModuleEntity(
       name = entityToAdd.name,
       dependencies = modulesDependencies + librariesDependencies + defaultDependencies,
-      source = workspaceModelDetails.projectConfigSource,
+      source = workspaceModelEntityUpdaterConfig.projectConfigSource,
       type = entityToAdd.type
     )
   }

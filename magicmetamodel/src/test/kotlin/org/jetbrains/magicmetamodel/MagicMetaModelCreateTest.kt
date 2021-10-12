@@ -1,25 +1,30 @@
 package org.jetbrains.magicmetamodel
 
-import ch.epfl.scala.bsp4j.BuildTarget
-import ch.epfl.scala.bsp4j.SourcesItem
 import io.kotest.matchers.shouldBe
 import org.jetbrains.magicmetamodel.impl.MagicMetaModelImpl
-import org.jetbrains.magicmetamodel.impl.WorkspaceModelTestMockImpl
+import org.jetbrains.magicmetamodel.impl.workspacemodel.WorkspaceModelBaseTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @DisplayName("MagicMetaModel.create(workspaceModel, targets, sources) tests")
-class MagicMetaModelCreateTest {
+private class MagicMetaModelCreateTest : WorkspaceModelBaseTest() {
 
   @Test
   fun `should return MagicMetaModelImpl`() {
     // given
-    val workspaceModel = WorkspaceModelTestMockImpl()
-    val targets = emptyList<BuildTarget>()
-    val sources = emptyList<SourcesItem>()
+    val testMagicMetaModelProjectConfig =
+      MagicMetaModelProjectConfig(workspaceModel, virtualFileUrlManager, projectBaseDirPath)
+
+    val projectDetails = ProjectDetails(
+      targetsId = emptyList(),
+      targets = emptyList(),
+      sources = emptyList(),
+      resources = emptyList(),
+      dependenciesSources = emptyList(),
+    )
 
     // when
-    val magicMetaModel = MagicMetaModel.create(workspaceModel, targets, sources)
+    val magicMetaModel = MagicMetaModel.create(testMagicMetaModelProjectConfig, projectDetails)
 
     // then
     magicMetaModel::class shouldBe MagicMetaModelImpl::class

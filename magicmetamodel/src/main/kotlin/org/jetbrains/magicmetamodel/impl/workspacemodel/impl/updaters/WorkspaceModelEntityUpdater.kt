@@ -8,7 +8,7 @@ import com.intellij.workspaceModel.storage.url.VirtualFileUrlManager
 
 internal abstract class WorkspaceModelEntity
 
-internal data class WorkspaceModelDetails(
+internal data class WorkspaceModelEntityUpdaterConfig(
   val workspaceModel: WorkspaceModel,
   val virtualFileUrlManager: VirtualFileUrlManager,
   val projectConfigSource: EntitySource,

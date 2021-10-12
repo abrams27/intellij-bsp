@@ -5,8 +5,12 @@ import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import ch.epfl.scala.bsp4j.DependencySourcesItem
 import ch.epfl.scala.bsp4j.ResourcesItem
 import ch.epfl.scala.bsp4j.SourcesItem
+import com.intellij.workspaceModel.ide.WorkspaceModel
+import com.intellij.workspaceModel.storage.url.VirtualFileUrlManager
+import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.WorkspaceModelUpdaterImpl
+import java.nio.file.Path
 
-public data class ModuleDetails(
+internal data class ModuleDetails(
   val target: BuildTarget,
   val allTargetsIds: List<BuildTargetIdentifier>,
   val sources: List<SourcesItem>,
@@ -24,6 +28,15 @@ internal interface WorkspaceModelUpdater {
   fun loadModule(moduleDetails: ModuleDetails)
 
 //  fun removeModule(module: Any)
-//
+
 //  fun clear()
+
+  companion object {
+    fun create(
+      workspaceModel: WorkspaceModel,
+      virtualFileUrlManager: VirtualFileUrlManager,
+      projectBaseDir: Path,
+    ): WorkspaceModelUpdater =
+      WorkspaceModelUpdaterImpl(workspaceModel, virtualFileUrlManager, projectBaseDir)
+  }
 }

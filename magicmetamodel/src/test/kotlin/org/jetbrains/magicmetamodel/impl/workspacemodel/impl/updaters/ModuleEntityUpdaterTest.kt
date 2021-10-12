@@ -48,7 +48,7 @@ private class ModuleEntityUpdaterTest : WorkspaceModelEntityWithoutParentModuleU
     )
 
     // when
-    val moduleEntityUpdater = ModuleEntityUpdater(workspaceModelDetails, defaultDependencies)
+    val moduleEntityUpdater = ModuleEntityUpdater(workspaceModelEntityUpdaterConfig, defaultDependencies)
 
     lateinit var returnedModuleEntity: ModuleEntity
 
@@ -150,7 +150,7 @@ private class ModuleEntityUpdaterTest : WorkspaceModelEntityWithoutParentModuleU
     val modules = listOf(module1, module2)
 
     // when
-    val moduleEntityUpdater = ModuleEntityUpdater(workspaceModelDetails, defaultDependencies)
+    val moduleEntityUpdater = ModuleEntityUpdater(workspaceModelEntityUpdaterConfig, defaultDependencies)
 
     lateinit var returnedModuleEntries: List<ModuleEntity>
 

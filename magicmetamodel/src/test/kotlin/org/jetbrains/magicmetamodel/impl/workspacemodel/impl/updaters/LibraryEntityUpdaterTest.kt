@@ -29,7 +29,7 @@ private class LibraryEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpd
     )
 
     // when
-    val libraryEntityUpdater = LibraryEntityUpdater(workspaceModelDetails)
+    val libraryEntityUpdater = LibraryEntityUpdater(workspaceModelEntityUpdaterConfig)
 
     lateinit var returnedLibraryEntity: LibraryEntity
 
@@ -78,7 +78,7 @@ private class LibraryEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpd
     val libraries = listOf(library1, library2)
 
     // when
-    val libraryEntityUpdater = LibraryEntityUpdater(workspaceModelDetails)
+    val libraryEntityUpdater = LibraryEntityUpdater(workspaceModelEntityUpdaterConfig)
 
     lateinit var returnedLibraryEntries: Collection<LibraryEntity>
 

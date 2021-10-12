@@ -8,30 +8,34 @@ import com.intellij.workspaceModel.storage.url.VirtualFileUrlManager
 import org.jetbrains.magicmetamodel.impl.workspacemodel.ModuleDetails
 import org.jetbrains.magicmetamodel.impl.workspacemodel.WorkspaceModelUpdater
 import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.JavaModuleUpdater
-import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.JavaModuleWithSourcesUpdater
-import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.WorkspaceModelDetails
+import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.WorkspaceModelEntityUpdaterConfig
 import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transformers.ModuleDetailsToJavaModuleTransformer
 import java.nio.file.Path
 
-public class WorkspaceModelUpdaterImpl(
-  workspaceModel: WorkspaceModel,
-  virtualFileUrlManager: VirtualFileUrlManager,
+internal class WorkspaceModelUpdaterImpl(
+  val workspaceModel: WorkspaceModel,
+  val virtualFileUrlManager: VirtualFileUrlManager,
   projectBaseDir: Path,
 ) : WorkspaceModelUpdater {
 
-  private val workspaceModelDetails = WorkspaceModelDetails(
+  private val workspaceModelEntityUpdaterConfig = WorkspaceModelEntityUpdaterConfig(
     workspaceModel = workspaceModel,
     virtualFileUrlManager = virtualFileUrlManager,
-    projectConfigSource = calculateProjectConfigSource(virtualFileUrlManager, projectBaseDir)
+    projectConfigSource = calculateProjectConfigSource(
+      virtualFileUrlManager,
+      projectBaseDir
+    )
   )
 
-  public override fun loadModule(moduleDetails: ModuleDetails) {
+  override fun loadModule(moduleDetails: ModuleDetails) {
+    // TODO for now we are supporting only java modules
     val javaModule = ModuleDetailsToJavaModuleTransformer.transform(moduleDetails)
 
-    val javaModuleUpdater = JavaModuleUpdater(workspaceModelDetails)
+    val javaModuleUpdater = JavaModuleUpdater(workspaceModelEntityUpdaterConfig)
     javaModuleUpdater.addEntity(javaModule)
   }
 
+  // TODO move?
   private fun calculateProjectConfigSource(
     virtualFileUrlManager: VirtualFileUrlManager,
     projectBaseDir: Path

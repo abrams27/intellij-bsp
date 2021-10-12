@@ -9,13 +9,13 @@ import org.junit.jupiter.api.BeforeEach
 
 internal abstract class WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest : WorkspaceModelBaseTest() {
 
-  protected lateinit var workspaceModelDetails: WorkspaceModelDetails
+  protected lateinit var workspaceModelEntityUpdaterConfig: WorkspaceModelEntityUpdaterConfig
 
   @BeforeEach
   override fun beforeEach() {
     super.beforeEach()
 
-    workspaceModelDetails = WorkspaceModelDetails(workspaceModel, virtualFileUrlManager, projectConfigSource)
+    workspaceModelEntityUpdaterConfig = WorkspaceModelEntityUpdaterConfig(workspaceModel, virtualFileUrlManager, projectConfigSource)
   }
 }
 

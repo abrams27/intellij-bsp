@@ -12,20 +12,20 @@ internal data class JavaModule(
 ) : WorkspaceModelEntity()
 
 internal class JavaModuleWithSourcesUpdater(
-  private val workspaceModelDetails: WorkspaceModelDetails,
+  private val workspaceModelEntityUpdaterConfig: WorkspaceModelEntityUpdaterConfig,
 ) : WorkspaceModelEntityWithoutParentModuleUpdater<JavaModule, ModuleEntity> {
 
   override fun addEntity(entityToAdd: JavaModule): ModuleEntity {
-    val moduleEntityUpdater = ModuleEntityUpdater(workspaceModelDetails, defaultDependencies)
+    val moduleEntityUpdater = ModuleEntityUpdater(workspaceModelEntityUpdaterConfig, defaultDependencies)
     val moduleEntity = moduleEntityUpdater.addEntity(entityToAdd.module)
 
-    val libraryEntityUpdater = LibraryEntityUpdater(workspaceModelDetails)
+    val libraryEntityUpdater = LibraryEntityUpdater(workspaceModelEntityUpdaterConfig)
     libraryEntityUpdater.addEntries(entityToAdd.libraries, moduleEntity)
 
-    val javaSourceEntityUpdater = JavaSourceEntityUpdater(workspaceModelDetails)
+    val javaSourceEntityUpdater = JavaSourceEntityUpdater(workspaceModelEntityUpdaterConfig)
     javaSourceEntityUpdater.addEntries(entityToAdd.sourceRoots, moduleEntity)
 
-    val javaResourceEntityUpdater = JavaResourceEntityUpdater(workspaceModelDetails)
+    val javaResourceEntityUpdater = JavaResourceEntityUpdater(workspaceModelEntityUpdaterConfig)
     javaResourceEntityUpdater.addEntries(entityToAdd.resourceRoots, moduleEntity)
 
     return moduleEntity
@@ -40,14 +40,14 @@ internal class JavaModuleWithSourcesUpdater(
 }
 
 internal class JavaModuleWithoutSourcesUpdater(
-  private val workspaceModelDetails: WorkspaceModelDetails,
+  private val workspaceModelEntityUpdaterConfig: WorkspaceModelEntityUpdaterConfig,
 ) : WorkspaceModelEntityWithoutParentModuleUpdater<JavaModule, ModuleEntity> {
 
   override fun addEntity(entityToAdd: JavaModule): ModuleEntity {
-    val moduleEntityUpdater = ModuleEntityUpdater(workspaceModelDetails)
+    val moduleEntityUpdater = ModuleEntityUpdater(workspaceModelEntityUpdaterConfig)
     val moduleEntity = moduleEntityUpdater.addEntity(entityToAdd.module)
 
-    val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelDetails)
+    val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelEntityUpdaterConfig)
     contentRootEntityUpdater.addEntity(entityToAdd.baseDirContentRoot, moduleEntity)
 
     return moduleEntity
@@ -55,11 +55,11 @@ internal class JavaModuleWithoutSourcesUpdater(
 }
 
 internal class JavaModuleUpdater(
-  workspaceModelDetails: WorkspaceModelDetails,
+  workspaceModelEntityUpdaterConfig: WorkspaceModelEntityUpdaterConfig,
 ) : WorkspaceModelEntityWithoutParentModuleUpdater<JavaModule, ModuleEntity> {
 
-  private val javaModuleWithSourcesUpdater = JavaModuleWithSourcesUpdater(workspaceModelDetails)
-  private val javaModuleWithoutSourcesUpdater = JavaModuleWithoutSourcesUpdater(workspaceModelDetails)
+  private val javaModuleWithSourcesUpdater = JavaModuleWithSourcesUpdater(workspaceModelEntityUpdaterConfig)
+  private val javaModuleWithoutSourcesUpdater = JavaModuleWithoutSourcesUpdater(workspaceModelEntityUpdaterConfig)
 
   override fun addEntity(entityToAdd: JavaModule): ModuleEntity =
     when (Pair(entityToAdd.sourceRoots.size, entityToAdd.resourceRoots.size)) {

@@ -1,12 +1,5 @@
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl
 
-import ch.epfl.scala.bsp4j.*
-import com.intellij.openapi.command.WriteCommandAction
-import com.intellij.workspaceModel.storage.bridgeEntities.ModuleDependencyItem
-import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
-import com.intellij.workspaceModel.storage.bridgeEntities.ModuleId
-import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
-import org.jetbrains.magicmetamodel.impl.workspacemodel.ModuleDetails
 import org.jetbrains.magicmetamodel.impl.workspacemodel.WorkspaceModelBaseTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -14,8 +7,8 @@ import org.junit.jupiter.api.Test
 @DisplayName("workspaceModelUpdaterImpl.loadModule(moduleDetails) tests")
 private class WorkspaceModelUpdaterImplLoadModuleTest : WorkspaceModelBaseTest() {
 
-//  @Test
-//  fun `should add java module`() {
+  @Test
+  fun `should add java module`() {
 //    // given
 //    val moduleName = "test-module"
 //    val moduleTargetId = BuildTargetIdentifier("//test-module")
@@ -97,5 +90,5 @@ private class WorkspaceModelUpdaterImplLoadModuleTest : WorkspaceModelBaseTest()
 //    val workspaceModelModules = workspaceModel.entityStorage.current.entities(ModuleEntity::class.java).toList()
 //
 //    workspaceModelModules shouldContainExactlyInAnyOrder listOf(expectedModuleEntity)
-//  }
+  }
 }

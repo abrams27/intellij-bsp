@@ -652,7 +652,7 @@ private class JavaModuleUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpd
     .map { it.primaryConstructor!! }
     .forEach {
       beforeEach()
-      test(it.call(workspaceModelDetails))
+      test(it.call(workspaceModelEntityUpdaterConfig))
     }
 
   private fun validateJavaSourceRootEntity(
