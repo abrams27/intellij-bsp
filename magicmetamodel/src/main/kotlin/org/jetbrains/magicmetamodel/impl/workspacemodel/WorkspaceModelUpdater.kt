@@ -18,6 +18,10 @@ internal data class ModuleDetails(
   val dependenciesSources: List<DependencySourcesItem>,
 )
 
+internal data class ModuleName(
+  val name: String,
+)
+
 internal interface WorkspaceModelUpdater {
 
 //  fun loadRootModule()
@@ -27,7 +31,7 @@ internal interface WorkspaceModelUpdater {
 
   fun loadModule(moduleDetails: ModuleDetails)
 
-//  fun removeModule(module: Any)
+  fun removeModule(module: ModuleName)
 
 //  fun clear()
 
