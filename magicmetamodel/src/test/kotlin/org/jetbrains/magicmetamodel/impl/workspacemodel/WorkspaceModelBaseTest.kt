@@ -16,6 +16,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import org.junit.jupiter.api.BeforeEach
 import java.nio.file.Path
 
+// TODO refactor
 internal abstract class WorkspaceModelBaseTest {
 
   protected lateinit var project: Project
