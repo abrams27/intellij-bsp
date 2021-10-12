@@ -619,6 +619,16 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         BuildTargetCapabilities(),
       )
 
+      val target4Id = BuildTargetIdentifier("//target4")
+      val target4 = BuildTarget(
+        target4Id,
+        emptyList(),
+        listOf("kotlin"),
+        listOf(target3Id),
+        BuildTargetCapabilities(),
+      )
+      target4.baseDirectory = Files.createTempDirectory("temp").toUri().toString()
+
       val source1InTarget1 = SourceItem(
         "file:///file1/in/target1",
         SourceItemKind.FILE,
@@ -659,10 +669,15 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // TODO
       target3Sources.roots = emptyList()
 
+      val target4Sources = SourcesItem(
+        target4Id,
+        emptyList(),
+      )
+
       val projectDetails = ProjectDetails(
-        targetsId = listOf(target1Id, target2Id, target3Id),
-        targets = listOf(target1, target2, target3),
-        sources = listOf(target1Sources, target2Sources, target3Sources),
+        targetsId = listOf(target1Id, target2Id, target3Id, target4Id),
+        targets = listOf(target1, target2, target3, target4),
+        sources = listOf(target1Sources, target2Sources, target3Sources, target4Sources),
         resources = emptyList(),
         dependenciesSources = emptyList(),
       )
@@ -677,7 +692,7 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       val notLoadedTargets = magicMetaModel.getAllNotLoadedTargets()
 
       // then
-      loadedTargets shouldContainExactlyInAnyOrder listOf(target1, target2, target3)
+      loadedTargets shouldContainExactlyInAnyOrder listOf(target1, target2, target3, target4)
       notLoadedTargets shouldBe emptyList()
     }
 
