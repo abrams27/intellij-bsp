@@ -16,13 +16,13 @@ private data class ExpectedLibraryEntityDetails(
 )
 
 @DisplayName("LibraryEntityUpdater.addEntity(entityToAdd, parentModuleEntity) tests")
-private class LibraryEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
+internal class LibraryEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
 
   @Test
   fun `should add one library to the workspace model`() {
     // given
     val libraryUri = "file:///dependency/test/1.0.0/test-1.0.0-sources.jar"
-    val libraryJar = "jar:${libraryUri}!/"
+    val libraryJar = "jar:$libraryUri!/"
     val library = Library(
       displayName = libraryUri,
       jar = libraryJar,
@@ -62,14 +62,14 @@ private class LibraryEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpd
   fun `should add multiple libraries to the workspace model`() {
     // given
     val libraryUri1 = "file:///dependency/test1/1.0.0/test1-1.0.0-sources.jar"
-    val libraryJar1 = "jar:${libraryUri1}!/"
+    val libraryJar1 = "jar:$libraryUri1!/"
     val library1 = Library(
       displayName = libraryUri1,
       jar = libraryJar1,
     )
 
     val libraryUri2 = "file:///dependency/test2/1.0.0/test2-1.0.0-sources.jar"
-    val libraryJar2 = "jar:${libraryUri2}!/"
+    val libraryJar2 = "jar:$libraryUri2!/"
     val library2 = Library(
       displayName = libraryUri2,
       jar = libraryJar2,

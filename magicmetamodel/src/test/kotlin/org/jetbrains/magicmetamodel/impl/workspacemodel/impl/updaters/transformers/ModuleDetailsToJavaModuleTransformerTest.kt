@@ -1,3 +1,4 @@
+@file:Suppress("LongMethod")
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transformers
 
 import ch.epfl.scala.bsp4j.BuildTarget
@@ -329,7 +330,9 @@ class ModuleDetailsToJavaModuleTransformerTest {
     )
   }
 
-  private infix fun <T, C : Collection<T>, E> C.shouldContainExactlyInAnyOrder(expectedWithAssertion: Pair<Collection<E>, (T, E) -> Unit>) {
+  private infix fun <T, C : Collection<T>, E> C.shouldContainExactlyInAnyOrder(
+    expectedWithAssertion: Pair<Collection<E>, (T, E) -> Unit>
+  ) {
     val expectedValues = expectedWithAssertion.first
     val assertion = expectedWithAssertion.second
 

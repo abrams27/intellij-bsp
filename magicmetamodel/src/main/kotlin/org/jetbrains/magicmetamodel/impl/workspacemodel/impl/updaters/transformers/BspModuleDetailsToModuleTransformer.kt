@@ -25,7 +25,8 @@ internal object BspModuleDetailsToModuleTransformer :
       name = inputEntity.target.id.uri,
       type = inputEntity.type,
       modulesDependencies = buildTargetToModuleDependencyTransformer.transform(inputEntity.target),
-      librariesDependencies = DependencySourcesItemToLibraryDependencyTransformer.transform(inputEntity.dependencySources),
+      librariesDependencies = DependencySourcesItemToLibraryDependencyTransformer
+        .transform(inputEntity.dependencySources),
     )
   }
 }

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 @DisplayName("MagicMetaModel tests")
-private class MagicMetaModelTest : WorkspaceModelBaseTest() {
+class MagicMetaModelTest : WorkspaceModelBaseTest() {
 
   @Nested
   @DisplayName("MagicMetaModel.create(magicMetaModelProjectConfig, projectDetails) tests")

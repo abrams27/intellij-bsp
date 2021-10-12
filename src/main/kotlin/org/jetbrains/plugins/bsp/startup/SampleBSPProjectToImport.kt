@@ -1,3 +1,4 @@
+@file:Suppress("MaxLineLength", "MayBeConst")
 package org.jetbrains.plugins.bsp.startup
 
 import ch.epfl.scala.bsp4j.BuildTarget
@@ -38,7 +39,6 @@ object SampleBSPProjectToImport {
     appTarget.data = appData
   }
 
-
   val libBId = BuildTargetIdentifier("//libB:libB")
   val libBDisplayName = "//libB:libB"
   val libBBaseDirectory = "file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/"
@@ -55,7 +55,6 @@ object SampleBSPProjectToImport {
     libBTarget.displayName = libBDisplayName
     libBTarget.baseDirectory = libBBaseDirectory
   }
-
 
   val libAid = BuildTargetIdentifier("//libA/src/java/bsp/libA:libA")
   val libADisplayName = "//libA/src/java/bsp/libA:libA"
@@ -83,7 +82,6 @@ object SampleBSPProjectToImport {
     libATarget.data = libAData
   }
 
-
   val libBBId = BuildTargetIdentifier("//libB/src/java/bsp/libB:libB")
   val libBBDisplayName = "//libB/src/java/bsp/libB:libB"
   val libBBBaseDirectory = "file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/src/java/bsp/libB/"
@@ -108,7 +106,6 @@ object SampleBSPProjectToImport {
     libBBTarget.data = libBBData
   }
 
-
   val appSourcesList = listOf(
     SourceItem(
       "file:///Users/marcin.abramowicz/Projects/bsp-sample/app/src/java/bsp/app/App.java",
@@ -124,7 +121,6 @@ object SampleBSPProjectToImport {
     appSources.roots = appRoots
   }
 
-
   val libBSourcesList = listOf<SourceItem>()
   val libBRoots = listOf("file:///Users/marcin.abramowicz/Projects/bsp-sample/")
 
@@ -133,7 +129,6 @@ object SampleBSPProjectToImport {
   init {
     libBSources.roots = libBRoots
   }
-
 
   val libASourcesList = listOf(
     SourceItem(
@@ -149,7 +144,6 @@ object SampleBSPProjectToImport {
   init {
     libASources.roots = libARoots
   }
-
 
   val libBBSourcesList = listOf(
     SourceItem(
@@ -169,7 +163,6 @@ object SampleBSPProjectToImport {
   init {
     libBBSources.roots = libBBRoots
   }
-
 
   val libBBResources = ResourcesItem(
     libBBId,
@@ -226,10 +219,5 @@ object SampleBSPProjectToImport {
 
   val libBDependenciesSources = DependencySourcesItem(libBId, emptyList())
 
-
   val allTargetsIds = listOf(appId, libBId, libAid, libBBId)
-  val targets = listOf(appTarget, libBBTarget, libBTarget, libATarget)
-  val sources = listOf(libBBSources, libASources, appSources, libBSources)
-  val resources = listOf(appResources, libBBResources)
-  val dependencies = listOf(libBDependenciesSources, appDependenciesSources, libBBDependenciesSources, libADependenciesSources)
 }

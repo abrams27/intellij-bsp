@@ -50,7 +50,9 @@ internal class ModuleEntityUpdater(
     )
   }
 
-  private fun toModuleDependencyItemModuleDependency(moduleDependency: ModuleDependency): ModuleDependencyItem.Exportable.ModuleDependency =
+  private fun toModuleDependencyItemModuleDependency(
+    moduleDependency: ModuleDependency
+  ): ModuleDependencyItem.Exportable.ModuleDependency =
     ModuleDependencyItem.Exportable.ModuleDependency(
       module = ModuleId(moduleDependency.moduleName),
       exported = true,

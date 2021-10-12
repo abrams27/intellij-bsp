@@ -18,7 +18,7 @@ private data class ExpectedJavaResourceRootEntityDetails(
 )
 
 @DisplayName("javaResourceEntityUpdater.addEntity(entityToAdd, parentModuleEntity) tests")
-private class JavaResourceEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
+internal class JavaResourceEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
 
   @Test
   fun `should add one java resource root to the workspace model`() {
@@ -100,7 +100,8 @@ private class JavaResourceEntityUpdaterTest : WorkspaceModelEntityWithParentModu
         expectedJavaResourceRootEntityDetails1,
         expectedJavaResourceRootEntityDetails2,
         expectedJavaResourceRootEntityDetails3
-      ), this::validateJavaResourceRootEntity
+      ),
+      this::validateJavaResourceRootEntity
     )
 
     workspaceModelLoadedEntries(JavaResourceRootEntity::class.java) shouldContainExactlyInAnyOrder Pair(
@@ -108,7 +109,8 @@ private class JavaResourceEntityUpdaterTest : WorkspaceModelEntityWithParentModu
         expectedJavaResourceRootEntityDetails1,
         expectedJavaResourceRootEntityDetails2,
         expectedJavaResourceRootEntityDetails3
-      ), this::validateJavaResourceRootEntity
+      ),
+      this::validateJavaResourceRootEntity
     )
   }
 

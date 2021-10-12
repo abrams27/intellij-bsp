@@ -1,4 +1,4 @@
-package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transformers;
+package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.transformers
 
 import ch.epfl.scala.bsp4j.ResourcesItem
 import org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters.JavaResourceRoot

@@ -101,8 +101,7 @@ class BuildTargetToModuleDependencyTransformerTest {
       BuildTargetIdentifier("//target3"),
       BuildTargetIdentifier("//target4"),
       BuildTargetIdentifier("//target5"),
-
-      )
+    )
 
     // when
     val buildTargetToModuleDependencyTransformer = BuildTargetToModuleDependencyTransformer(allTargets)
@@ -155,8 +154,7 @@ class BuildTargetToModuleDependencyTransformerTest {
       BuildTargetIdentifier("//target3"),
       BuildTargetIdentifier("//target4"),
       BuildTargetIdentifier("//target5"),
-
-      )
+    )
 
     val buildTargets = listOf(buildTarget1, buildTarget2)
 

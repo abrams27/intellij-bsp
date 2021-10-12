@@ -10,10 +10,11 @@ internal object DependencySourcesItemToLibraryTransformer :
     return inputEntity.sources.map(this::toLibrary)
   }
 
+  @Suppress("ForbiddenComment")
+  // TODO: name and version should be extracted, maybe BSP prefix as well?
   private fun toLibrary(dependencyUri: String): Library =
     Library(
-      // TODO: name and version should be extracted, maybe BSP prefix as well?
       displayName = dependencyUri,
-      jar = "jar:${dependencyUri}!/"
+      jar = "jar:$dependencyUri!/"
     )
 }

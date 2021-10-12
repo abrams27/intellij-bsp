@@ -1,3 +1,4 @@
+@file:Suppress("LongMethod")
 package org.jetbrains.magicmetamodel.impl
 
 import ch.epfl.scala.bsp4j.BuildTarget
@@ -15,7 +16,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @DisplayName("TargetIdToModuleDetailsDelegate(projectDetails) tests")
-private class TargetIdToModuleDetailsDelegateTest {
+class TargetIdToModuleDetailsDelegateTest {
 
   @Test
   fun `should return empty map for empty project details`() {

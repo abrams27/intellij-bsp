@@ -17,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach
 import java.nio.file.Path
 
 // TODO refactor
-internal abstract class WorkspaceModelBaseTest {
+open class WorkspaceModelBaseTest {
 
   protected lateinit var project: Project
   protected lateinit var workspaceModel: WorkspaceModel
@@ -56,7 +56,9 @@ internal abstract class WorkspaceModelBaseTest {
     return JpsFileEntitySource.FileInDirectory(virtualProjectModulesDirPath, projectLocation)
   }
 
-  protected infix fun <T, C : Collection<T>, E> C.shouldContainExactlyInAnyOrder(expectedWithAssertion: Pair<Collection<E>, (T, E) -> Unit>) {
+  protected infix fun <T, C : Collection<T>, E> C.shouldContainExactlyInAnyOrder(
+    expectedWithAssertion: Pair<Collection<E>, (T, E) -> Unit>
+  ) {
     val expectedValues = expectedWithAssertion.first
     val assertion = expectedWithAssertion.second
 

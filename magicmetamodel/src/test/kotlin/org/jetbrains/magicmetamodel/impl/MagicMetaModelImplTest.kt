@@ -31,7 +31,7 @@ import java.nio.file.Files
 // TODO add checking workspacemodel
 // TODO extract 'given' to separate objects
 @DisplayName("MagicMetaModelImpl tests")
-private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
+class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
 
   private lateinit var testMagicMetaModelProjectConfig: MagicMetaModelProjectConfig
 

@@ -1,3 +1,4 @@
+@file:Suppress("MaxLineLength")
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl
 
 import org.jetbrains.magicmetamodel.impl.workspacemodel.WorkspaceModelBaseTest
@@ -5,7 +6,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 @DisplayName("workspaceModelUpdaterImpl.loadModule(moduleDetails) tests")
-private class WorkspaceModelUpdaterImplLoadModuleTest : WorkspaceModelBaseTest() {
+class WorkspaceModelUpdaterImplLoadModuleTest : WorkspaceModelBaseTest() {
 
   @Test
   fun `should add java module`() {

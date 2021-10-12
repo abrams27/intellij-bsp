@@ -18,7 +18,7 @@ private data class ExpectedJavaSourceRootEntityDetails(
 )
 
 @DisplayName("javaSourceEntityUpdater.addEntity(entityToAdd, parentModuleEntity) tests")
-private class JavaSourceEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
+internal class JavaSourceEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
 
   @Test
   fun `should add one java source root to the workspace model`() {

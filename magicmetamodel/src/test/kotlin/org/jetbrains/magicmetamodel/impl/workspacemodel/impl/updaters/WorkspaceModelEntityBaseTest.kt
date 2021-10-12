@@ -15,7 +15,8 @@ internal abstract class WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest :
   override fun beforeEach() {
     super.beforeEach()
 
-    workspaceModelEntityUpdaterConfig = WorkspaceModelEntityUpdaterConfig(workspaceModel, virtualFileUrlManager, projectConfigSource)
+    workspaceModelEntityUpdaterConfig =
+      WorkspaceModelEntityUpdaterConfig(workspaceModel, virtualFileUrlManager, projectConfigSource)
   }
 }
 

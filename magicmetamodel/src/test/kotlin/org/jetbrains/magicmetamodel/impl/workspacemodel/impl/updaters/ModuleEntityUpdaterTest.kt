@@ -1,3 +1,4 @@
+@file:Suppress("LongMethod")
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 
 import com.intellij.openapi.command.WriteCommandAction
@@ -16,7 +17,7 @@ private data class ExpectedModuleEntityDetails(
 )
 
 @DisplayName("ModuleEntityUpdater.addEntity(entityToAdd, parentModuleEntity) tests")
-private class ModuleEntityUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest() {
+internal class ModuleEntityUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest() {
 
   @Test
   fun `should add one module to the workspace model`() {

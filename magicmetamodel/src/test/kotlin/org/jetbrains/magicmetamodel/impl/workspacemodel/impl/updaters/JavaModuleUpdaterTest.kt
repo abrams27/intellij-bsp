@@ -1,3 +1,4 @@
+@file:Suppress("LongMethod")
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 
 import com.intellij.openapi.command.WriteCommandAction
@@ -21,8 +22,7 @@ import kotlin.io.path.toPath
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
-
-private class JavaModuleUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest() {
+internal class JavaModuleUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest() {
 
   private data class ExpectedJavaSourceRootEntityDetails(
     val contentRootEntity: ContentRootEntity,
@@ -174,7 +174,6 @@ private class JavaModuleUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpd
           listOf(expectedModuleEntity), this@JavaModuleUpdaterTest::validateModuleEntity
         )
 
-
         val virtualSourceDir1 = sourceDir1.toVirtualFileUrl(virtualFileUrlManager)
         val expectedJavaSourceRootEntityDetails1 = ExpectedJavaSourceRootEntityDetails(
           contentRootEntity = ContentRootEntity(virtualSourceDir1, emptyList(), emptyList()),
@@ -194,7 +193,6 @@ private class JavaModuleUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpd
           listOf(expectedJavaSourceRootEntityDetails1, expectedJavaSourceRootEntityDetails2),
           this@JavaModuleUpdaterTest::validateJavaSourceRootEntity
         )
-
 
         val virtualResourceUrl1 = resourcePath1.toVirtualFileUrl(virtualFileUrlManager)
         val expectedJavaResourceRootEntityDetails1 = ExpectedJavaResourceRootEntityDetails(
@@ -247,7 +245,6 @@ private class JavaModuleUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpd
           url = URI.create("file:///root/dir/example/").toPath()
         )
 
-
         val sourceDir11 = URI.create("file:///root/dir/example/package/one").toPath()
         val sourcePackagePrefix11 = "example.package.one"
         val sourceDir12 = URI.create("file:///root/dir/example/package/two").toPath()
@@ -294,7 +291,6 @@ private class JavaModuleUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpd
           libraries = libraries1,
           baseDirContentRoot = baseDirContentRoot1,
         )
-
 
         val module2 = Module(
           name = "module2",
@@ -425,7 +421,6 @@ private class JavaModuleUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpd
           listOf(expectedModuleEntity1, expectedModuleEntity2), this@JavaModuleUpdaterTest::validateModuleEntity
         )
 
-
         val virtualSourceDir11 = sourceDir11.toVirtualFileUrl(virtualFileUrlManager)
         val expectedJavaSourceRootEntityDetails11 = ExpectedJavaSourceRootEntityDetails(
           contentRootEntity = ContentRootEntity(virtualSourceDir11, emptyList(), emptyList()),
@@ -456,7 +451,6 @@ private class JavaModuleUpdaterTest : WorkspaceModelEntityWithoutParentModuleUpd
           ),
           this@JavaModuleUpdaterTest::validateJavaSourceRootEntity
         )
-
 
         val virtualResourceUrl11 = resourcePath11.toVirtualFileUrl(virtualFileUrlManager)
         val expectedJavaResourceRootEntityDetails11 = ExpectedJavaResourceRootEntityDetails(

@@ -39,7 +39,7 @@ class DependencySourcesItemToLibraryTransformerTest {
     // then
     val expectedLibrary = Library(
       displayName = dependencySource,
-      jar = "jar:${dependencySource}!/"
+      jar = "jar:$dependencySource!/"
     )
 
     libraries shouldContainExactlyInAnyOrder listOf(expectedLibrary)
@@ -63,15 +63,15 @@ class DependencySourcesItemToLibraryTransformerTest {
     // then
     val expectedLibrary1 = Library(
       displayName = dependencySource1,
-      jar = "jar:${dependencySource1}!/"
+      jar = "jar:$dependencySource1!/"
     )
     val expectedLibrary2 = Library(
       displayName = dependencySource2,
-      jar = "jar:${dependencySource2}!/"
+      jar = "jar:$dependencySource2!/"
     )
     val expectedLibrary3 = Library(
       displayName = dependencySource3,
-      jar = "jar:${dependencySource3}!/"
+      jar = "jar:$dependencySource3!/"
     )
 
     libraries shouldContainExactlyInAnyOrder listOf(expectedLibrary1, expectedLibrary2, expectedLibrary3)
@@ -101,15 +101,15 @@ class DependencySourcesItemToLibraryTransformerTest {
     // then
     val expectedLibrary1 = Library(
       displayName = dependencySource1,
-      jar = "jar:${dependencySource1}!/"
+      jar = "jar:$dependencySource1!/"
     )
     val expectedLibrary2 = Library(
       displayName = dependencySource2,
-      jar = "jar:${dependencySource2}!/"
+      jar = "jar:$dependencySource2!/"
     )
     val expectedLibrary3 = Library(
       displayName = dependencySource3,
-      jar = "jar:${dependencySource3}!/"
+      jar = "jar:$dependencySource3!/"
     )
 
     libraries shouldContainExactlyInAnyOrder listOf(expectedLibrary1, expectedLibrary2, expectedLibrary3)
