@@ -134,6 +134,9 @@ subprojects {
 
   tasks.test {
     useJUnitPlatform()
+    testLogging {
+      events("PASSED", "SKIPPED", "FAILED")
+    }
   }
 
   // Set the JVM compatibility versions
