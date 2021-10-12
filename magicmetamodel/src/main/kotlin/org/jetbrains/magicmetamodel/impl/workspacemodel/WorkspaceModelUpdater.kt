@@ -31,6 +31,9 @@ internal interface WorkspaceModelUpdater {
 
   fun loadModule(moduleDetails: ModuleDetails)
 
+  fun removeModules(modules: List<ModuleName>) =
+    modules.forEach(this::removeModule)
+
   fun removeModule(module: ModuleName)
 
 //  fun clear()

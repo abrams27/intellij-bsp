@@ -11,6 +11,7 @@ import org.jetbrains.magicmetamodel.MagicMetaModel
 import org.jetbrains.magicmetamodel.MagicMetaModelProjectConfig
 import org.jetbrains.magicmetamodel.ProjectDetails
 import org.jetbrains.magicmetamodel.impl.workspacemodel.ModuleDetails
+import org.jetbrains.magicmetamodel.impl.workspacemodel.ModuleName
 import org.jetbrains.magicmetamodel.impl.workspacemodel.WorkspaceModelUpdater
 
 /**
@@ -71,8 +72,6 @@ internal class MagicMetaModelImpl internal constructor(
     throwIllegalArgumentExceptionIfTargetIsNotIncludedInTheModel(targetId)
 
     if (loadedTargetsStorage.isTargetNotLoaded(targetId)) {
-      @Suppress("ForbiddenComment")
-      // TODO: add mapping to the workspace model
       loadTargetAndRemoveOverlappingLoadedTargets(targetId)
     }
   }
@@ -88,8 +87,16 @@ internal class MagicMetaModelImpl internal constructor(
 
   private fun loadTargetAndRemoveOverlappingLoadedTargets(targetIdToLoad: BuildTargetIdentifier) {
     val targetsToRemove = overlappingTargetsGraph[targetIdToLoad] ?: emptySet()
+    // TODO test it!
+    val loadedTargetsToRemove = targetsToRemove.filter(loadedTargetsStorage::isTargetLoaded)
 
-    loadedTargetsStorage.removeTargets(targetsToRemove)
+    val modulesToRemove = loadedTargetsToRemove.map { ModuleName(it.uri) }
+    workspaceModelUpdater.removeModules(modulesToRemove)
+    loadedTargetsStorage.removeTargets(loadedTargetsToRemove)
+
+    // TODO null!!!
+    val moduleToAdd = targetIdToModuleDetails[targetIdToLoad]!!
+    workspaceModelUpdater.loadModule(moduleToAdd)
     loadedTargetsStorage.addTarget(targetIdToLoad)
   }
 
