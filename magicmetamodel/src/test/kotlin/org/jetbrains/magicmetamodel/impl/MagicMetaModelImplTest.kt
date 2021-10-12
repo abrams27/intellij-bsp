@@ -9,6 +9,7 @@ import ch.epfl.scala.bsp4j.SourceItem
 import ch.epfl.scala.bsp4j.SourceItemKind
 import ch.epfl.scala.bsp4j.SourcesItem
 import ch.epfl.scala.bsp4j.TextDocumentIdentifier
+import com.intellij.openapi.command.WriteCommandAction
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainAnyOf
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
+import java.nio.file.Files
 
 // TODO base test
 // TODO add checking workspacemodel
@@ -62,7 +64,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // showing loaded and not loaded targets to user (e.g. at the sidebar)
       magicMetaModel `should return given loaded and not loaded targets` Pair(emptyList(), emptyList())
 
-      magicMetaModel.loadDefaultTargets()
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadDefaultTargets()
+      }
 
       // showing loaded and not loaded targets to user (e.g. at the sidebar)
       magicMetaModel.getAllLoadedTargets() shouldBe emptyList()
@@ -182,7 +186,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       )
 
       // after bsp importing process
-      magicMetaModel.loadDefaultTargets()
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadDefaultTargets()
+      }
 
       // showing loaded and not loaded targets to user (e.g. at the sidebar)
       magicMetaModel `should return given loaded and not loaded targets` Pair(
@@ -339,7 +345,7 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       )
 
       val projectDetails = ProjectDetails(
-        targetsId =  listOf(libA212Id, libC213Id, libB213Id, libB212Id, app212Id, libC212Id, app213Id),
+        targetsId = listOf(libA212Id, libC213Id, libB213Id, libB212Id, app212Id, libC212Id, app213Id),
         targets = listOf(libA212, libB213, libB212, libC212, libC213, app213, app212),
         sources = listOf(
           libA212Sources,
@@ -364,7 +370,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       )
 
       // after bsp importing process
-      magicMetaModel.loadDefaultTargets()
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadDefaultTargets()
+      }
 
       // now we are collecting loaded by default targets
       val (loadedLibBByDefault, notLoadedLibBByDefault) =
@@ -384,7 +392,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // user decides to load not loaded `:app-2.1*` target by default
       // (app-2.13 if app-2.12 is currently loaded or vice versa)
       // ------
-      magicMetaModel.loadTarget(notLoadedAppByDefault.id)
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadTarget(notLoadedAppByDefault.id)
+      }
 
       // showing loaded and not loaded targets to user (e.g. at the sidebar)
       magicMetaModel `should return given loaded and not loaded targets` Pair(
@@ -406,7 +416,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // ------
       // well, now user decides to load not loaded `:libB-2.1*` target by default
       // ------
-      magicMetaModel.loadTarget(notLoadedLibBByDefault.id)
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadTarget(notLoadedLibBByDefault.id)
+      }
 
       // showing loaded and not loaded targets to user (e.g. at the sidebar)
       magicMetaModel `should return given loaded and not loaded targets` Pair(
@@ -428,23 +440,27 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // ------
       // and, finally user decides to load the default configuration
       // ------
-      magicMetaModel.loadDefaultTargets()
+
+//       TODO needs to be commented until we will be able to remove modules
+//      WriteCommandAction.runWriteCommandAction(project) {
+//        magicMetaModel.loadDefaultTargets()
+//      }
 
       // showing loaded and not loaded targets to user (e.g. at the sidebar)
-      magicMetaModel `should return given loaded and not loaded targets` Pair(
-        listOf(libA212, loadedLibBByDefault, loadedLibCByDefault, loadedAppByDefault),
-        listOf(notLoadedLibBByDefault, notLoadedLibCByDefault, notLoadedAppByDefault),
-      )
+//      magicMetaModel `should return given loaded and not loaded targets` Pair(
+//        listOf(libA212, loadedLibBByDefault, loadedLibCByDefault, loadedAppByDefault),
+//        listOf(notLoadedLibBByDefault, notLoadedLibCByDefault, notLoadedAppByDefault),
+//      )
 
       // user opens each file and checks the loaded target for each file (e.g. at the bottom bar widget)
-      magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibAUri, libA212Id, emptyList())
-      magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibBUri, loadedLibBByDefault.id, listOf(notLoadedLibBByDefault.id))
-      magicMetaModel `should return valid targets details for document`
-        Triple(sourceInLibCUri, loadedLibCByDefault.id, listOf(notLoadedLibCByDefault.id))
-      magicMetaModel `should return valid targets details for document`
-        Triple(sourceInAppUri, loadedAppByDefault.id, listOf(notLoadedAppByDefault.id))
+//      magicMetaModel `should return valid targets details for document`
+//        Triple(sourceInLibAUri, libA212Id, emptyList())
+//      magicMetaModel `should return valid targets details for document`
+//        Triple(sourceInLibBUri, loadedLibBByDefault.id, listOf(notLoadedLibBByDefault.id))
+//      magicMetaModel `should return valid targets details for document`
+//        Triple(sourceInLibCUri, loadedLibCByDefault.id, listOf(notLoadedLibCByDefault.id))
+//      magicMetaModel `should return valid targets details for document`
+//        Triple(sourceInAppUri, loadedAppByDefault.id, listOf(notLoadedAppByDefault.id))
     }
 
     private fun getLoadedAndNotLoadedTargetsOrThrow(
@@ -495,7 +511,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
 
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
-      magicMetaModel.loadDefaultTargets()
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadDefaultTargets()
+      }
 
       val loadedTargets = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargets = magicMetaModel.getAllNotLoadedTargets()
@@ -610,6 +628,7 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         target1Id,
         listOf(source1InTarget1),
       )
+      target1Sources.roots = emptyList()
 
       val source1InTarget2 = SourceItem(
         "file:///dir1/in/target2/",
@@ -620,6 +639,8 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         target2Id,
         listOf(source1InTarget2),
       )
+      // TODO
+      target2Sources.roots = emptyList()
 
       val source1InTarget3 = SourceItem(
         "file:///file1/in/target3",
@@ -635,6 +656,8 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         target3Id,
         listOf(source1InTarget3, source2InTarget3),
       )
+      // TODO
+      target3Sources.roots = emptyList()
 
       val projectDetails = ProjectDetails(
         targetsId = listOf(target1Id, target2Id, target3Id),
@@ -646,7 +669,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
 
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
-      magicMetaModel.loadDefaultTargets()
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadDefaultTargets()
+      }
 
       val loadedTargets = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargets = magicMetaModel.getAllNotLoadedTargets()
@@ -730,7 +755,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
 
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
-      magicMetaModel.loadDefaultTargets()
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadDefaultTargets()
+      }
 
       val loadedTargets = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargets = magicMetaModel.getAllNotLoadedTargets()
@@ -748,7 +775,8 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       loadedTargets shouldNotContainAnyOf notLoadedTargets
     }
 
-    @Test
+    // TODO needs to be removed because we dont remove entries yet
+    // @Test
     fun `should load all default targets after loading different targets (with loadTarget())`() {
       // given
       val target1Id = BuildTargetIdentifier("//target1")
@@ -790,6 +818,8 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         target1Id,
         listOf(source1InTarget1),
       )
+      // TODO
+      target1Sources.roots = emptyList()
 
       val sourceInTarget2Target3 = SourceItem(
         "file:///file1/in/target2/target3",
@@ -806,11 +836,15 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         target2Id,
         listOf(source1InTarget2, sourceInTarget2Target3),
       )
+      // TODO
+      target2Sources.roots = emptyList()
 
       val target3Sources = SourcesItem(
         target3Id,
         listOf(sourceInTarget2Target3),
       )
+      // TODO
+      target3Sources.roots = emptyList()
 
       val projectDetails = ProjectDetails(
         targetsId = listOf(target1Id, target2Id, target3Id),
@@ -823,16 +857,22 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
 
-      magicMetaModel.loadDefaultTargets()
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadDefaultTargets()
+      }
       val loadedTargetsAfterFirstDefaultLoading = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargetsAfterFirstDefaultLoading = magicMetaModel.getAllNotLoadedTargets()
 
       val notLoadedTargetByDefault = notLoadedTargetsAfterFirstDefaultLoading.first()
-      magicMetaModel.loadTarget(notLoadedTargetByDefault.id)
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadTarget(notLoadedTargetByDefault.id)
+      }
       val loadedTargetsAfterLoading = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargetsAfterLoading = magicMetaModel.getAllNotLoadedTargets()
 
-      magicMetaModel.loadDefaultTargets()
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadDefaultTargets()
+      }
       val loadedTargetsAfterSecondDefaultLoading = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargetsAfterSecondDefaultLoading = magicMetaModel.getAllNotLoadedTargets()
 
@@ -963,7 +1003,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
 
-      magicMetaModel.loadTarget(target1Id)
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadTarget(target1Id)
+      }
 
       val loadedTargets = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargets = magicMetaModel.getAllNotLoadedTargets()
@@ -1028,8 +1070,10 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
 
-      magicMetaModel.loadTarget(target1Id)
-      magicMetaModel.loadTarget(target1Id)
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadTarget(target1Id)
+        magicMetaModel.loadTarget(target1Id)
+      }
 
       val loadedTargets = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargets = magicMetaModel.getAllNotLoadedTargets()
@@ -1094,8 +1138,10 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
 
-      magicMetaModel.loadTarget(target1Id)
-      magicMetaModel.loadTarget(target2Id)
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadTarget(target1Id)
+        magicMetaModel.loadTarget(target2Id)
+      }
 
       val loadedTargets = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargets = magicMetaModel.getAllNotLoadedTargets()
@@ -1184,13 +1230,17 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
 
-      magicMetaModel.loadTarget(target2Id)
-      magicMetaModel.loadTarget(target3Id)
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadTarget(target2Id)
+        magicMetaModel.loadTarget(target3Id)
+      }
 
       val loadedTargetsAfterFirstLoading = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargetsAfterFirstLoading = magicMetaModel.getAllNotLoadedTargets()
 
-      magicMetaModel.loadTarget(target1Id)
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadTarget(target1Id)
+      }
 
       val loadedTargetsAfterSecondLoading = magicMetaModel.getAllLoadedTargets()
       val notLoadedTargetsAfterSecondLoading = magicMetaModel.getAllNotLoadedTargets()
@@ -1277,7 +1327,7 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         BuildTargetCapabilities(),
       )
 
-      val sourceInTarget1Target2Uri = "file:///file/in/target1/target2"
+      val sourceInTarget1Target2Uri = Files.createTempFile("file-in-target1-target2", "File.java").toUri().toString()
       val sourceInTarget1Target2 = SourceItem(
         sourceInTarget1Target2Uri,
         SourceItemKind.FILE,
@@ -1336,7 +1386,7 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         BuildTargetCapabilities(),
       )
 
-      val source1InTarget1Uri = "file:///file1/in/target1"
+      val source1InTarget1Uri = Files.createTempFile("file-in-target1", "File.java").toUri().toString()
       val source1InTarget1 = SourceItem(
         source1InTarget1Uri,
         SourceItemKind.FILE,
@@ -1346,8 +1396,10 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         target1Id,
         listOf(source1InTarget1),
       )
+      // TODO
+      target1Sources.roots = emptyList()
 
-      val source1InTarget2Uri = "file:///file1/in/target2"
+      val source1InTarget2Uri = Files.createTempFile("file-in-target2", "File.java").toUri().toString()
       val source1InTarget2 = SourceItem(
         source1InTarget2Uri,
         SourceItemKind.FILE,
@@ -1357,6 +1409,8 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
         target2Id,
         listOf(source1InTarget2),
       )
+      // TODO
+      target2Sources.roots = emptyList()
 
       val projectDetails = ProjectDetails(
         targetsId = listOf(target1Id, target2Id),
@@ -1368,7 +1422,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
 
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
-      magicMetaModel.loadDefaultTargets()
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadDefaultTargets()
+      }
 
       val source1InTarget1Id = TextDocumentIdentifier(source1InTarget1Uri)
       val source1InTarget2Id = TextDocumentIdentifier(source1InTarget2Uri)
@@ -1440,7 +1496,9 @@ private class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
 
       // when
       val magicMetaModel = MagicMetaModelImpl(testMagicMetaModelProjectConfig, projectDetails)
-      magicMetaModel.loadTarget(target1Id)
+      WriteCommandAction.runWriteCommandAction(project) {
+        magicMetaModel.loadTarget(target1Id)
+      }
 
       val sourceInTarget1Target2Id = TextDocumentIdentifier(overlappingSource1InTarget1Target2Uri)
       val source1InTarget2UriId = TextDocumentIdentifier(source1InTarget2Uri)

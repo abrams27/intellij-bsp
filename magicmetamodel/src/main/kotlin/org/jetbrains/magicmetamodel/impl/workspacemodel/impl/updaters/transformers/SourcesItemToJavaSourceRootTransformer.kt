@@ -17,7 +17,8 @@ internal object SourcesItemToJavaSourceRootTransformer :
   }
 
   private fun getSourceRootsAsURIs(sourcesItem: SourcesItem): List<URI> =
-    sourcesItem.roots.map(URI::create)
+    // TODO?
+    (sourcesItem.roots ?: emptyList()).map(URI::create)
 
   private fun toJavaSourceRoot(sourceRoot: SourceRoot, sourceRoots: List<URI>): JavaSourceRoot {
     val packagePrefix = calculatePackagePrefix(sourceRoot, sourceRoots)
