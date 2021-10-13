@@ -9,6 +9,9 @@
 
     <extensions defaultExtensionNs="com.intellij">
       <projectOpenProcessor implementation="org.jetbrains.plugins.bsp.startup.TestStartupActivity"/>
+
+
+      <statusBarWidgetFactory implementation="org.jetbrains.plugins.bsp.widgets.document.targets.BSPStatusBarWidgetFactory"/>
     </extensions>
 
     <applicationListeners>
