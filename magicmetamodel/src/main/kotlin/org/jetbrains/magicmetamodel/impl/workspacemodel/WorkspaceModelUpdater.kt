@@ -36,7 +36,7 @@ internal interface WorkspaceModelUpdater {
 
   fun removeModule(module: ModuleName)
 
-//  fun clear()
+  fun clear()
 
   companion object {
     fun create(

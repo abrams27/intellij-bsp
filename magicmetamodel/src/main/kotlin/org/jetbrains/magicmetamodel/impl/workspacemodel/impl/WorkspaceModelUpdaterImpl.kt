@@ -55,4 +55,8 @@ internal class WorkspaceModelUpdaterImpl(
   override fun removeModule(module: ModuleName) {
     workspaceModuleRemover.removeEntity(module)
   }
+
+  override fun clear() {
+    workspaceModuleRemover.clear()
+  }
 }

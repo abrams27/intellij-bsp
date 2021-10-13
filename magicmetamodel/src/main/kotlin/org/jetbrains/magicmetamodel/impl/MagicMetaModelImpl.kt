@@ -51,15 +51,13 @@ internal class MagicMetaModelImpl internal constructor(
 
     LOGGER.debug { "Calculating default targets to load done! Targets to load: $nonOverlappingTargetsToLoad" }
 
-    // TODO
-    // workspaceModelUpdater.clear()
+    workspaceModelUpdater.clear()
     loadedTargetsStorage.clear()
 
     val modulesToLoad = getModulesDetailsForTargetsToLoad(nonOverlappingTargetsToLoad)
 
     // TODO TEST TESTS TEESTS RTEST11
     println(modulesToLoad)
-    println(modulesToLoad.size)
     workspaceModelUpdater.loadModules(modulesToLoad)
     loadedTargetsStorage.addTargets(nonOverlappingTargetsToLoad)
   }

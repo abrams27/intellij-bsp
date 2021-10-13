@@ -90,7 +90,11 @@ internal class WorkspaceModuleRemover(
   }
 
   override fun clear() {
-    TODO("Not yet implemented")
-  }
+    val allModules =
+      workspaceModelEntityUpdaterConfig.workspaceModel.entityStorage.current.entities(ModuleEntity::class.java)
 
+    workspaceModelEntityUpdaterConfig.workspaceModel.updateProjectModel { builder ->
+      allModules.forEach(builder::removeEntity)
+    }
+  }
 }
