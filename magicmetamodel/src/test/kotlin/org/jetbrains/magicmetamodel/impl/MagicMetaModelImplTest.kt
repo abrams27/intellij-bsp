@@ -789,7 +789,7 @@ class MagicMetaModelImplTest : WorkspaceModelBaseTest() {
       loadedTargets shouldNotContainAnyOf notLoadedTargets
     }
 
-     @Test
+    @Test
     fun `should load all default targets after loading different targets (with loadTarget())`() {
       // given
       val target1Id = BuildTargetIdentifier("//target1")
