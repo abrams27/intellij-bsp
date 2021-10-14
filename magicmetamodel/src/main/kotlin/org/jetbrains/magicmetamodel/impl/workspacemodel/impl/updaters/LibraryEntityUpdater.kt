@@ -11,7 +11,8 @@ import com.intellij.workspaceModel.storage.bridgeEntities.addLibraryEntity
 
 internal data class Library(
   val displayName: String,
-  val jar: String,
+  val sourcesJar: String,
+  val classesJar: String,
 ) : WorkspaceModelEntity()
 
 internal class LibraryEntityUpdater(
@@ -39,7 +40,7 @@ internal class LibraryEntityUpdater(
 
   private fun toLibraryRoot(entityToAdd: Library): LibraryRoot =
     LibraryRoot(
-      url = workspaceModelEntityUpdaterConfig.virtualFileUrlManager.fromUrl(entityToAdd.jar),
+      url = workspaceModelEntityUpdaterConfig.virtualFileUrlManager.fromUrl(entityToAdd.sourcesJar),
       type = LibraryRootTypeId.SOURCES,
     )
 }
