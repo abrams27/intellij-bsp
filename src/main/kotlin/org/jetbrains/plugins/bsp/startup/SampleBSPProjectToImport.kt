@@ -1,4 +1,5 @@
 @file:Suppress("MaxLineLength", "MayBeConst")
+
 package org.jetbrains.plugins.bsp.startup
 
 import ch.epfl.scala.bsp4j.BuildTarget
@@ -13,6 +14,9 @@ import ch.epfl.scala.bsp4j.SourcesItem
 
 object SampleBSPProjectToImport {
 
+  // targets
+
+  // //app/src/java/bsp/app:App
   val appId = BuildTargetIdentifier("//app/src/java/bsp/app:App")
   val appDisplayName = "//app/src/java/bsp/app:App"
   val appBaseDirectory = "file:///Users/marcin.abramowicz/Projects/bsp-sample/app/src/java/bsp/app/"
@@ -39,6 +43,7 @@ object SampleBSPProjectToImport {
     appTarget.data = appData
   }
 
+  // //libB:libB
   val libBId = BuildTargetIdentifier("//libB:libB")
   val libBDisplayName = "//libB:libB"
   val libBBaseDirectory = "file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/"
@@ -56,6 +61,7 @@ object SampleBSPProjectToImport {
     libBTarget.baseDirectory = libBBaseDirectory
   }
 
+  // //libA/src/java/bsp/libA:libA
   val libAid = BuildTargetIdentifier("//libA/src/java/bsp/libA:libA")
   val libADisplayName = "//libA/src/java/bsp/libA:libA"
   val libABaseDirectory = "file:///Users/marcin.abramowicz/Projects/bsp-sample/libA/src/java/bsp/libA/"
@@ -82,6 +88,7 @@ object SampleBSPProjectToImport {
     libATarget.data = libAData
   }
 
+  // //libB/src/java/bsp/libB:libB
   val libBBId = BuildTargetIdentifier("//libB/src/java/bsp/libB:libB")
   val libBBDisplayName = "//libB/src/java/bsp/libB:libB"
   val libBBBaseDirectory = "file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/src/java/bsp/libB/"
@@ -106,6 +113,61 @@ object SampleBSPProjectToImport {
     libBBTarget.data = libBBData
   }
 
+  // //libB/src/java/bsp/libB:libB-2
+  val libBB2Id = BuildTargetIdentifier("//libB/src/java/bsp/libB:libB-2")
+  val libBB2DisplayName = "//libB/src/java/bsp/libB:libB-2"
+  val libBB2BaseDirectory = "file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/src/java/bsp/libB/"
+  val libBB2Tags = listOf("library")
+  val libBB2LanguageIds = listOf("java")
+  val libBB2Dependencies = listOf(BuildTargetIdentifier("@maven//:com_google_guava_guava"))
+  val libBB2Capabilities = BuildTargetCapabilities(true, false, false, false)
+
+  val libBB2DataKind = "jvm"
+  val libBB2Data = JvmBuildTarget(
+    "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/external/local_jdk/",
+    "8"
+  )
+
+  val libBB2Target = BuildTarget(libBB2Id, libBB2Tags, libBB2LanguageIds, libBB2Dependencies, libBB2Capabilities)
+
+  init {
+    libBB2Target.displayName = libBB2DisplayName
+    libBB2Target.baseDirectory = libBB2BaseDirectory
+    libBB2Target.dataKind = libBB2DataKind
+    libBB2Target.data = libBB2Data
+  }
+
+  // //app/src/java/bsp/app:another-app
+  val anotherAppId = BuildTargetIdentifier("//app/src/java/bsp/app:another-app")
+  val anotherAppDisplayName = "//app/src/java/bsp/app:another-app"
+  val anotherAppBaseDirectory = "file:///Users/marcin.abramowicz/Projects/bsp-sample/app/src/java/bsp/app/"
+  val anotherAppTags = listOf("application")
+  val anotherAppLanguageIds = listOf("java")
+  val anotherAppDependencies = listOf(
+    BuildTargetIdentifier("@maven//:com_google_guava_guava"),
+    BuildTargetIdentifier("//libB/src/java/bsp/libB:libB-2"),
+  )
+  val anotherAppCapabilities = BuildTargetCapabilities(true, false, true, false)
+  val anotherAppDataKind = "jvm"
+  val anotherAppData = JvmBuildTarget(
+    "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/external/local_jdk/",
+    "8"
+  )
+
+  val anotherAppTarget =
+    BuildTarget(anotherAppId, anotherAppTags, anotherAppLanguageIds, anotherAppDependencies, anotherAppCapabilities)
+
+  init {
+    anotherAppTarget.displayName = anotherAppDisplayName
+    anotherAppTarget.baseDirectory = anotherAppBaseDirectory
+    anotherAppTarget.dataKind = anotherAppDataKind
+    anotherAppTarget.data = anotherAppData
+  }
+
+
+  // sources
+
+  // //app/src/java/bsp/app:App
   val appSourcesList = listOf(
     SourceItem(
       "file:///Users/marcin.abramowicz/Projects/bsp-sample/app/src/java/bsp/app/App.java",
@@ -121,6 +183,7 @@ object SampleBSPProjectToImport {
     appSources.roots = appRoots
   }
 
+  // //libB:libB
   val libBSourcesList = listOf<SourceItem>()
   val libBRoots = listOf("file:///Users/marcin.abramowicz/Projects/bsp-sample/")
 
@@ -130,6 +193,7 @@ object SampleBSPProjectToImport {
     libBSources.roots = libBRoots
   }
 
+  // //libA/src/java/bsp/libA:libA
   val libASourcesList = listOf(
     SourceItem(
       "file:///Users/marcin.abramowicz/Projects/bsp-sample/libA/src/java/bsp/libA/LibA1.java",
@@ -145,6 +209,7 @@ object SampleBSPProjectToImport {
     libASources.roots = libARoots
   }
 
+  // //libB/src/java/bsp/libB:libB
   val libBBSourcesList = listOf(
     SourceItem(
       "file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/src/java/bsp/libB/LibB1.java",
@@ -153,6 +218,10 @@ object SampleBSPProjectToImport {
     ),
     SourceItem(
       "file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/src/java/bsp/libB/LibB2.java",
+      SourceItemKind.FILE, false
+    ),
+    SourceItem(
+      "file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/src/java/bsp/libB/LibB3.java",
       SourceItemKind.FILE, false
     )
   )
@@ -164,16 +233,63 @@ object SampleBSPProjectToImport {
     libBBSources.roots = libBBRoots
   }
 
+  // //libB/src/java/bsp/libB:libB-2
+  val libBB2SourcesList = listOf(
+    SourceItem(
+      "file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/src/java/bsp/libB/LibB2.java",
+      SourceItemKind.FILE, false
+    )
+  )
+
+  val libBB2Roots = listOf("file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/src/java/")
+
+  val libBB2Sources = SourcesItem(libBB2Id, libBB2SourcesList)
+
+  init {
+    libBB2Sources.roots = libBB2Roots
+  }
+
+  // //app/src/java/bsp/app:another-app
+  val anotherAppSourcesList = listOf(
+    SourceItem(
+      "file:///Users/marcin.abramowicz/Projects/bsp-sample/app/src/java/bsp/app/AnotherApp.java",
+      SourceItemKind.FILE, false
+    ),
+    SourceItem(
+      "file:///Users/marcin.abramowicz/Projects/bsp-sample/app/src/java/bsp/app/App.java",
+      SourceItemKind.FILE, false
+    )
+  )
+  val anotherAppRoots = listOf("file:///Users/marcin.abramowicz/Projects/bsp-sample/app/src/java/")
+
+  val anotherAppSources = SourcesItem(anotherAppId, anotherAppSourcesList)
+
+  init {
+    anotherAppSources.roots = anotherAppRoots
+  }
+
+  // resources
+
+  // //libB/src/java/bsp/libB:libB
   val libBBResources = ResourcesItem(
     libBBId,
     listOf("file:///Users/marcin.abramowicz/Projects/bsp-sample/libB/src/resources/randomResource.txt")
   )
 
+  // //app/src/java/bsp/app:App
   val appResources = ResourcesItem(
     appId,
     listOf("file:///Users/marcin.abramowicz/Projects/bsp-sample/app/src/resources/randomResource.txt")
   )
 
+  val anotherAppResources = ResourcesItem(
+    anotherAppId,
+    listOf(  "file:///Users/marcin.abramowicz/Projects/bsp-sample/app/src/resources/randomResource.txt")
+  )
+
+  // dependency sources
+
+  // //app/src/java/bsp/app:App
   val appDependenciesSources = DependencySourcesItem(
     appId,
     listOf(
@@ -189,6 +305,7 @@ object SampleBSPProjectToImport {
     )
   )
 
+  // //libA/src/java/bsp/libA:libA
   val libADependenciesSources = DependencySourcesItem(
     libAid,
     listOf(
@@ -204,6 +321,7 @@ object SampleBSPProjectToImport {
     )
   )
 
+  // //libB/src/java/bsp/libB:libB
   val libBBDependenciesSources = DependencySourcesItem(
     libBBId,
     listOf(
@@ -217,7 +335,35 @@ object SampleBSPProjectToImport {
     )
   )
 
+  // //libB:libB
   val libBDependenciesSources = DependencySourcesItem(libBId, emptyList())
 
-  val allTargetsIds = listOf(appId, libBId, libAid, libBBId)
+  // //app/src/java/bsp/app:another-app
+  val anotherAppDependenciesSources = DependencySourcesItem(
+    anotherAppId,
+    listOf(
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/guava/guava/28.1-jre/guava-28.1-jre-sources.jar"
+    )
+  )
+
+  val libBB2DependenciesSources = DependencySourcesItem(
+    libBB2Id,
+    listOf(
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.3.2/error_prone_annotations-2.3.2-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.18/animal-sniffer-annotations-1.18-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/org/checkerframework/checker-qual/2.8.1/checker-qual-2.8.1-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2-sources.jar",
+      "file:///private/var/tmp/_bazel_marcin.abramowicz/a2afba1d0e52eedc0574abc5f4ddea23/execroot/bsp_sample/external/maven/v1/https/repo.maven.apache.org/maven2/com/google/guava/guava/28.1-jre/guava-28.1-jre-sources.jar"
+    )
+  )
+
+  val allTargetsIds = listOf(appId, libBId, libAid, libBB2Id, libBBId, anotherAppId)
 }
