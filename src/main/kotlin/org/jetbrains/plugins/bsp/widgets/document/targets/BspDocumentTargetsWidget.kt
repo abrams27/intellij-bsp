@@ -31,7 +31,7 @@ private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarP
   override fun ID(): String = ID
 
   override fun getWidgetState(file: VirtualFile?): WidgetState =
-    if (file == null) getInactiveWidgetState() else getActiveWidgetState(file)
+    if (file == null) getInactiveWidgetState() else getActiveWidgetState()
 
   private fun getInactiveWidgetState(): WidgetState {
     val state = WidgetState(BspDocumentTargetsWidgetBundle.message("widget.tooltip.text.inactive"), "", false)
@@ -40,7 +40,7 @@ private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarP
     return state
   }
 
-  private fun getActiveWidgetState(file: VirtualFile): WidgetState {
+  private fun getActiveWidgetState(): WidgetState {
     val state = WidgetState(BspDocumentTargetsWidgetBundle.message("widget.tooltip.text.active"), "", true)
     state.icon = IconLoader.getIcon("icons/buildServerProtocol.svg")
 
@@ -73,7 +73,7 @@ private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarP
 
     availableTargets
       .map { Action(it, magicMetaModelService.magicMetaModel) }
-      .forEach (group::add)
+      .forEach(group::add)
 
     return group
   }
@@ -81,7 +81,10 @@ private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarP
   override fun createInstance(project: Project): StatusBarWidget =
     BspDocumentTargetsWidget(project)
 
-  private class Action(val target: BuildTargetIdentifier, private val magicMetaModel: MagicMetaModel) : AnAction(target.uri) {
+  private class Action(
+    val target: BuildTargetIdentifier,
+    private val magicMetaModel: MagicMetaModel
+  ) : AnAction(target.uri) {
     override fun actionPerformed(e: AnActionEvent) {
       magicMetaModel.loadTarget(target)
     }
