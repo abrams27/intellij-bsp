@@ -25,20 +25,22 @@ class MagicMetaModelService(project: Project) {
     val projectDetails = ProjectDetails(
       targetsId = SampleBSPProjectToImport.allTargetsIds,
       targets = listOf(
-        SampleBSPProjectToImport.libATarget,
+        SampleBSPProjectToImport.libA1Target,
         SampleBSPProjectToImport.appTarget,
         SampleBSPProjectToImport.libBB2Target,
         SampleBSPProjectToImport.libBBTarget,
+        SampleBSPProjectToImport.libA2Target,
         SampleBSPProjectToImport.anotherAppTarget,
         SampleBSPProjectToImport.libBTarget,
       ),
       sources = listOf(
         SampleBSPProjectToImport.libBB2Sources,
-        SampleBSPProjectToImport.appSources,
-        SampleBSPProjectToImport.libASources,
+        SampleBSPProjectToImport.libA2Sources,
+        SampleBSPProjectToImport.anotherAppSources,
+        SampleBSPProjectToImport.libA1Sources,
         SampleBSPProjectToImport.libBBSources,
         SampleBSPProjectToImport.libBSources,
-        SampleBSPProjectToImport.anotherAppSources,
+        SampleBSPProjectToImport.appSources,
       ),
       resources = listOf(
         SampleBSPProjectToImport.appResources,
@@ -47,10 +49,11 @@ class MagicMetaModelService(project: Project) {
       ),
       dependenciesSources = listOf(
         SampleBSPProjectToImport.appDependenciesSources,
+        SampleBSPProjectToImport.libA2DependenciesSources,
         SampleBSPProjectToImport.libBBDependenciesSources,
         SampleBSPProjectToImport.libBB2DependenciesSources,
         SampleBSPProjectToImport.anotherAppDependenciesSources,
-        SampleBSPProjectToImport.libADependenciesSources,
+        SampleBSPProjectToImport.libA1DependenciesSources,
         SampleBSPProjectToImport.libBDependenciesSources,
       ),
     )
