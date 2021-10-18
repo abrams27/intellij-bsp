@@ -33,14 +33,20 @@ internal class LibraryEntityUpdater(
     builder.addLibraryEntity(
       name = entityToAdd.displayName,
       tableId = LibraryTableId.ModuleLibraryTableId(ModuleId(parentModuleEntity.name)),
-      listOf(toLibraryRoot(entityToAdd)),
+      listOf(toLibrarySourcesRoot(entityToAdd), toLibraryClassesRoot(entityToAdd)),
       emptyList(),
       workspaceModelEntityUpdaterConfig.projectConfigSource
     )
 
-  private fun toLibraryRoot(entityToAdd: Library): LibraryRoot =
+  private fun toLibrarySourcesRoot(entityToAdd: Library): LibraryRoot =
     LibraryRoot(
       url = workspaceModelEntityUpdaterConfig.virtualFileUrlManager.fromUrl(entityToAdd.sourcesJar),
       type = LibraryRootTypeId.SOURCES,
+    )
+
+  private fun toLibraryClassesRoot(entityToAdd: Library): LibraryRoot =
+    LibraryRoot(
+      url = workspaceModelEntityUpdaterConfig.virtualFileUrlManager.fromUrl(entityToAdd.classesJar),
+      type = LibraryRootTypeId.COMPILED,
     )
 }
