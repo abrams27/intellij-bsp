@@ -19,9 +19,9 @@ import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.StatusBarWidgetFactory
 import com.intellij.openapi.wm.impl.status.EditorBasedStatusBarPopup
 import org.jetbrains.magicmetamodel.MagicMetaModel
+import org.jetbrains.plugins.bsp.config.BspPluginIcons
 import org.jetbrains.plugins.bsp.services.MagicMetaModelService
 
-// move it
 private const val ID = "BSPTargets"
 
 private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarPopup(project, false) {
@@ -35,14 +35,14 @@ private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarP
 
   private fun getInactiveWidgetState(): WidgetState {
     val state = WidgetState(BspDocumentTargetsWidgetBundle.message("widget.tooltip.text.inactive"), "", false)
-    state.icon = IconLoader.getIcon("icons/buildServerProtocol.svg")
+    state.icon = BspPluginIcons.bsp
 
     return state
   }
 
   private fun getActiveWidgetState(): WidgetState {
     val state = WidgetState(BspDocumentTargetsWidgetBundle.message("widget.tooltip.text.active"), "", true)
-    state.icon = IconLoader.getIcon("icons/buildServerProtocol.svg")
+    state.icon = BspPluginIcons.bsp
 
     return state
   }
