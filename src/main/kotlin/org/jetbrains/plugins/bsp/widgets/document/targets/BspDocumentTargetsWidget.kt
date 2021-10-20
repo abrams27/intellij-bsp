@@ -12,7 +12,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.ui.popup.ListPopup
 import com.intellij.openapi.util.Disposer
-import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
