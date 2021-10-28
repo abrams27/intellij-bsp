@@ -29,5 +29,4 @@ private fun validateContentRootEntity(
 
   val actualModuleEntity = actual.module
   actualModuleEntity shouldBe expected.parentModuleEntity
-  actualModuleEntity shouldBeEqualToComparingFields expected.parentModuleEntity
 }

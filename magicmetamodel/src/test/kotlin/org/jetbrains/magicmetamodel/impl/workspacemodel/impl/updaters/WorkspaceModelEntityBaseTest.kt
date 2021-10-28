@@ -4,7 +4,7 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.workspaceModel.storage.WorkspaceEntityStorageBuilder
 import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addModuleEntity
-import org.jetbrains.magicmetamodel.impl.workspacemodel.WorkspaceModelBaseTest
+import org.jetbrains.workspace.model.test.framework.WorkspaceModelBaseTest
 import org.junit.jupiter.api.BeforeEach
 
 internal abstract class WorkspaceModelEntityWithoutParentModuleUpdaterBaseTest : WorkspaceModelBaseTest() {

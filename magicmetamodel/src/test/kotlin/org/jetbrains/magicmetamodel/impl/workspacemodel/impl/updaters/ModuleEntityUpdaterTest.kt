@@ -226,7 +226,7 @@ internal class ModuleEntityUpdaterTest : WorkspaceModelEntityWithoutParentModule
     returnedModuleEntries shouldContainExactlyInAnyOrder Pair(
       listOf(expectedModule1Details, expectedModule2Details), this::validateModuleEntity
     )
-    workspaceModelLoadedEntries(ModuleEntity::class.java) shouldContainExactlyInAnyOrder Pair(
+    loadedEntries(ModuleEntity::class.java) shouldContainExactlyInAnyOrder Pair(
       listOf(expectedModule1Details, expectedModule2Details), this::validateModuleEntity
     )
   }

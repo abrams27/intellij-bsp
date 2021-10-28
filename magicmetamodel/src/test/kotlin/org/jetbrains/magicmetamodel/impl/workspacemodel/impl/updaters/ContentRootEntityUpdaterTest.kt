@@ -3,15 +3,13 @@ package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.workspaceModel.storage.bridgeEntities.ContentRootEntity
 import com.intellij.workspaceModel.storage.impl.url.toVirtualFileUrl
-import io.kotest.matchers.shouldBe
+import org.jetbrains.workspace.model.matchers.collection.entries.ExpectedContentRootEntity
+import org.jetbrains.workspace.model.matchers.collection.entries.shouldBeEqual
+import org.jetbrains.workspace.model.matchers.collection.entries.shouldContainExactlyInAnyOrder
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.net.URI
 import kotlin.io.path.toPath
-
-private data class ExpectedContentRootEntityDetails(
-  val contentRootEntity: ContentRootEntity,
-)
 
 @DisplayName("ContentRootEntityUpdater.addEntity()")
 internal class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
@@ -33,15 +31,14 @@ internal class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModu
 
     // then
     val virtualContentUrl = contentPath.toVirtualFileUrl(virtualFileUrlManager)
-    val expectedContentRootEntityDetails = ExpectedContentRootEntityDetails(
+    val expectedContentRootEntityDetails = ExpectedContentRootEntity(
       contentRootEntity = ContentRootEntity(virtualContentUrl, emptyList(), emptyList()),
+      parentModuleEntity = parentModuleEntity,
     )
 
-    validateContentRootEntity(returnedContentRootEntity, expectedContentRootEntityDetails)
+    returnedContentRootEntity shouldBeEqual expectedContentRootEntityDetails
 
-    workspaceModelLoadedEntries(ContentRootEntity::class.java) shouldContainExactlyInAnyOrder Pair(
-      listOf(expectedContentRootEntityDetails), this::validateContentRootEntity
-    )
+    loadedEntries(ContentRootEntity::class.java) shouldContainExactlyInAnyOrder listOf(expectedContentRootEntityDetails)
   }
 
   @Test
@@ -69,40 +66,27 @@ internal class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModu
 
     // then
     val virtualContentUrl1 = contentPath1.toVirtualFileUrl(virtualFileUrlManager)
-    val expectedContentRootEntityDetails1 = ExpectedContentRootEntityDetails(
+    val expectedContentRootEntityDetails1 = ExpectedContentRootEntity(
       contentRootEntity = ContentRootEntity(virtualContentUrl1, emptyList(), emptyList()),
+      parentModuleEntity = parentModuleEntity,
     )
 
     val virtualContentUrl2 = contentPath2.toVirtualFileUrl(virtualFileUrlManager)
-    val expectedContentRootEntityDetails2 = ExpectedContentRootEntityDetails(
+    val expectedContentRootEntityDetails2 = ExpectedContentRootEntity(
       contentRootEntity = ContentRootEntity(virtualContentUrl2, emptyList(), emptyList()),
+      parentModuleEntity = parentModuleEntity,
     )
 
     val virtualContentUrl3 = contentPath3.toVirtualFileUrl(virtualFileUrlManager)
-    val expectedContentRootEntityDetails3 = ExpectedContentRootEntityDetails(
+    val expectedContentRootEntityDetails3 = ExpectedContentRootEntity(
       contentRootEntity = ContentRootEntity(virtualContentUrl3, emptyList(), emptyList()),
+      parentModuleEntity = parentModuleEntity,
     )
 
-    returnedContentRootEntries shouldContainExactlyInAnyOrder Pair(
-      listOf(expectedContentRootEntityDetails1, expectedContentRootEntityDetails2, expectedContentRootEntityDetails3),
-      this::validateContentRootEntity
-    )
+    returnedContentRootEntries shouldContainExactlyInAnyOrder
+      listOf(expectedContentRootEntityDetails1, expectedContentRootEntityDetails2, expectedContentRootEntityDetails3)
 
-    workspaceModelLoadedEntries(ContentRootEntity::class.java) shouldContainExactlyInAnyOrder Pair(
-      listOf(expectedContentRootEntityDetails1, expectedContentRootEntityDetails2, expectedContentRootEntityDetails3),
-      this::validateContentRootEntity
-    )
-  }
-
-  private fun validateContentRootEntity(
-    actual: ContentRootEntity,
-    expected: ExpectedContentRootEntityDetails
-  ) {
-    actual.url shouldBe expected.contentRootEntity.url
-    actual.excludedUrls shouldBe expected.contentRootEntity.excludedUrls
-    actual.excludedPatterns shouldBe expected.contentRootEntity.excludedPatterns
-
-    val actualModuleEntity = actual.module
-    actualModuleEntity shouldBe parentModuleEntity
+    loadedEntries(ContentRootEntity::class.java) shouldContainExactlyInAnyOrder
+      listOf(expectedContentRootEntityDetails1, expectedContentRootEntityDetails2, expectedContentRootEntityDetails3)
   }
 }

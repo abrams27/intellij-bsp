@@ -1,4 +1,5 @@
 @file:Suppress("LongMethod")
+
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 
 import com.intellij.openapi.command.WriteCommandAction

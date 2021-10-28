@@ -1,4 +1,4 @@
-package org.jetbrains.magicmetamodel.impl.workspacemodel
+package org.jetbrains.workspace.model.test.framework
 
 import com.intellij.openapi.project.Project
 import com.intellij.project.stateStore
@@ -16,12 +16,12 @@ import io.kotest.matchers.collections.shouldHaveSize
 import org.junit.jupiter.api.BeforeEach
 import java.nio.file.Path
 
-// TODO refactor
-open class WorkspaceModelBaseTest {
+public abstract class WorkspaceModelBaseTest {
 
   protected lateinit var project: Project
   protected lateinit var workspaceModel: WorkspaceModel
   protected lateinit var virtualFileUrlManager: VirtualFileUrlManager
+
   protected lateinit var projectBaseDirPath: Path
   protected lateinit var projectConfigSource: JpsFileEntitySource
 
@@ -30,6 +30,7 @@ open class WorkspaceModelBaseTest {
     project = emptyProjectTestMock()
     workspaceModel = WorkspaceModel.getInstance(project)
     virtualFileUrlManager = VirtualFileUrlManager.getInstance(project)
+
     projectBaseDirPath = project.stateStore.projectBasePath
     projectConfigSource = calculateProjectConfigSource(projectBaseDirPath, virtualFileUrlManager)
   }
@@ -56,17 +57,19 @@ open class WorkspaceModelBaseTest {
     return JpsFileEntitySource.FileInDirectory(virtualProjectModulesDirPath, projectLocation)
   }
 
-  protected infix fun <T, C : Collection<T>, E> C.shouldContainExactlyInAnyOrder(
-    expectedWithAssertion: Pair<Collection<E>, (T, E) -> Unit>
+  protected fun <E : WorkspaceEntity> workspaceModelLoadedEntries(entityClass: Class<E>): List<E> =
+    workspaceModel.entityStorage.current.entities(entityClass).toList()
+
+  protected fun <E : WorkspaceEntity> loadedEntries(entityClass: Class<E>): List<E> =
+    workspaceModel.entityStorage.current.entities(entityClass).toList()
+
+  protected infix fun <A, E> Collection<A>.shouldContainExactlyInAnyOrder(
+    expectedWithAssertion: Pair<Collection<E>,(actual: A, expected: E) -> Unit>,
   ) {
     val expectedValues = expectedWithAssertion.first
     val assertion = expectedWithAssertion.second
 
     this shouldHaveSize expectedValues.size
-
     this.forAll { actual -> expectedValues.forAny { assertion(actual, it) } }
   }
-
-  protected fun <E : WorkspaceEntity> workspaceModelLoadedEntries(entityClass: Class<E>): List<E> =
-    workspaceModel.entityStorage.current.entities(entityClass).toList()
 }
