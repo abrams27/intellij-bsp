@@ -70,24 +70,24 @@ internal class ContentRootEntityUpdaterTest : WorkspaceModelWithParentJavaModule
 
     // then
     val virtualContentUrl1 = contentPath1.toVirtualFileUrl(virtualFileUrlManager)
-    val expectedContentRootEntityDetails1 = ExpectedContentRootEntity(
+    val expectedContentRootEntity1 = ExpectedContentRootEntity(
       contentRootEntity = ContentRootEntity(virtualContentUrl1, emptyList(), emptyList()),
       parentModuleEntity = parentModuleEntity,
     )
 
     val virtualContentUrl2 = contentPath2.toVirtualFileUrl(virtualFileUrlManager)
-    val expectedContentRootEntityDetails2 = ExpectedContentRootEntity(
+    val expectedContentRootEntity2 = ExpectedContentRootEntity(
       contentRootEntity = ContentRootEntity(virtualContentUrl2, emptyList(), emptyList()),
       parentModuleEntity = parentModuleEntity,
     )
 
     val virtualContentUrl3 = contentPath3.toVirtualFileUrl(virtualFileUrlManager)
-    val expectedContentRootEntityDetails3 = ExpectedContentRootEntity(
+    val expectedContentRootEntity3 = ExpectedContentRootEntity(
       contentRootEntity = ContentRootEntity(virtualContentUrl3, emptyList(), emptyList()),
       parentModuleEntity = parentModuleEntity,
     )
     val expectedContentRootEntries =
-      listOf(expectedContentRootEntityDetails1, expectedContentRootEntityDetails2, expectedContentRootEntityDetails3)
+      listOf(expectedContentRootEntity1, expectedContentRootEntity2, expectedContentRootEntity3)
 
     returnedContentRootEntries shouldContainExactlyInAnyOrder expectedContentRootEntries
     loadedEntries(ContentRootEntity::class.java) shouldContainExactlyInAnyOrder expectedContentRootEntries

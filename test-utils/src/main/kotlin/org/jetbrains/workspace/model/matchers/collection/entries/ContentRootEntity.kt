@@ -3,7 +3,6 @@ package org.jetbrains.workspace.model.matchers.collection.entries
 import com.intellij.workspaceModel.storage.bridgeEntities.ContentRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
-import io.kotest.matchers.equality.shouldBeEqualToComparingFields
 import io.kotest.matchers.shouldBe
 import org.jetbrains.workspace.model.matchers.collection.shouldContainExactlyInAnyOrder
 
@@ -25,7 +24,7 @@ private fun validateContentRootEntity(
   expected: ExpectedContentRootEntity
 ) {
   actual.url shouldBe expected.contentRootEntity.url
-  actual.excludedUrls shouldContainExactlyInAnyOrder  expected.contentRootEntity.excludedUrls
+  actual.excludedUrls shouldContainExactlyInAnyOrder expected.contentRootEntity.excludedUrls
   actual.excludedPatterns shouldContainExactlyInAnyOrder expected.contentRootEntity.excludedPatterns
 
   val actualModuleEntity = actual.module
