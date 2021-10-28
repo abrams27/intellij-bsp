@@ -1,5 +1,6 @@
 package org.jetbrains.workspace.model.test.framework
 
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.project.stateStore
 import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory
@@ -8,6 +9,9 @@ import com.intellij.workspaceModel.ide.JpsProjectConfigLocation
 import com.intellij.workspaceModel.ide.WorkspaceModel
 import com.intellij.workspaceModel.ide.getInstance
 import com.intellij.workspaceModel.storage.WorkspaceEntity
+import com.intellij.workspaceModel.storage.WorkspaceEntityStorageBuilder
+import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
+import com.intellij.workspaceModel.storage.bridgeEntities.addModuleEntity
 import com.intellij.workspaceModel.storage.impl.url.toVirtualFileUrl
 import com.intellij.workspaceModel.storage.url.VirtualFileUrlManager
 import io.kotest.inspectors.forAll
@@ -57,6 +61,13 @@ public abstract class WorkspaceModelBaseTest {
     return JpsFileEntitySource.FileInDirectory(virtualProjectModulesDirPath, projectLocation)
   }
 
+  protected fun <T : Any> runTestWriteAction(action: () -> T): T {
+    lateinit var result: T
+    WriteCommandAction.runWriteCommandAction(project) { result = action() }
+
+    return result
+  }
+
   protected fun <E : WorkspaceEntity> workspaceModelLoadedEntries(entityClass: Class<E>): List<E> =
     workspaceModel.entityStorage.current.entities(entityClass).toList()
 
@@ -64,7 +75,7 @@ public abstract class WorkspaceModelBaseTest {
     workspaceModel.entityStorage.current.entities(entityClass).toList()
 
   protected infix fun <A, E> Collection<A>.shouldContainExactlyInAnyOrder(
-    expectedWithAssertion: Pair<Collection<E>,(actual: A, expected: E) -> Unit>,
+    expectedWithAssertion: Pair<Collection<E>, (actual: A, expected: E) -> Unit>,
   ) {
     val expectedValues = expectedWithAssertion.first
     val assertion = expectedWithAssertion.second
@@ -72,4 +83,35 @@ public abstract class WorkspaceModelBaseTest {
     this shouldHaveSize expectedValues.size
     this.forAll { actual -> expectedValues.forAny { assertion(actual, it) } }
   }
+}
+
+public abstract class WorkspaceModelWithParentJavaModuleBaseTest : WorkspaceModelBaseTest() {
+
+  protected lateinit var parentModuleEntity: ModuleEntity
+
+  private val parentModuleName = "test-module-root"
+  private val parentModuleType = "JAVA_MODULE"
+
+  @BeforeEach
+  override fun beforeEach() {
+    super.beforeEach()
+
+    addParentModuleEntity()
+  }
+
+  private fun addParentModuleEntity() {
+    WriteCommandAction.runWriteCommandAction(project) {
+      workspaceModel.updateProjectModel {
+        parentModuleEntity = addParentModuleEntity(it)
+      }
+    }
+  }
+
+  private fun addParentModuleEntity(builder: WorkspaceEntityStorageBuilder): ModuleEntity =
+    builder.addModuleEntity(
+      name = parentModuleName,
+      dependencies = emptyList(),
+      source = projectConfigSource,
+      type = parentModuleType
+    )
 }

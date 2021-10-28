@@ -1,18 +1,31 @@
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 
-import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.workspaceModel.storage.bridgeEntities.ContentRootEntity
 import com.intellij.workspaceModel.storage.impl.url.toVirtualFileUrl
 import org.jetbrains.workspace.model.matchers.collection.entries.ExpectedContentRootEntity
 import org.jetbrains.workspace.model.matchers.collection.entries.shouldBeEqual
 import org.jetbrains.workspace.model.matchers.collection.entries.shouldContainExactlyInAnyOrder
+import org.jetbrains.workspace.model.test.framework.WorkspaceModelWithParentJavaModuleBaseTest
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.net.URI
 import kotlin.io.path.toPath
 
 @DisplayName("ContentRootEntityUpdater.addEntity()")
-internal class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModuleUpdaterBaseTest() {
+internal class ContentRootEntityUpdaterTest : WorkspaceModelWithParentJavaModuleBaseTest() {
+
+  private lateinit var contentRootEntityUpdater: ContentRootEntityUpdater
+
+  @BeforeEach
+  override fun beforeEach() {
+    // given
+    super.beforeEach()
+
+    val workspaceModelEntityUpdaterConfig =
+      WorkspaceModelEntityUpdaterConfig(workspaceModel, virtualFileUrlManager, projectConfigSource)
+    contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelEntityUpdaterConfig)
+  }
 
   @Test
   fun `should add one content root to the workspace model`() {
@@ -21,24 +34,19 @@ internal class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModu
     val contentRoot = ContentRoot(contentPath)
 
     // when
-    val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelEntityUpdaterConfig)
-
-    lateinit var returnedContentRootEntity: ContentRootEntity
-
-    WriteCommandAction.runWriteCommandAction(project) {
-      returnedContentRootEntity = contentRootEntityUpdater.addEntity(contentRoot, parentModuleEntity)
+    val returnedContentRootEntity = runTestWriteAction {
+      contentRootEntityUpdater.addEntity(contentRoot, parentModuleEntity)
     }
 
     // then
     val virtualContentUrl = contentPath.toVirtualFileUrl(virtualFileUrlManager)
-    val expectedContentRootEntityDetails = ExpectedContentRootEntity(
+    val expectedContentRootEntity = ExpectedContentRootEntity(
       contentRootEntity = ContentRootEntity(virtualContentUrl, emptyList(), emptyList()),
       parentModuleEntity = parentModuleEntity,
     )
 
-    returnedContentRootEntity shouldBeEqual expectedContentRootEntityDetails
-
-    loadedEntries(ContentRootEntity::class.java) shouldContainExactlyInAnyOrder listOf(expectedContentRootEntityDetails)
+    returnedContentRootEntity shouldBeEqual expectedContentRootEntity
+    loadedEntries(ContentRootEntity::class.java) shouldContainExactlyInAnyOrder listOf(expectedContentRootEntity)
   }
 
   @Test
@@ -56,12 +64,8 @@ internal class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModu
     val contentRoots = listOf(contentRoot1, contentRoot2, contentRoot3)
 
     // when
-    val contentRootEntityUpdater = ContentRootEntityUpdater(workspaceModelEntityUpdaterConfig)
-
-    lateinit var returnedContentRootEntries: Collection<ContentRootEntity>
-
-    WriteCommandAction.runWriteCommandAction(project) {
-      returnedContentRootEntries = contentRootEntityUpdater.addEntries(contentRoots, parentModuleEntity)
+    val returnedContentRootEntries = runTestWriteAction {
+      contentRootEntityUpdater.addEntries(contentRoots, parentModuleEntity)
     }
 
     // then
@@ -82,11 +86,10 @@ internal class ContentRootEntityUpdaterTest : WorkspaceModelEntityWithParentModu
       contentRootEntity = ContentRootEntity(virtualContentUrl3, emptyList(), emptyList()),
       parentModuleEntity = parentModuleEntity,
     )
-
-    returnedContentRootEntries shouldContainExactlyInAnyOrder
+    val expectedContentRootEntries =
       listOf(expectedContentRootEntityDetails1, expectedContentRootEntityDetails2, expectedContentRootEntityDetails3)
 
-    loadedEntries(ContentRootEntity::class.java) shouldContainExactlyInAnyOrder
-      listOf(expectedContentRootEntityDetails1, expectedContentRootEntityDetails2, expectedContentRootEntityDetails3)
+    returnedContentRootEntries shouldContainExactlyInAnyOrder expectedContentRootEntries
+    loadedEntries(ContentRootEntity::class.java) shouldContainExactlyInAnyOrder expectedContentRootEntries
   }
 }

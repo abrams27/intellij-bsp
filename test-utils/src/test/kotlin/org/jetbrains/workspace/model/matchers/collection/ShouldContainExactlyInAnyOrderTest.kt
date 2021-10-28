@@ -1,7 +1,7 @@
 package org.jetbrains.workspace.model.matchers.collection
 
 import io.kotest.assertions.throwables.shouldNotThrow
-import io.kotest.assertions.throwables.shouldThrowExactly
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -28,7 +28,7 @@ class ShouldContainExactlyInAnyOrderTest {
     val expectedValues = listOf("1")
 
     //  when & then
-    shouldThrowExactly<AssertionError> {
+    shouldThrow<AssertionError> {
       actualValues.shouldContainExactlyInAnyOrder(::shouldBeTheSame, expectedValues)
     }
   }
