@@ -120,6 +120,7 @@ internal class LibraryEntityUpdaterTest : WorkspaceModelWithParentJavaModuleBase
         excludedRoots = emptyList()
       )
     )
+
     val expectedLibraryEntries = listOf(expectedLibraryEntity1, expectedLibraryEntity2)
 
     returnedLibraryEntries shouldContainExactlyInAnyOrder expectedLibraryEntries

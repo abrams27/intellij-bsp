@@ -86,6 +86,7 @@ internal class ContentRootEntityUpdaterTest : WorkspaceModelWithParentJavaModule
       contentRootEntity = ContentRootEntity(virtualContentUrl3, emptyList(), emptyList()),
       parentModuleEntity = parentModuleEntity,
     )
+
     val expectedContentRootEntries =
       listOf(expectedContentRootEntity1, expectedContentRootEntity2, expectedContentRootEntity3)
 
