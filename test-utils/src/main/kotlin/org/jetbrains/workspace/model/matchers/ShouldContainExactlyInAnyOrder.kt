@@ -1,4 +1,4 @@
-package org.jetbrains.workspace.model.matchers.collection
+package org.jetbrains.workspace.model.matchers
 
 import io.kotest.inspectors.forAll
 import io.kotest.inspectors.forAny

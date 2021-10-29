@@ -5,9 +5,9 @@ import com.intellij.workspaceModel.storage.bridgeEntities.LibraryRoot
 import com.intellij.workspaceModel.storage.bridgeEntities.LibraryRootTypeId
 import com.intellij.workspaceModel.storage.bridgeEntities.LibraryTableId
 import com.intellij.workspaceModel.storage.bridgeEntities.ModuleId
-import org.jetbrains.workspace.model.matchers.collection.entries.ExpectedLibraryEntity
-import org.jetbrains.workspace.model.matchers.collection.entries.shouldBeEqual
-import org.jetbrains.workspace.model.matchers.collection.entries.shouldContainExactlyInAnyOrder
+import org.jetbrains.workspace.model.matchers.entries.ExpectedLibraryEntity
+import org.jetbrains.workspace.model.matchers.entries.shouldBeEqual
+import org.jetbrains.workspace.model.matchers.entries.shouldContainExactlyInAnyOrder
 import org.jetbrains.workspace.model.test.framework.WorkspaceModelWithParentJavaModuleBaseTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

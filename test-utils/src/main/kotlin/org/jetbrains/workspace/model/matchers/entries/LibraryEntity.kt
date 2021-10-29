@@ -1,9 +1,9 @@
-package org.jetbrains.workspace.model.matchers.collection.entries
+package org.jetbrains.workspace.model.matchers.entries
 
 import com.intellij.workspaceModel.storage.bridgeEntities.LibraryEntity
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import org.jetbrains.workspace.model.matchers.collection.shouldContainExactlyInAnyOrder
+import org.jetbrains.workspace.model.matchers.shouldContainExactlyInAnyOrder
 
 public data class ExpectedLibraryEntity(
   val libraryEntity: LibraryEntity,

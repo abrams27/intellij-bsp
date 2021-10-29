@@ -1,4 +1,4 @@
-package org.jetbrains.workspace.model.matchers.collection
+package org.jetbrains.workspace.model.matchers
 
 import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow

@@ -1,11 +1,11 @@
-package org.jetbrains.workspace.model.matchers.collection.entries
+package org.jetbrains.workspace.model.matchers.entries
 
 import com.intellij.workspaceModel.storage.bridgeEntities.ContentRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.JavaResourceRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.SourceRootEntity
 import io.kotest.matchers.shouldBe
-import org.jetbrains.workspace.model.matchers.collection.shouldContainExactlyInAnyOrder
+import org.jetbrains.workspace.model.matchers.shouldContainExactlyInAnyOrder
 
 public data class ExpectedJavaResourceRootEntity(
   val javaResourceRootEntity: JavaResourceRootEntity,

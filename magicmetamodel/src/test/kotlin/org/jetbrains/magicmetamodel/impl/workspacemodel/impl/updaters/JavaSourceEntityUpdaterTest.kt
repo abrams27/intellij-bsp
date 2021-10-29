@@ -4,9 +4,9 @@ import com.intellij.workspaceModel.storage.bridgeEntities.ContentRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.JavaSourceRootEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.SourceRootEntity
 import com.intellij.workspaceModel.storage.impl.url.toVirtualFileUrl
-import org.jetbrains.workspace.model.matchers.collection.entries.ExpectedJavaSourceRootEntity
-import org.jetbrains.workspace.model.matchers.collection.entries.shouldBeEqual
-import org.jetbrains.workspace.model.matchers.collection.entries.shouldContainExactlyInAnyOrder
+import org.jetbrains.workspace.model.matchers.entries.ExpectedJavaSourceRootEntity
+import org.jetbrains.workspace.model.matchers.entries.shouldBeEqual
+import org.jetbrains.workspace.model.matchers.entries.shouldContainExactlyInAnyOrder
 import org.jetbrains.workspace.model.test.framework.WorkspaceModelWithParentJavaModuleBaseTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
