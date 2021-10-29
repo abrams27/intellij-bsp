@@ -29,19 +29,12 @@ private fun validateJavaResourceRootEntity(
   actual.generated shouldBe expected.javaResourceRootEntity.generated
   actual.relativeOutputPath shouldBe expected.javaResourceRootEntity.relativeOutputPath
 
-  val actualSourceRoot = actual.sourceRoot
-  actualSourceRoot.url shouldBe expected.sourceRootEntity.url
-  actualSourceRoot.rootType shouldBe expected.sourceRootEntity.rootType
-
-  val actualContentRoot = actualSourceRoot.contentRoot
-  actualContentRoot shouldBeEqual toExpectedContentRootEntity(expected)
-
-  val actualModuleEntity = actualContentRoot.module
-  actualModuleEntity shouldBe expected.parentModuleEntity
+  actual.sourceRoot shouldBeEqual toExpectedSourceRootEntity(expected)
 }
 
-private fun toExpectedContentRootEntity(expected: ExpectedJavaResourceRootEntity): ExpectedContentRootEntity =
-  ExpectedContentRootEntity(
+private fun toExpectedSourceRootEntity(expected: ExpectedJavaResourceRootEntity): ExpectedSourceRootEntity =
+  ExpectedSourceRootEntity(
+    sourceRootEntity = expected.sourceRootEntity,
     contentRootEntity = expected.contentRootEntity,
     parentModuleEntity = expected.parentModuleEntity,
   )
