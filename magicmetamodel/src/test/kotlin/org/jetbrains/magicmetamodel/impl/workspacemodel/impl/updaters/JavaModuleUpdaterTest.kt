@@ -176,10 +176,10 @@ internal class JavaModuleUpdaterTest : WorkspaceModelBaseTest() {
           parentModuleEntity = expectedModuleEntity.moduleEntity,
         )
 
-//        loadedEntries(JavaSourceRootEntity::class.java) shouldContainExactlyInAnyOrder listOf(
-//          expectedJavaSourceRootEntity1,
-//          expectedJavaSourceRootEntity2
-//        )
+        loadedEntries(JavaSourceRootEntity::class.java) shouldContainExactlyInAnyOrder listOf(
+          expectedJavaSourceRootEntity1,
+          expectedJavaSourceRootEntity2
+        )
 
         val virtualResourceUrl1 = resourcePath1.toVirtualFileUrl(virtualFileUrlManager)
         val expectedJavaResourceRootEntity1 = ExpectedJavaResourceRootEntity(

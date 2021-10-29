@@ -14,13 +14,10 @@ import com.intellij.workspaceModel.storage.bridgeEntities.ModuleEntity
 import com.intellij.workspaceModel.storage.bridgeEntities.addModuleEntity
 import com.intellij.workspaceModel.storage.impl.url.toVirtualFileUrl
 import com.intellij.workspaceModel.storage.url.VirtualFileUrlManager
-import io.kotest.inspectors.forAll
-import io.kotest.inspectors.forAny
-import io.kotest.matchers.collections.shouldHaveSize
 import org.junit.jupiter.api.BeforeEach
 import java.nio.file.Path
 
-public abstract class WorkspaceModelBaseTest {
+public open class WorkspaceModelBaseTest {
 
   protected lateinit var project: Project
   protected lateinit var workspaceModel: WorkspaceModel

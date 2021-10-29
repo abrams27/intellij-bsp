@@ -53,7 +53,6 @@ class JavaResourceEntityUpdaterTest : WorkspaceModelWithParentJavaModuleBaseTest
     loadedEntries(JavaResourceRootEntity::class.java) shouldContainExactlyInAnyOrder listOf(
       expectedJavaResourceRootEntity
     )
-
   }
 
   @Test
