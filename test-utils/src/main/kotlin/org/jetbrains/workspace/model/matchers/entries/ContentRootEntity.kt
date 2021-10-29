@@ -27,5 +27,10 @@ private fun validateContentRootEntity(
   actual.excludedUrls shouldContainExactlyInAnyOrder expected.contentRootEntity.excludedUrls
   actual.excludedPatterns shouldContainExactlyInAnyOrder expected.contentRootEntity.excludedPatterns
 
-  actual.module shouldBe expected.parentModuleEntity
+  actual.module shouldBeEqual toExpectedModuleEntity(expected)
 }
+
+private fun toExpectedModuleEntity(expected: ExpectedContentRootEntity): ExpectedModuleEntity =
+  ExpectedModuleEntity(
+    moduleEntity = expected.parentModuleEntity
+  )

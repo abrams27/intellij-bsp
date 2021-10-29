@@ -68,21 +68,8 @@ public abstract class WorkspaceModelBaseTest {
     return result
   }
 
-  protected fun <E : WorkspaceEntity> workspaceModelLoadedEntries(entityClass: Class<E>): List<E> =
-    workspaceModel.entityStorage.current.entities(entityClass).toList()
-
   protected fun <E : WorkspaceEntity> loadedEntries(entityClass: Class<E>): List<E> =
     workspaceModel.entityStorage.current.entities(entityClass).toList()
-
-  protected infix fun <A, E> Collection<A>.shouldContainExactlyInAnyOrder(
-    expectedWithAssertion: Pair<Collection<E>, (actual: A, expected: E) -> Unit>,
-  ) {
-    val expectedValues = expectedWithAssertion.first
-    val assertion = expectedWithAssertion.second
-
-    this shouldHaveSize expectedValues.size
-    this.forAll { actual -> expectedValues.forAny { assertion(actual, it) } }
-  }
 }
 
 public abstract class WorkspaceModelWithParentJavaModuleBaseTest : WorkspaceModelBaseTest() {
