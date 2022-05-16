@@ -1,12 +1,13 @@
 package org.jetbrains.magicmetamodel.impl
 
+import ch.epfl.scala.bsp4j.BuildTarget
 import ch.epfl.scala.bsp4j.BuildTargetIdentifier
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.diagnostic.trace
 import kotlin.reflect.KProperty
 
 internal class NonOverlappingTargetsDelegate(
-  private val allTargets: List<BuildTargetIdentifier>,
+  private val allTargets: List<BuildTarget>,
   private val overlappingTargetsGraph: Map<BuildTargetIdentifier, Set<BuildTargetIdentifier>>,
 ) {
 
@@ -27,12 +28,12 @@ internal class NonOverlappingTargetsDelegate(
 
   private fun addTargetToSetIfNoneOfItsNeighborsIsAdded(
     nonOverlappingTargetsAcc: Set<BuildTargetIdentifier>,
-    target: BuildTargetIdentifier,
+    target: BuildTarget,
   ): Set<BuildTargetIdentifier> {
-    val shouldNotTargetBeAddedToSet = isAnyOfNeighborsAddedToSet(nonOverlappingTargetsAcc, target)
+    val shouldNotTargetBeAddedToSet = isAnyOfNeighborsAddedToSet(nonOverlappingTargetsAcc, target.id)
 
     return if (shouldNotTargetBeAddedToSet) nonOverlappingTargetsAcc
-    else (nonOverlappingTargetsAcc + target).also { LOGGER.trace { "Adding $target to non overlapping targets." } }
+    else (nonOverlappingTargetsAcc + target.id).also { LOGGER.trace { "Adding $target to non overlapping targets." } }
   }
 
   private fun isAnyOfNeighborsAddedToSet(
