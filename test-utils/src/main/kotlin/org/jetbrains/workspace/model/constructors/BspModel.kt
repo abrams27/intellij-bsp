@@ -9,7 +9,6 @@ public class BuildTargetId(
   uri: String
 ) : BuildTargetIdentifier(uri)
 
-
 public class BuildTarget(
   id: BuildTargetIdentifier,
   displayName: String? = null,
@@ -30,20 +29,17 @@ public class BuildTarget(
   }
 }
 
-
 public class SourceItem(
   uri: String,
   kind: SourceItemKind,
   generated: Boolean = false,
 ) : ch.epfl.scala.bsp4j.SourceItem(uri, kind, generated)
 
-
 public class SourcesItem(
   target: BuildTargetIdentifier,
   sources: List<SourceItem>,
 ) : ch.epfl.scala.bsp4j.SourcesItem(target, sources)
 
-
 public class TextDocumentId(
   uri: String,
-): TextDocumentIdentifier(uri)
+) : TextDocumentIdentifier(uri)
