@@ -1,3 +1,5 @@
+@file:Suppress("MaxLineLength")
+
 package org.jetbrains.magicmetamodel.impl.workspacemodel.impl.updaters
 
 import com.intellij.workspaceModel.storage.bridgeEntities.ContentRootEntity
