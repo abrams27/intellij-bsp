@@ -23,6 +23,16 @@ import org.jetbrains.plugins.bsp.services.MagicMetaModelService
 
 private const val ID = "BspDocumentTargetsWidget"
 
+private class LoadTargetAction(
+  private val target: BuildTargetIdentifier,
+  private val magicMetaModel: MagicMetaModel
+) : AnAction(target.uri) {
+
+  override fun actionPerformed(e: AnActionEvent) {
+    magicMetaModel.loadTarget(target)
+  }
+}
+
 private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarPopup(project, false) {
 
   private val magicMetaModelService = MagicMetaModelService.getInstance(project)
@@ -64,14 +74,14 @@ private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarP
 
     val loadedTarget = documentDetails.loadedTargetId
     if (loadedTarget != null) {
-      group.addAction(Action(loadedTarget, magicMetaModelService.magicMetaModel))
+      group.addAction(LoadTargetAction(loadedTarget, magicMetaModelService.magicMetaModel))
     }
 
     group.addSeparator(BspDocumentTargetsWidgetBundle.message("widget.available.targets.to.load"))
     val availableTargets = documentDetails.notLoadedTargetsIds
 
     availableTargets
-      .map { Action(it, magicMetaModelService.magicMetaModel) }
+      .map { LoadTargetAction(it, magicMetaModelService.magicMetaModel) }
       .forEach(group::add)
 
     return group
@@ -79,15 +89,6 @@ private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarP
 
   override fun createInstance(project: Project): StatusBarWidget =
     BspDocumentTargetsWidget(project)
-
-  private class Action(
-    val target: BuildTargetIdentifier,
-    private val magicMetaModel: MagicMetaModel
-  ) : AnAction(target.uri) {
-    override fun actionPerformed(e: AnActionEvent) {
-      magicMetaModel.loadTarget(target)
-    }
-  }
 }
 
 class BspDocumentTargetsWidgetFactory : StatusBarWidgetFactory {

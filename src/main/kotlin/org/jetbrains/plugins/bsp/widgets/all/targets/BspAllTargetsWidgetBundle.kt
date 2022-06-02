@@ -4,12 +4,11 @@ import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
 
-//@NonNls
-//private const val BUNDLE = "messages.BspDocumentTargetsWidgetBundle"
+@NonNls
+private const val BUNDLE = "messages.widgets.BspAllTargetsWidgetBundle"
 
-//internal object BspDocumentTargetsWidgetBundle : DynamicBundle(BUNDLE) {
-//
-//  @JvmStatic
-//  fun message(@PropertyKey(resourceBundle = BUNDLE) key: String, vararg params: Any) =
-//    getMessage(key, *params)
-//}
+internal object BspAllTargetsWidgetBundle : DynamicBundle(BUNDLE) {
+
+  fun message(@PropertyKey(resourceBundle = BUNDLE) key: String, vararg params: Any) =
+    getMessage(key, *params)
+}
