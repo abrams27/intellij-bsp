@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
 
 @NonNls
-private const val BUNDLE = "messages.BspDocumentTargetsWidgetBundle"
+private const val BUNDLE = "messages.widgets.BspDocumentTargetsWidgetBundle"
 
 internal object BspDocumentTargetsWidgetBundle : DynamicBundle(BUNDLE) {
 

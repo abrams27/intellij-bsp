@@ -21,7 +21,7 @@ import org.jetbrains.magicmetamodel.MagicMetaModel
 import org.jetbrains.plugins.bsp.config.BspPluginIcons
 import org.jetbrains.plugins.bsp.services.MagicMetaModelService
 
-private const val ID = "BSPTargets"
+private const val ID = "BspDocumentTargetsWidget"
 
 private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarPopup(project, false) {
 
@@ -30,16 +30,16 @@ private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarP
   override fun ID(): String = ID
 
   override fun getWidgetState(file: VirtualFile?): WidgetState =
-    if (file == null) getInactiveWidgetState() else getActiveWidgetState()
+    if (file == null) inactiveWidgetState() else activeWidgetState()
 
-  private fun getInactiveWidgetState(): WidgetState {
+  private fun inactiveWidgetState(): WidgetState {
     val state = WidgetState(BspDocumentTargetsWidgetBundle.message("widget.tooltip.text.inactive"), "", false)
     state.icon = BspPluginIcons.bsp
 
     return state
   }
 
-  private fun getActiveWidgetState(): WidgetState {
+  private fun activeWidgetState(): WidgetState {
     val state = WidgetState(BspDocumentTargetsWidgetBundle.message("widget.tooltip.text.active"), "", true)
     state.icon = BspPluginIcons.bsp
 
@@ -90,7 +90,7 @@ private class BspDocumentTargetsWidget(project: Project) : EditorBasedStatusBarP
   }
 }
 
-class BSPStatusBarWidgetFactory : StatusBarWidgetFactory {
+class BspDocumentTargetsWidgetFactory : StatusBarWidgetFactory {
 
   override fun getId(): String = ID
 

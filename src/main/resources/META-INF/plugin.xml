@@ -12,8 +12,7 @@
 
       <projectOpenProcessor implementation="org.jetbrains.plugins.bsp.import.BspProjectOpenProcessor"/>
 
-
-      <statusBarWidgetFactory implementation="org.jetbrains.plugins.bsp.widgets.document.targets.BSPStatusBarWidgetFactory"/>
+      <statusBarWidgetFactory implementation="org.jetbrains.plugins.bsp.widgets.document.targets.BspDocumentTargetsWidgetFactory"/>
     </extensions>
 
     <applicationListeners>
