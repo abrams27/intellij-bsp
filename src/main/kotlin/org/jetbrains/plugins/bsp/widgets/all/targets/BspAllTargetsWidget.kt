@@ -13,10 +13,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
-import com.intellij.ui.awt.RelativePoint
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBList
-import com.intellij.ui.content.Content
 import com.intellij.ui.content.impl.ContentImpl
 import org.jetbrains.magicmetamodel.MagicMetaModel
 import org.jetbrains.plugins.bsp.config.BspPluginIcons
@@ -27,21 +25,61 @@ import javax.swing.DefaultListModel
 import javax.swing.ListSelectionModel
 import javax.swing.SwingConstants
 
-private class LoadTargetAction(
-  message: String,
-  private val target: BuildTargetIdentifier,
-  private val magicMetaModel: MagicMetaModel
-) : AnAction(message) {
+private class ListsUpdater(
+  val magicMetaModel: MagicMetaModel,
+) {
 
-  override fun actionPerformed(e: AnActionEvent) {
-    magicMetaModel.loadTarget(target)
+  private val loadedTargetsListModel = DefaultListModel<BuildTarget>()
+  val loadedTargetsJbList = JBList(loadedTargetsListModel)
+
+  private val notLoadedTargetsListModel = DefaultListModel<BuildTarget>()
+  val notLoadedTargetsJbList = JBList(notLoadedTargetsListModel)
+
+  init {
+    loadedTargetsJbList.selectionMode = ListSelectionModel.SINGLE_SELECTION
+    loadedTargetsJbList.installCellRenderer {
+      JBLabel(
+        it.displayName ?: it.id.uri,
+        BspPluginIcons.bsp,
+        SwingConstants.LEFT
+      )
+    }
+
+    notLoadedTargetsJbList.selectionMode = ListSelectionModel.SINGLE_SELECTION
+    notLoadedTargetsJbList.installCellRenderer {
+      JBLabel(
+        it.displayName ?: it.id.uri,
+        BspPluginIcons.bsp,
+        SwingConstants.LEFT
+      )
+    }
+
+    updateModels()
+  }
+
+  fun updateModels() {
+    loadedTargetsListModel.removeAllElements()
+    loadedTargetsListModel.addAll(magicMetaModel.getAllLoadedTargets())
+
+    notLoadedTargetsListModel.removeAllElements()
+    notLoadedTargetsListModel.addAll(magicMetaModel.getAllNotLoadedTargets())
   }
 }
 
-private class TargetsListMouseListener(
-  private val jbList: JBList<BuildTarget>,
-  private val magicMetaModel: MagicMetaModel,
-  private val xd: DefaultListModel<BuildTarget>,
+private class LoadTargetAction(
+  text: String,
+  private val target: BuildTargetIdentifier,
+  private val listsUpdater: ListsUpdater,
+) : AnAction(text) {
+
+  override fun actionPerformed(e: AnActionEvent) {
+    listsUpdater.magicMetaModel.loadTarget(target)
+    listsUpdater.updateModels()
+  }
+}
+
+private class NotLoadedTargetsListMouseListener(
+  private val listsUpdater: ListsUpdater,
 ) : MouseListener {
 
   override fun mouseClicked(e: MouseEvent?) = mouseClickedNotNull(e!!)
@@ -53,14 +91,12 @@ private class TargetsListMouseListener(
   }
 
   private fun updateSelectedIndex(mouseEvent: MouseEvent) {
-    jbList.selectedIndex = jbList.locationToIndex(mouseEvent.point)
+    listsUpdater.notLoadedTargetsJbList.selectedIndex = listsUpdater.notLoadedTargetsJbList.locationToIndex(mouseEvent.point)
   }
 
   private fun showPopupIfRightButtonClicked(mouseEvent: MouseEvent) {
     if (mouseEvent.mouseButton == MouseButton.Right) {
       showPopup(mouseEvent)
-
-      xd.remove(jbList.selectedIndex)
     }
   }
 
@@ -70,32 +106,45 @@ private class TargetsListMouseListener(
     val mnemonics = JBPopupFactory.ActionSelectionAid.MNEMONICS
 
     JBPopupFactory.getInstance()
-      .createActionGroupPopup("dadas", actionGroup, context, mnemonics, true)
+      .createActionGroupPopup(null, actionGroup, context, mnemonics, true)
       .showInBestPositionFor(context)
   }
 
   private fun calculatePopupGroup(): ActionGroup {
     val group = DefaultActionGroup()
 
-    val target = jbList.selectedValue.id
-    group.addAction(LoadTargetAction("loade taf", target, magicMetaModel))
+    val target = listsUpdater.notLoadedTargetsJbList.selectedValue.id
+    val action = LoadTargetAction(
+      BspAllTargetsWidgetBundle.message("widget.load.target.popup.message"),
+      target,
+      listsUpdater
+    )
+    group.addAction(action)
 
     return group
   }
 
-  override fun mousePressed(e: MouseEvent?) {}
+  override fun mousePressed(e: MouseEvent?) {
+    // nothing
+  }
 
-  override fun mouseReleased(e: MouseEvent?) {}
+  override fun mouseReleased(e: MouseEvent?) {
+    // nothing
+  }
 
-  override fun mouseEntered(e: MouseEvent?) {}
+  override fun mouseEntered(e: MouseEvent?) {
+    // nothing
+  }
 
-  override fun mouseExited(e: MouseEvent?) {}
+  override fun mouseExited(e: MouseEvent?) {
+    // nothing
+  }
 }
 
-class BspAllTargetsWidgetFactory : ToolWindowFactory {
+public class BspAllTargetsWidgetFactory : ToolWindowFactory {
 
+  // TODO true if BSP project
   override fun shouldBeAvailable(project: Project): Boolean =
-    // TODO: true if BSP project
     true
 
   override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
@@ -103,28 +152,21 @@ class BspAllTargetsWidgetFactory : ToolWindowFactory {
 
     toolWindow.title = BspAllTargetsWidgetBundle.message("widget.title")
 
-    val loadedTargetsTab = createTargetsTab(
-      magicMetaModel.getAllLoadedTargets(),
+    val listsUpdater = ListsUpdater(magicMetaModel)
+
+    val loadedTargetsTab = ContentImpl(
+      listsUpdater.loadedTargetsJbList,
       BspAllTargetsWidgetBundle.message("widget.loaded.targets.tab.name"),
-      magicMetaModel
+      true
     )
     toolWindow.contentManager.addContent(loadedTargetsTab)
 
-    val notLoadedTargetsTab = createTargetsTab(
-      magicMetaModel.getAllNotLoadedTargets(),
+    val notLoadedTargetsTab = ContentImpl(
+      listsUpdater.notLoadedTargetsJbList,
       BspAllTargetsWidgetBundle.message("widget.not.loaded.targets.tab.name"),
-      magicMetaModel
+      true
     )
+    listsUpdater.notLoadedTargetsJbList.addMouseListener(NotLoadedTargetsListMouseListener(listsUpdater))
     toolWindow.contentManager.addContent(notLoadedTargetsTab)
-  }
-
-  private fun createTargetsTab(targets: List<BuildTarget>, tabName: String, magicMetaModel: MagicMetaModel): Content {
-    val a = DefaultListModel<BuildTarget>()
-    a.addAll(targets)
-    val jbList = JBList(a)
-    jbList.selectionMode = ListSelectionModel.SINGLE_SELECTION
-    jbList.installCellRenderer { JBLabel(it.displayName ?: it.id.uri, BspPluginIcons.bsp, SwingConstants.LEFT) }
-    jbList.addMouseListener(TargetsListMouseListener(jbList, magicMetaModel, a))
-    return ContentImpl(jbList, tabName, true)
   }
 }
