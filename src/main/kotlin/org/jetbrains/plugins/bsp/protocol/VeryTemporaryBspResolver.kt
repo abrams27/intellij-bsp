@@ -9,11 +9,10 @@ import ch.epfl.scala.bsp4j.SourcesParams
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.jetbrains.magicmetamodel.ProjectDetails
+import org.jetbrains.plugins.bsp.services.BspServer
 import java.nio.file.Path
 
-public class VeryTemporaryBspResolver(private val projectBaseDir: Path) {
-
-  private val server = VeryTemporaryBspConnection(projectBaseDir).bspServer
+public class VeryTemporaryBspResolver(private val projectBaseDir: Path, private val server: BspServer) {
 
   public fun collectModel(): ProjectDetails {
     println("buildInitialize")

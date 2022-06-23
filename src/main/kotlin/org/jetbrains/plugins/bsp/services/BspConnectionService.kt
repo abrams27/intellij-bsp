@@ -1,4 +1,4 @@
-package org.jetbrains.plugins.bsp.protocol
+package org.jetbrains.plugins.bsp.services
 
 import ch.epfl.scala.bsp4j.BspConnectionDetails
 import ch.epfl.scala.bsp4j.BuildClient
@@ -10,27 +10,37 @@ import ch.epfl.scala.bsp4j.ShowMessageParams
 import ch.epfl.scala.bsp4j.TaskFinishParams
 import ch.epfl.scala.bsp4j.TaskProgressParams
 import ch.epfl.scala.bsp4j.TaskStartParams
-import com.google.gson.Gson
+import com.intellij.openapi.project.Project
+import com.intellij.project.stateStore
 import com.intellij.util.concurrency.AppExecutorUtil
 import org.eclipse.lsp4j.jsonrpc.Launcher
-import java.io.File
-import java.nio.file.Path
+import org.jetbrains.protocol.connection.LocatedBspConnectionDetails
 
 public interface BspServer : BuildServer
 
-internal class VeryTemporaryBspConnection(projectBaseDir: Path) {
+public class BspConnectionService(private val project: Project) {
 
-  val bspServer = connect(projectBaseDir)
+  public var server: BspServer? = null
 
-  private fun connect(projectBaseDir: Path): BspServer {
-    val config = getConfig(projectBaseDir)
-
+  public fun connect(connectionFile: LocatedBspConnectionDetails) {
+    val process = createAndStartProcess(connectionFile.bspConnectionDetails)
+    // TODO
     val client = BspClient()
-    val process = ProcessBuilder(config.argv)
-      .directory(projectBaseDir.toFile())
+
+    val launcher = createLauncher(process, client)
+
+    launcher.startListening()
+    server = launcher.remoteProxy
+    client.onConnectWithServer(server)
+  }
+
+  private fun createAndStartProcess(bspConnectionDetails: BspConnectionDetails): Process =
+    ProcessBuilder(bspConnectionDetails.argv)
+      .directory(project.stateStore.projectBasePath.toFile())
       .start()
 
-    val launcher = Launcher.Builder<BspServer>()
+  private fun createLauncher(process: Process, client: BuildClient): Launcher<BspServer> =
+    Launcher.Builder<BspServer>()
       .setRemoteInterface(BspServer::class.java)
       .setExecutorService(AppExecutorUtil.getAppExecutorService())
       .setInput(process.inputStream)
@@ -38,23 +48,13 @@ internal class VeryTemporaryBspConnection(projectBaseDir: Path) {
       .setLocalService(client)
       .create()
 
-    launcher.startListening()
-    val server = launcher.remoteProxy
-    client.onConnectWithServer(server)
-
-    return server
+  public fun disconnect() {
   }
 
-  private fun getConfig(projectBaseDir: Path): BspConnectionDetails {
-    val configFile = getConfigFile(projectBaseDir)
-
-    return Gson().fromJson(configFile.readText(), BspConnectionDetails::class.java)
+  public companion object {
+    public fun getInstance(project: Project): BspConnectionService =
+      project.getService(BspConnectionService::class.java)
   }
-
-  private fun getConfigFile(projectBaseDir: Path): File =
-    File(projectBaseDir.toFile(), ".bsp")
-      .listFiles { file -> file.name.endsWith(".json") }
-      .first()
 }
 
 private class BspClient : BuildClient {
