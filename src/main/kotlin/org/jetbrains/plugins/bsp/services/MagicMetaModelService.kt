@@ -9,19 +9,20 @@ import org.jetbrains.magicmetamodel.MagicMetaModel
 import org.jetbrains.magicmetamodel.MagicMetaModelProjectConfig
 import org.jetbrains.plugins.bsp.protocol.VeryTemporaryBspResolver
 
-public class MagicMetaModelService(project: Project) {
+public class MagicMetaModelService(private val project: Project) {
+  public val magicMetaModel: MagicMetaModel by lazy {
+    initializeMagicModel()
+  }
 
-  public val magicMetaModel: MagicMetaModel = initializeMagicModel(project)
-
-  private fun initializeMagicModel(project: Project): MagicMetaModel {
-    val magicMetaModelProjectConfig = calculateProjectConfig(project)
+  private fun initializeMagicModel(): MagicMetaModel {
+    val magicMetaModelProjectConfig = calculateProjectConfig()
     val bspResolver = VeryTemporaryBspResolver(magicMetaModelProjectConfig.projectBaseDir)
     val projectDetails = bspResolver.collectModel()
 
     return MagicMetaModel.create(magicMetaModelProjectConfig, projectDetails)
   }
 
-  private fun calculateProjectConfig(project: Project): MagicMetaModelProjectConfig {
+  private fun calculateProjectConfig(): MagicMetaModelProjectConfig {
     val workspaceModel = WorkspaceModel.getInstance(project)
     val virtualFileUrlManager = VirtualFileUrlManager.getInstance(project)
     val projectBaseDir = project.stateStore.projectBasePath
