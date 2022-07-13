@@ -2,10 +2,12 @@ package org.jetbrains.plugins.bsp.import
 
 import com.intellij.ide.impl.OpenProjectTask
 import com.intellij.openapi.application.runWriteAction
+import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ex.ProjectManagerEx
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.platform.PlatformProjectOpenProcessor
 import com.intellij.projectImport.ProjectOpenProcessor
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.Cell
@@ -76,6 +78,13 @@ public class BspProjectOpenProcessor : ProjectOpenProcessor() {
 
       project
     } else null
+
+//    {
+//      val bspDir = getBspDir(virtualFile) ?: return null
+//      val baseDir = bspDir.parent ?: return null
+//
+//      return PlatformProjectOpenProcessor.getInstance().doOpenProject(baseDir, projectToClose, forceOpenInNewFrame)
+//    }
   }
 
   private inner class TemporaryBspImportDialog(
