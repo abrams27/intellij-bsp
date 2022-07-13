@@ -1,18 +1,31 @@
 package org.jetbrains.plugins.bsp.import
 
+import com.intellij.ide.impl.OpenProjectTask
 import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.startup.StartupManager
-import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.project.ex.ProjectManagerEx
+import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.platform.PlatformProjectOpenProcessor
 import com.intellij.projectImport.ProjectOpenProcessor
+import com.intellij.ui.components.JBCheckBox
+import com.intellij.ui.dsl.builder.Cell
+import com.intellij.ui.dsl.builder.bind
+import com.intellij.ui.dsl.builder.panel
+import com.intellij.ui.dsl.builder.selected
+import com.intellij.ui.layout.not
 import org.jetbrains.plugins.bsp.config.BspPluginBundle
 import org.jetbrains.plugins.bsp.config.BspPluginIcons
+import org.jetbrains.plugins.bsp.extension.points.BspConnectionDetailsGeneratorExtension
+import org.jetbrains.plugins.bsp.services.BspConnectionService
 import org.jetbrains.plugins.bsp.services.MagicMetaModelService
-import org.jetbrains.plugins.bsp.util.BspConstants
+import org.jetbrains.protocol.connection.BspConnectionDetailsGeneratorProvider
+import org.jetbrains.protocol.connection.BspConnectionFilesProvider
+import org.jetbrains.protocol.connection.LocatedBspConnectionDetailsParser
+import java.nio.file.Paths
 import javax.swing.Icon
+import javax.swing.JComponent
 
 public class BspProjectOpenProcessor : ProjectOpenProcessor() {
 
@@ -20,15 +33,13 @@ public class BspProjectOpenProcessor : ProjectOpenProcessor() {
 
   override fun getIcon(): Icon = BspPluginIcons.bsp
 
-  /// Check if the directory is the .bsp directory itself or contains one
-  private fun getBspDir(file: VirtualFile): VirtualFile? =
-    if (!file.isDirectory) null else {
-      if (FileUtil.namesEqual(file.name, BspConstants.BSP_DIR)) file else file.findChild(BspConstants.BSP_DIR)
-    }
-
   override fun canOpenProject(file: VirtualFile): Boolean {
-    val bspDir = getBspDir(file) ?: return false
-    return bspDir.children.any { it.extension == BspConstants.SERVER_CONFIG_EXTENSION }
+    val bspConnectionFilesProvider = BspConnectionFilesProvider(file)
+    val bspConnectionDetailsGeneratorProvider =
+      BspConnectionDetailsGeneratorProvider(file, BspConnectionDetailsGeneratorExtension.extensions())
+
+    return bspConnectionFilesProvider.isAnyBspConnectionFileDefined() or
+      bspConnectionDetailsGeneratorProvider.canGenerateAnyBspConnectionDetailsFile()
   }
 
   override fun doOpenProject(
@@ -36,9 +47,90 @@ public class BspProjectOpenProcessor : ProjectOpenProcessor() {
     projectToClose: Project?,
     forceOpenInNewFrame: Boolean
   ): Project? {
-    val bspDir = getBspDir(virtualFile) ?: return null
-    val baseDir = bspDir.parent ?: return null
+    val bspConnectionFilesProvider = BspConnectionFilesProvider(virtualFile)
+    val bspConnectionDetailsGeneratorProvider =
+      BspConnectionDetailsGeneratorProvider(virtualFile, BspConnectionDetailsGeneratorExtension.extensions())
 
-    return PlatformProjectOpenProcessor.getInstance().doOpenProject(baseDir, projectToClose, forceOpenInNewFrame)
+    val dialog = TemporaryBspImportDialog(bspConnectionFilesProvider, bspConnectionDetailsGeneratorProvider)
+
+    return if (dialog.showAndGet()) {
+      // TODO better options
+      val options = OpenProjectTask(isNewProject = true)
+      val project = ProjectManagerEx.getInstanceEx().openProject(Paths.get(virtualFile.path), options)!!
+
+      val connectionService = BspConnectionService.getInstance(project)
+
+      if (dialog.buildToolUsed.selected()) {
+        val xd = dialog.buildTool
+        val xd1 = bspConnectionDetailsGeneratorProvider.generateBspConnectionDetailFileForGeneratorWithName(xd)
+        val xd2 = LocatedBspConnectionDetailsParser.parseFromFile(xd1!!)
+        connectionService.connect(xd2!!)
+      } else {
+        val xd = bspConnectionFilesProvider.connectionFiles[dialog.connectionFileId]
+        connectionService.connect(xd)
+      }
+
+      val magicMetaModelService = MagicMetaModelService.getInstance(project)
+      magicMetaModelService.initializeMagicModel()
+      val magicMetaModel = magicMetaModelService.magicMetaModel
+
+      runWriteAction { magicMetaModel.loadDefaultTargets() }
+
+      project
+    } else null
+
+//    {
+//      val bspDir = getBspDir(virtualFile) ?: return null
+//      val baseDir = bspDir.parent ?: return null
+//
+//      return PlatformProjectOpenProcessor.getInstance().doOpenProject(baseDir, projectToClose, forceOpenInNewFrame)
+//    }
+  }
+
+  private inner class TemporaryBspImportDialog(
+    private val bspConnectionFilesProvider: BspConnectionFilesProvider,
+    private val bspConnectionDetailsGeneratorProvider: BspConnectionDetailsGeneratorProvider
+  ) : DialogWrapper(true) {
+
+    lateinit var buildToolUsed: Cell<JBCheckBox>
+
+    var connectionFileId = 0
+
+    var buildTool = bspConnectionDetailsGeneratorProvider
+      .availableGeneratorsNames().firstOrNull() ?: ""
+
+    init {
+      title = "Select An Import Method (Temporary)"
+      init()
+    }
+
+    override fun createCenterPanel(): JComponent =
+      panel {
+
+        row {
+          buildToolUsed = checkBox("Use build tool")
+        }
+
+        buttonsGroup(title = "Detected Connection Files:") {
+          bspConnectionFilesProvider
+            .connectionFiles
+            .mapIndexed { id, a ->
+              row {
+                radioButton("name: ${a.bspConnectionDetails.name} location: ${a.connectionFileLocation.url}", id)
+                  .enabledIf(buildToolUsed.selected.not())
+              }
+            }
+        }.bind(::connectionFileId)
+
+        buttonsGroup(title = "Detected Build Tools:") {
+          bspConnectionDetailsGeneratorProvider
+            .availableGeneratorsNames()
+            .map {
+              row {
+                radioButton(it, it).enabledIf(buildToolUsed.selected)
+              }
+            }
+        }.bind(::buildTool)
+      }
   }
 }
