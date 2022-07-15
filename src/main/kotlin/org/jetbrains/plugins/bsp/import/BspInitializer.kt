@@ -21,6 +21,7 @@ public class BspInitializer : StartupActivity {
 
     ApplicationManager.getApplication().invokeLater {
       val magicMetaModelService = MagicMetaModelService.getInstance(project)
+      magicMetaModelService.initializeMagicModel()
 
       println("ProjectOpenActivity.invokeLater")
       runWriteAction {

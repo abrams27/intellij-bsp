@@ -56,34 +56,38 @@ public class BspProjectOpenProcessor : ProjectOpenProcessor() {
     return if (dialog.showAndGet()) {
       // TODO better options
       val options = OpenProjectTask(isNewProject = true)
-      val project = ProjectManagerEx.getInstanceEx().openProject(Paths.get(virtualFile.path), options)!!
+//      val project = ProjectManagerEx.getInstanceEx().openProject(Paths.get(virtualFile.path), options)!!
 
-      val connectionService = BspConnectionService.getInstance(project)
+      val project = PlatformProjectOpenProcessor.getInstance().doOpenProject(virtualFile, projectToClose, forceOpenInNewFrame)
 
-      if (dialog.buildToolUsed.selected()) {
-        val xd = dialog.buildTool
-        val xd1 = bspConnectionDetailsGeneratorProvider.generateBspConnectionDetailFileForGeneratorWithName(xd)
-        val xd2 = LocatedBspConnectionDetailsParser.parseFromFile(xd1!!)
-        connectionService.connect(xd2!!)
-      } else {
-        val xd = bspConnectionFilesProvider.connectionFiles[dialog.connectionFileId]
-        connectionService.connect(xd)
-      }
+      if (project != null) {
 
-      val magicMetaModelService = MagicMetaModelService.getInstance(project)
-      magicMetaModelService.initializeMagicModel()
-      val magicMetaModel = magicMetaModelService.magicMetaModel
+        val connectionService = BspConnectionService.getInstance(project)
 
-      runWriteAction { magicMetaModel.loadDefaultTargets() }
+        if (dialog.buildToolUsed.selected()) {
+          val xd = dialog.buildTool
+          val xd1 = bspConnectionDetailsGeneratorProvider.generateBspConnectionDetailFileForGeneratorWithName(xd)
+          val xd2 = LocatedBspConnectionDetailsParser.parseFromFile(xd1!!)
+          connectionService.connect(xd2!!)
+        } else {
+          val xd = bspConnectionFilesProvider.connectionFiles[dialog.connectionFileId]
+          connectionService.connect(xd)
+        }
 
-      project
+//      val magicMetaModelService = MagicMetaModelService.getInstance(project)
+//      magicMetaModelService.initializeMagicModel()
+//      val magicMetaModel = magicMetaModelService.magicMetaModel
+
+//      runWriteAction { magicMetaModel.loadDefaultTargets() }
+
+        project
+      } else null
     } else null
 
 //    {
 //      val bspDir = getBspDir(virtualFile) ?: return null
 //      val baseDir = bspDir.parent ?: return null
 //
-//      return PlatformProjectOpenProcessor.getInstance().doOpenProject(baseDir, projectToClose, forceOpenInNewFrame)
 //    }
   }
 

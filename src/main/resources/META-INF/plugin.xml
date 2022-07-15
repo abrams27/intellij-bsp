@@ -17,7 +17,7 @@
     />
 
 
-    <postStartupActivity implementation="org.jetbrains.plugins.bsp.import.ProjectOpenActivity"/>
+<!--    <postStartupActivity implementation="org.jetbrains.plugins.bsp.import.ProjectOpenActivity"/>-->
     <postStartupActivity implementation="org.jetbrains.plugins.bsp.import.BspInitializer"/>
 
     <projectService
