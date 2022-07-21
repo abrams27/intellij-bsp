@@ -22,12 +22,20 @@ import com.intellij.build.AbstractViewManager
 import com.intellij.build.DefaultBuildDescriptor
 import com.intellij.build.SyncViewManager
 import com.intellij.build.events.MessageEvent
+import com.intellij.build.events.impl.BuildIssueEventImpl
 import com.intellij.build.events.impl.FinishBuildEventImpl
 import com.intellij.build.events.impl.MessageEventImpl
+import com.intellij.build.events.impl.OutputBuildEventImpl
 import com.intellij.build.events.impl.ProgressBuildEventImpl
 import com.intellij.build.events.impl.StartBuildEventImpl
 import com.intellij.build.events.impl.SuccessResultImpl
+import com.intellij.build.issue.BuildIssue
+import com.intellij.build.issue.BuildIssueQuickFix
+import com.intellij.icons.AllIcons
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
+import com.intellij.pom.Navigatable
 import com.intellij.project.stateStore
 import com.intellij.util.concurrency.AppExecutorUtil
 import org.eclipse.lsp4j.jsonrpc.Launcher
@@ -52,6 +60,7 @@ public class BspConnectionService(private val project: Project) {
     launcher.startListening()
     server = launcher.remoteProxy
     client.onConnectWithServer(server)
+
   }
 
   private fun createAndStartProcess(bspConnectionDetails: BspConnectionDetails): Process =
@@ -89,7 +98,18 @@ public class VeryTemporaryBspResolver(
     val buildId = "xd"
     val title = "Title 2"
     val basePath = project.basePath!!
+    val restartAction: AnAction = object : AnAction() {
+      override fun update(e: AnActionEvent) {
+        e.presentation.isEnabled = true
+        e.presentation.icon = AllIcons.Actions.Refresh
+      }
+
+      override fun actionPerformed(e: AnActionEvent) {
+      }
+    }
+
     val buildDescriptor = DefaultBuildDescriptor(buildId, title, basePath, System.currentTimeMillis())
+      .withRestartActions(restartAction)
 
     val startEvent = StartBuildEventImpl(buildDescriptor, "message")
     buildViewManager.onEvent(buildId, startEvent)
@@ -130,6 +150,7 @@ public class VeryTemporaryBspResolver(
     )
     buildViewManager.onEvent(buildId, xd2)
 
+
     println("done done!")
     return ProjectDetails(
       targetsId = allTargetsIds!!,
@@ -166,16 +187,44 @@ private class BspClient(
     println("onBuildShowMessage")
     println(params)
 
-    val event = MessageEventImpl(randomId, MessageEvent.Kind.SIMPLE, null, "", params?.message)
-    buildViewManager.onEvent(buildId, event)
+//    val event = MessageEventImpl(randomId, MessageEvent.Kind.SIMPLE, null, "", params?.message)
+//    val event = OutputBuildEventImpl(randomId, "XDXD", true)
+    val event1 = OutputBuildEventImpl(buildId, "XDXD", true)
+//    buildViewManager.onEvent(buildId, event)
+    buildViewManager.onEvent(buildId, event1)
+    val x = MessageEventImpl(buildId, MessageEvent.Kind.WARNING, "xd", "LOL",
+      "LOLOLO")
+    buildViewManager.onEvent(buildId, x)
   }
 
   override fun onBuildLogMessage(params: LogMessageParams?) {
     println("onBuildLogMessage")
     println(params)
 
-    val event = MessageEventImpl(randomId, MessageEvent.Kind.SIMPLE, null, "", params?.message)
-    buildViewManager.onEvent(buildId, event)
+//    val event = MessageEventImpl(randomId, MessageEvent.Kind.SIMPLE, null, "", params?.message)
+    val event = OutputBuildEventImpl(randomId, "XDXD22", true)
+    val event1 = OutputBuildEventImpl(buildId, params?.message!!, true)
+//    buildViewManager.onEvent(buildId, event)
+    buildViewManager.onEvent(buildId, event1)
+//    val x = MessageEventImpl(buildId, MessageEvent.Kind.WARNING, "xd", "LOL",
+//      "LOLOLO")
+//    buildViewManager.onEvent(buildId, x)
+//    val xx = FileMessageEventImpl(buildId, MessageEvent.Kind.ERROR, "XD", "RRSARE", "DASDASDASADS", FilePosition(File("~/dev/test/bazel-bsp/WORKSPACE"), 12, 2))
+//    buildViewManager.onEvent(buildId, xx)
+
+    val buildIssue = object : BuildIssue {
+      override val description: String
+        get() = "XDX"
+      override val quickFixes: List<BuildIssueQuickFix>
+        get() = emptyList()
+      override val title: String
+        get() = "RR"
+
+      override fun getNavigatable(project: Project): Navigatable? {
+       return null
+      }
+    }
+    buildViewManager.onEvent(buildId, BuildIssueEventImpl(buildId, buildIssue, MessageEvent.Kind.ERROR))
   }
 
   override fun onBuildTaskStart(params: TaskStartParams?) {
