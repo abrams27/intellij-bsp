@@ -7,9 +7,8 @@ import com.intellij.build.events.impl.OutputBuildEventImpl
 import com.intellij.build.events.impl.ProgressBuildEventImpl
 import com.intellij.build.events.impl.StartBuildEventImpl
 import com.intellij.build.events.impl.SuccessResultImpl
-import java.nio.file.Path
 
-public class BspSyncConsole(private val syncView: BuildProgressListener, private val basePath: Path) {
+public class BspSyncConsole(private val syncView: BuildProgressListener, private val basePath: String) {
 
   private var syncId: Any = "needToStartId"
   private var inProgress: Boolean = false
@@ -23,7 +22,7 @@ public class BspSyncConsole(private val syncView: BuildProgressListener, private
   }
 
   private fun doStartImport(syncId: Any, title: String, message: String) {
-    val buildDescriptor = DefaultBuildDescriptor(syncId, title, basePath.toString(), System.currentTimeMillis())
+    val buildDescriptor = DefaultBuildDescriptor(syncId, title, basePath, System.currentTimeMillis())
     // TODO one day
     //  .withRestartActions(restartAction)
 
@@ -56,13 +55,18 @@ public class BspSyncConsole(private val syncView: BuildProgressListener, private
   }
 
   @Synchronized
-  public fun addMessage(id: Any, message: String): Unit = doIfImportInProcess {
+  public fun addMessage(id: Any?, message: String): Unit = doIfImportInProcess {
     if (message.isNotBlank()) {
       val messageToSend = prepareTextToPrint(message)
-      val event = OutputBuildEventImpl(id, messageToSend, true)
 
-      syncView.onEvent(syncId, event)
+      doAddMessage(id, messageToSend)
     }
+  }
+
+  private fun doAddMessage(id: Any?, message: String) {
+    val event = OutputBuildEventImpl(id, message, true)
+
+    syncView.onEvent(syncId, event)
   }
 
   @Synchronized

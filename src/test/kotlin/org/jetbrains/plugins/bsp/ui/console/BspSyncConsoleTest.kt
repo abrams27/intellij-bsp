@@ -8,7 +8,6 @@ import com.intellij.build.events.impl.ProgressBuildEventImpl
 import com.intellij.build.events.impl.StartBuildEventImpl
 import io.kotest.matchers.maps.shouldContainExactly
 import org.junit.jupiter.api.Test
-import kotlin.io.path.Path
 import kotlin.reflect.KClass
 
 private data class TestableBuildEvent(
@@ -26,7 +25,7 @@ private class BuildProgressListenerTestMock : BuildProgressListener {
     addEvent(buildId, sanitizeEvent(event))
   }
 
-  private fun sanitizeEvent(eventToSanitize: BuildEvent): TestableBuildEvent = when(eventToSanitize) {
+  private fun sanitizeEvent(eventToSanitize: BuildEvent): TestableBuildEvent = when (eventToSanitize) {
     is OutputBuildEventImpl -> TestableBuildEvent(
       eventToSanitize::class,
       null,
@@ -53,7 +52,7 @@ class BspSyncConsoleTest {
   fun `should start the import, start 3 subtask, put 2 messages and for each subtask and finish the import (the happy path)`() {
     // given
     val buildProcessListener = BuildProgressListenerTestMock()
-    val basePath = Path("/project/")
+    val basePath = "/project/"
     // when
     val bspSyncConsole = BspSyncConsole(buildProcessListener, basePath)
 
@@ -74,8 +73,10 @@ class BspSyncConsoleTest {
     bspSyncConsole.addMessage("subtask 3", "message 4")
     bspSyncConsole.addMessage("subtask 3", "      ") // should be omitted - blank string
 
-    bspSyncConsole.addMessage("subtask 2", "message 5\n")
-    bspSyncConsole.addMessage("subtask 3", "message 6\n")
+    bspSyncConsole.addMessage(null, "message 5")
+
+    bspSyncConsole.addMessage("subtask 2", "message 6\n")
+    bspSyncConsole.addMessage("subtask 3", "message 7\n")
 
     bspSyncConsole.finishSubtask("subtask 2", "Subtask 2 finished")
     bspSyncConsole.finishSubtask("subtask 3", "Subtask 3 finished")
@@ -100,8 +101,10 @@ class BspSyncConsoleTest {
         TestableBuildEvent(ProgressBuildEventImpl::class, "subtask 3", "import", "Starting subtask 3"),
         TestableBuildEvent(OutputBuildEventImpl::class, null, "subtask 3", "message 4\n"),
 
-        TestableBuildEvent(OutputBuildEventImpl::class, null, "subtask 2", "message 5\n"),
-        TestableBuildEvent(OutputBuildEventImpl::class, null, "subtask 3", "message 6\n"),
+        TestableBuildEvent(OutputBuildEventImpl::class, null, null, "message 5\n"),
+
+        TestableBuildEvent(OutputBuildEventImpl::class, null, "subtask 2", "message 6\n"),
+        TestableBuildEvent(OutputBuildEventImpl::class, null, "subtask 3", "message 7\n"),
 
         TestableBuildEvent(FinishBuildEventImpl::class, "subtask 2", null, "Subtask 2 finished"),
         TestableBuildEvent(FinishBuildEventImpl::class, "subtask 3", null, "Subtask 3 finished"),
